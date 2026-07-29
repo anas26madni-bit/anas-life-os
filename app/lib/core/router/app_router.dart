@@ -6,7 +6,7 @@ import '../startup/foundation_page.dart';
 part 'app_router.g.dart';
 
 @TypedGoRoute<FoundationRoute>(path: '/')
-class FoundationRoute extends GoRouteData {
+class FoundationRoute extends GoRouteData with $FoundationRoute {
   const FoundationRoute();
 
   @override
