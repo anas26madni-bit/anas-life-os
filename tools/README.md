@@ -1,3 +1,4 @@
 # Tools
 
-Reserved for approved developer tooling. Tooling must not introduce runtime network dependencies or bypass Project Bible quality gates.
+Repository-owned validation utilities live here. They must remain independent
+of product features and may not transmit project or user data.

@@ -4,9 +4,26 @@ All notable project changes are recorded here. Releases will use semantic versio
 
 ## [Unreleased]
 
-### Planned
+### Added
 
-- Sprint 1 Project Foundation after the required Flutter and Android toolchain passes validation.
+- Android-only Flutter project foundation for API 30 through API 36
+- Clean Architecture foundation with Riverpod state composition and constrained
+  `get_it`/`injectable` infrastructure bootstrap
+- Structured privacy-safe local logging and typed failure/result primitives
+- Material 3 light, dark, system, dynamic-color, custom-seed, and high-contrast foundations
+- English and Urdu localization with RTL/LTR support
+- Typed GoRouter foundation route and recoverable startup status
+- SQLCipher in-memory capability, foreign-key, and integrity verification
+- Modular cryptography, secure-storage, event, plugin, and AI contracts
+- Unit, widget, integration, architecture-boundary, and coverage gates
+- Local and GitHub quality-gate automation
+- Sprint 1 architecture, dependency, test, and manual-validation documentation
+
+### Blocked validation
+
+- Formatter, analyzer, tests, coverage, and Android build cannot execute on the
+  current machine because Flutter, Dart, Java, Gradle, Android SDK, and ADB are
+  not installed or discoverable.
 
 ## [0.0.0-documentation-baseline] - 2026-07-29
 
@@ -21,4 +38,5 @@ All notable project changes are recorded here. Releases will use semantic versio
 
 ### Implementation status
 
-- No Flutter, Dart, Kotlin, database, backend, or feature implementation was added.
+- Documentation baseline only; superseded by the Sprint 1 foundation entries
+  above.

@@ -1,0 +1,11 @@
+targets:
+  $default:
+    builders:
+      injectable_generator:injectable_builder:
+        generate_for:
+          - lib/core/di/**
+          - lib/core/logging/**
+          - lib/core/database/**
+      go_router_builder:
+        generate_for:
+          - lib/core/router/**
