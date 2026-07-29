@@ -7,14 +7,14 @@
 /*.staging.md
 
 # Flutter and Android outputs
-.dart_tool/
+**/.dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
 .packages
-build/
-coverage/
-android/.gradle/
-android/local.properties
+**/build/
+**/coverage/
+**/android/.gradle/
+**/android/local.properties
 *.jks
 *.keystore
 key.properties
