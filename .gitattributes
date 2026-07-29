@@ -1,0 +1,13 @@
+* text=auto
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.sh text eol=lf
+*.ps1 text eol=crlf
+*.docx binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+/PROJECT_BIBLE_FINAL.md -text
+/docs/handover/** -text
