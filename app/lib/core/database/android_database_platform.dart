@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
 
@@ -8,14 +7,16 @@ import 'database_key_provider.dart';
 
 final class AndroidDatabasePlatform implements DatabaseKeyProvider {
   const AndroidDatabasePlatform({
-    MethodChannel channel = const MethodChannel('com.anaslifeos.app/database'),
-  }) : _channel = channel;
+    this.channel = const MethodChannel(
+      'com.anaslifeos.app/database',
+    ),
+  });
 
-  final MethodChannel _channel;
+  final MethodChannel channel;
 
   @override
   Future<DatabaseKey> loadOrCreate() async {
-    final bytes = await _channel.invokeMethod<Uint8List>(
+    final bytes = await channel.invokeMethod<Uint8List>(
       'loadOrCreateDatabaseKey',
     );
     if (bytes == null) {
@@ -28,7 +29,7 @@ final class AndroidDatabasePlatform implements DatabaseKeyProvider {
   }
 
   Future<Directory> databaseDirectory() async {
-    final path = await _channel.invokeMethod<String>('databaseDirectory');
+    final path = await channel.invokeMethod<String>('databaseDirectory');
     if (path == null || path.trim().isEmpty) {
       throw PlatformException(
         code: 'database_directory_unavailable',
