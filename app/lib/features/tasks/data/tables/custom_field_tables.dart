@@ -6,7 +6,10 @@ import 'project_tables.dart';
 import 'task_table.dart';
 
 @DataClassName('CustomFieldRow')
-@TableIndex(name: 'idx_custom_fields_owner_sort', columns: {#ownerType, #sortOrder})
+@TableIndex(
+  name: 'idx_custom_fields_owner_sort',
+  columns: {#ownerType, #sortOrder},
+)
 class CustomFields extends BusinessEntityTable {
   TextColumn get ownerType => textEnum<CustomFieldOwner>()();
   TextColumn get label => text().withLength(min: 1, max: 200)();
@@ -21,8 +24,16 @@ class CustomFields extends BusinessEntityTable {
 @DataClassName('CustomFieldValueRow')
 @TableIndex(name: 'idx_custom_field_values_task', columns: {#taskId})
 @TableIndex(name: 'idx_custom_field_values_project', columns: {#projectId})
-@TableIndex(name: 'idx_custom_field_values_unique_task', columns: {#customFieldId, #taskId}, unique: true)
-@TableIndex(name: 'idx_custom_field_values_unique_project', columns: {#customFieldId, #projectId}, unique: true)
+@TableIndex(
+  name: 'idx_custom_field_values_unique_task',
+  columns: {#customFieldId, #taskId},
+  unique: true,
+)
+@TableIndex(
+  name: 'idx_custom_field_values_unique_project',
+  columns: {#customFieldId, #projectId},
+  unique: true,
+)
 class CustomFieldValues extends BusinessEntityTable {
   IntColumn get customFieldId => integer().references(CustomFields, #id)();
   IntColumn get taskId => integer().nullable().references(Tasks, #id)();

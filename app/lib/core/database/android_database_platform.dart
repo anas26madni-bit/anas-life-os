@@ -8,9 +8,7 @@ import 'database_key_provider.dart';
 
 final class AndroidDatabasePlatform implements DatabaseKeyProvider {
   const AndroidDatabasePlatform({
-    MethodChannel channel = const MethodChannel(
-      'com.anaslifeos.app/database',
-    ),
+    MethodChannel channel = const MethodChannel('com.anaslifeos.app/database'),
   }) : _channel = channel;
 
   final MethodChannel _channel;

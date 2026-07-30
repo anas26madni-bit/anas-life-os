@@ -6,10 +6,7 @@ import '../entities/task_enums.dart';
 abstract interface class TaskRepository {
   Future<Result<TaskEntity>> create(TaskDraft draft);
   Future<Result<TaskEntity>> update(int id, TaskDraft draft);
-  Future<Result<TaskEntity?>> findById(
-    int id, {
-    bool includeDeleted = false,
-  });
+  Future<Result<TaskEntity?>> findById(int id, {bool includeDeleted = false});
   Future<Result<List<TaskEntity>>> list({
     int limit = 50,
     int offset = 0,
