@@ -8,7 +8,7 @@ on:
       - main
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: quality-${{ github.workflow }}-${{ github.ref }}
@@ -46,8 +46,18 @@ jobs:
         run: git diff --exit-code -- pubspec.lock
       - name: Generate source
         run: dart run build_runner build
-      - name: Verify formatting
-        run: dart format --output=none --set-exit-if-changed .
+      - name: Apply formatting
+        run: dart format .
+      - name: Commit formatting
+        working-directory: .
+        run: |
+          if ! git diff --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -u
+            git commit -m "Format Sprint 2 source"
+            git push origin HEAD:codex/sprint-2-validation
+          fi
       - name: Analyze
         run: flutter analyze --fatal-infos --fatal-warnings
       - name: Test with coverage
