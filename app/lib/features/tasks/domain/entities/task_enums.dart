@@ -12,12 +12,7 @@ enum TaskStatus {
 
 enum TaskPriority { none, low, medium, high, critical }
 
-enum DependencyType {
-  finishToStart,
-  startToStart,
-  finishToFinish,
-  startToFinish,
-}
+enum DependencyType { finishToStart, startToStart, finishToFinish, startToFinish }
 
 enum RepeatFrequency { daily, weekly, monthly, yearly, custom }
 
