@@ -4,10 +4,7 @@ import 'database_file_resolver.dart';
 import 'database_key_provider.dart';
 
 final class EncryptedDatabaseOpener {
-  const EncryptedDatabaseOpener(
-    this._fileResolver,
-    this._keyProvider,
-  );
+  const EncryptedDatabaseOpener(this._fileResolver, this._keyProvider);
 
   final DatabaseFileResolver _fileResolver;
   final DatabaseKeyProvider _keyProvider;

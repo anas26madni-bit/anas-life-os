@@ -12,6 +12,8 @@ final class DatabaseFileResolver {
     if (!await directory.exists()) {
       await directory.create(recursive: true);
     }
-    return File('${directory.path}${Platform.pathSeparator}${DatabaseConstants.name}');
+    return File(
+      '${directory.path}${Platform.pathSeparator}${DatabaseConstants.name}',
+    );
   }
 }

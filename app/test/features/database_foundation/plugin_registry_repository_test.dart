@@ -5,29 +5,32 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../helpers/database_test_harness.dart';
 
 void main() {
-  test('persists inert plugin descriptors with normalized permissions', () async {
-    final database = createTestDatabase();
-    addTearDown(database.close);
-    final repository = DriftPluginRegistryRepository(database);
-    final installedAt = DateTime.utc(2026, 7, 30);
+  test(
+    'persists inert plugin descriptors with normalized permissions',
+    () async {
+      final database = createTestDatabase();
+      addTearDown(database.close);
+      final repository = DriftPluginRegistryRepository(database);
+      final installedAt = DateTime.utc(2026, 7, 30);
 
-    await repository.save(
-      PluginDescriptor(
-        uuid: '00000000-0000-7000-8000-000000000001',
-        name: 'core.descriptor',
-        version: '1.0.0',
-        enabled: true,
-        installedAt: installedAt,
-        updatedAt: installedAt,
-        requiredPermissions: const ['read_notes', 'read_tasks', 'read_notes'],
-      ),
-    );
+      await repository.save(
+        PluginDescriptor(
+          uuid: '00000000-0000-7000-8000-000000000001',
+          name: 'core.descriptor',
+          version: '1.0.0',
+          enabled: true,
+          installedAt: installedAt,
+          updatedAt: installedAt,
+          requiredPermissions: const ['read_notes', 'read_tasks', 'read_notes'],
+        ),
+      );
 
-    final descriptor = await repository.findByName('core.descriptor');
-    expect(descriptor, isNotNull);
-    expect(descriptor!.requiredPermissions, ['read_notes', 'read_tasks']);
-    expect((await repository.getEnabled()).single.name, 'core.descriptor');
-  });
+      final descriptor = await repository.findByName('core.descriptor');
+      expect(descriptor, isNotNull);
+      expect(descriptor!.requiredPermissions, ['read_notes', 'read_tasks']);
+      expect((await repository.getEnabled()).single.name, 'core.descriptor');
+    },
+  );
 
   test('validates descriptor identity fields', () {
     final now = DateTime.utc(2026, 7, 30);

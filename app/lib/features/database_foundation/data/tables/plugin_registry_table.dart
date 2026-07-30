@@ -1,20 +1,13 @@
 import 'package:drift/drift.dart';
 
 @DataClassName('PluginRegistryRow')
-@TableIndex(
-  name: 'idx_plugin_registry_uuid',
-  columns: {#uuid},
-  unique: true,
-)
+@TableIndex(name: 'idx_plugin_registry_uuid', columns: {#uuid}, unique: true)
 @TableIndex(
   name: 'idx_plugin_registry_name',
   columns: {#pluginName},
   unique: true,
 )
-@TableIndex(
-  name: 'idx_plugin_registry_enabled',
-  columns: {#enabled},
-)
+@TableIndex(name: 'idx_plugin_registry_enabled', columns: {#enabled})
 class PluginRegistry extends Table {
   IntColumn get id => integer().autoIncrement()();
 

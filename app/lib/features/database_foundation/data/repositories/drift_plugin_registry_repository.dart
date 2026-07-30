@@ -6,27 +6,28 @@ import '../../domain/entities/plugin_descriptor.dart';
 import '../../domain/repositories/plugin_registry_repository.dart';
 import '../database/app_database.dart';
 
-final class DriftPluginRegistryRepository
-    implements PluginRegistryRepository {
+final class DriftPluginRegistryRepository implements PluginRegistryRepository {
   const DriftPluginRegistryRepository(this._database);
 
   final AppDatabase _database;
 
   @override
   Future<void> save(PluginDescriptor descriptor) async {
-    await _database.into(_database.pluginRegistry).insertOnConflictUpdate(
-      PluginRegistryCompanion.insert(
-        uuid: descriptor.uuid,
-        pluginName: descriptor.name,
-        pluginVersion: descriptor.version,
-        enabled: Value(descriptor.enabled),
-        installDate: descriptor.installedAt.toUtc().microsecondsSinceEpoch,
-        lastUpdate: descriptor.updatedAt.toUtc().microsecondsSinceEpoch,
-        requiredPermissions: Value(
-          jsonEncode(descriptor.requiredPermissions),
-        ),
-      ),
-    );
+    await _database
+        .into(_database.pluginRegistry)
+        .insertOnConflictUpdate(
+          PluginRegistryCompanion.insert(
+            uuid: descriptor.uuid,
+            pluginName: descriptor.name,
+            pluginVersion: descriptor.version,
+            enabled: Value(descriptor.enabled),
+            installDate: descriptor.installedAt.toUtc().microsecondsSinceEpoch,
+            lastUpdate: descriptor.updatedAt.toUtc().microsecondsSinceEpoch,
+            requiredPermissions: Value(
+              jsonEncode(descriptor.requiredPermissions),
+            ),
+          ),
+        );
   }
 
   @override

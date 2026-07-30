@@ -13,14 +13,7 @@ abstract final class LifecycleColumnProfile {
     'notes',
   };
 
-  static const history = <String>{
-    'id',
-    'uuid',
-    'created_at',
-  };
+  static const history = <String>{'id', 'uuid', 'created_at'};
 
-  static const schema = <String>{
-    'id',
-    'uuid',
-  };
+  static const schema = <String>{'id', 'uuid'};
 }

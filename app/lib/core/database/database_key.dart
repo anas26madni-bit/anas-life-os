@@ -16,7 +16,6 @@ final class DatabaseKey {
 
   final Uint8List _bytes;
 
-  String get hexadecimal => _bytes
-      .map((byte) => byte.toRadixString(16).padLeft(2, '0'))
-      .join();
+  String get hexadecimal =>
+      _bytes.map((byte) => byte.toRadixString(16).padLeft(2, '0')).join();
 }

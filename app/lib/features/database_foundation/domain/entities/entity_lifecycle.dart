@@ -5,7 +5,11 @@ final class EntityLifecycle {
     DateTime? deletedAt,
   }) {
     if (version < 1) {
-      throw ArgumentError.value(version, 'version', 'Version must be positive.');
+      throw ArgumentError.value(
+        version,
+        'version',
+        'Version must be positive.',
+      );
     }
     if (isDeleted != (deletedAt != null)) {
       throw ArgumentError(
@@ -49,9 +53,6 @@ final class EntityLifecycle {
     if (!isDeleted) {
       return this;
     }
-    return EntityLifecycle(
-      version: version + 1,
-      isDeleted: false,
-    );
+    return EntityLifecycle(version: version + 1, isDeleted: false);
   }
 }

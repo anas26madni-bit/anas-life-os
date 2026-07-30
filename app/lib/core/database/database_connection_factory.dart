@@ -15,9 +15,8 @@ abstract final class DatabaseConnectionFactory {
     setup: (database) => _configure(database, key),
   );
 
-  static QueryExecutor openInMemory(DatabaseKey key) => NativeDatabase.memory(
-    setup: (database) => _configure(database, key),
-  );
+  static QueryExecutor openInMemory(DatabaseKey key) =>
+      NativeDatabase.memory(setup: (database) => _configure(database, key));
 
   static void _configure(Database database, DatabaseKey key) {
     database.execute("PRAGMA key = \"x'${key.hexadecimal}'\";");

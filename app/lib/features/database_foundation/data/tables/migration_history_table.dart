@@ -3,11 +3,7 @@ import 'package:drift/drift.dart';
 import '../../domain/entities/migration_record.dart';
 
 @DataClassName('MigrationHistoryRow')
-@TableIndex(
-  name: 'idx_migration_history_uuid',
-  columns: {#uuid},
-  unique: true,
-)
+@TableIndex(name: 'idx_migration_history_uuid', columns: {#uuid}, unique: true)
 @TableIndex(
   name: 'idx_migration_history_status_started_at',
   columns: {#status, #startedAt},

@@ -36,9 +36,11 @@ class DatabaseInitializer {
 
       await database.verifyIntegrity();
 
-      final engineVersion = (await database
-          .customSelect('SELECT sqlite_version() AS version;')
-          .getSingle()).read<String>('version');
+      final engineVersion =
+          (await database
+                  .customSelect('SELECT sqlite_version() AS version;')
+                  .getSingle())
+              .read<String>('version');
       final cipherVersion = cipherRows.single.read<String>('cipher_version');
       _logger.info(
         'Database foundation verified',
@@ -80,12 +82,7 @@ class DatabaseInitializer {
   DatabaseKey _createEphemeralKey() {
     final random = Random.secure();
     return DatabaseKey(
-      Uint8List.fromList(
-        List<int>.generate(
-          32,
-          (_) => random.nextInt(256),
-        ),
-      ),
+      Uint8List.fromList(List<int>.generate(32, (_) => random.nextInt(256))),
     );
   }
 }

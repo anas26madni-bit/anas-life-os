@@ -28,17 +28,11 @@ void main() {
 
   test('rejects contradictory lifecycle state', () {
     expect(
-      () => EntityLifecycle(
-        version: 0,
-        isDeleted: false,
-      ),
+      () => EntityLifecycle(version: 0, isDeleted: false),
       throwsArgumentError,
     );
     expect(
-      () => EntityLifecycle(
-        version: 1,
-        isDeleted: true,
-      ),
+      () => EntityLifecycle(version: 1, isDeleted: true),
       throwsArgumentError,
     );
   });

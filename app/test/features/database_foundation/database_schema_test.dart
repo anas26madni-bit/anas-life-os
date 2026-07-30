@@ -18,10 +18,10 @@ void main() {
           "AND name NOT LIKE 'sqlite_%' ORDER BY name;",
         )
         .get();
-    expect(
-      tables.map((row) => row.read<String>('name')),
-      ['migration_history', 'plugin_registry'],
-    );
+    expect(tables.map((row) => row.read<String>('name')), [
+      'migration_history',
+      'plugin_registry',
+    ]);
 
     final indexes = await database
         .customSelect(
@@ -29,50 +29,41 @@ void main() {
           "AND name LIKE 'idx_%' ORDER BY name;",
         )
         .get();
-    expect(
-      indexes.map((row) => row.read<String>('name')),
-      [
-        'idx_migration_history_status_started_at',
-        'idx_migration_history_uuid',
-        'idx_plugin_registry_enabled',
-        'idx_plugin_registry_name',
-        'idx_plugin_registry_uuid',
-      ],
-    );
+    expect(indexes.map((row) => row.read<String>('name')), [
+      'idx_migration_history_status_started_at',
+      'idx_migration_history_uuid',
+      'idx_plugin_registry_enabled',
+      'idx_plugin_registry_name',
+      'idx_plugin_registry_uuid',
+    ]);
 
     final migrationColumns = await database
         .customSelect('PRAGMA table_info(migration_history);')
         .get();
-    expect(
-      migrationColumns.map((row) => row.read<String>('name')),
-      [
-        'id',
-        'uuid',
-        'from_version',
-        'to_version',
-        'migration_name',
-        'started_at',
-        'completed_at',
-        'status',
-      ],
-    );
+    expect(migrationColumns.map((row) => row.read<String>('name')), [
+      'id',
+      'uuid',
+      'from_version',
+      'to_version',
+      'migration_name',
+      'started_at',
+      'completed_at',
+      'status',
+    ]);
 
     final pluginColumns = await database
         .customSelect('PRAGMA table_info(plugin_registry);')
         .get();
-    expect(
-      pluginColumns.map((row) => row.read<String>('name')),
-      [
-        'id',
-        'uuid',
-        'plugin_name',
-        'plugin_version',
-        'enabled',
-        'install_date',
-        'last_update',
-        'required_permissions',
-      ],
-    );
+    expect(pluginColumns.map((row) => row.read<String>('name')), [
+      'id',
+      'uuid',
+      'plugin_name',
+      'plugin_version',
+      'enabled',
+      'install_date',
+      'last_update',
+      'required_permissions',
+    ]);
 
     final foreignKeys = await database
         .customSelect('PRAGMA foreign_keys;')
@@ -115,24 +106,12 @@ void main() {
         'notes',
       }),
     );
-    expect(
-      LifecycleColumnProfile.history,
-      isNot(contains('is_deleted')),
-    );
-    expect(
-      LifecycleColumnProfile.schema,
-      isNot(contains('deleted_at')),
-    );
+    expect(LifecycleColumnProfile.history, isNot(contains('is_deleted')));
+    expect(LifecycleColumnProfile.schema, isNot(contains('deleted_at')));
   });
 
   test('rejects database keys that are not 256 bits', () {
-    expect(
-      () => DatabaseKey(Uint8List(31)),
-      throwsArgumentError,
-    );
-    expect(
-      DatabaseKey(Uint8List(32)).hexadecimal,
-      hasLength(64),
-    );
+    expect(() => DatabaseKey(Uint8List(31)), throwsArgumentError);
+    expect(DatabaseKey(Uint8List(32)).hexadecimal, hasLength(64));
   });
 }

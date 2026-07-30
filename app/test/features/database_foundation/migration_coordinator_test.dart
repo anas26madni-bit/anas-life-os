@@ -128,28 +128,31 @@ void main() {
     );
   });
 
-  test('returns a safe failure when migration outcome cannot be saved', () async {
-    final database = createTestDatabase();
-    addTearDown(database.close);
-    final coordinator = MigrationCoordinator(
-      database,
-      _FailingMigrationHistory(),
-      clock: () => DateTime.utc(2026, 7, 30),
-    );
+  test(
+    'returns a safe failure when migration outcome cannot be saved',
+    () async {
+      final database = createTestDatabase();
+      addTearDown(database.close);
+      final coordinator = MigrationCoordinator(
+        database,
+        _FailingMigrationHistory(),
+        clock: () => DateTime.utc(2026, 7, 30),
+      );
 
-    final result = await coordinator.execute(
-      fromVersion: 1,
-      toVersion: 2,
-      name: 'probe',
-      operation: (_) async {},
-    );
+      final result = await coordinator.execute(
+        fromVersion: 1,
+        toVersion: 2,
+        name: 'probe',
+        operation: (_) async {},
+      );
 
-    expect(result, isA<FailureResult<MigrationRecord>>());
-    expect(
-      (result as FailureResult<MigrationRecord>).failure.code,
-      'migration_outcome_unavailable',
-    );
-  });
+      expect(result, isA<FailureResult<MigrationRecord>>());
+      expect(
+        (result as FailureResult<MigrationRecord>).failure.code,
+        'migration_outcome_unavailable',
+      );
+    },
+  );
 }
 
 final class _FailingMigrationHistory implements MigrationHistoryRepository {

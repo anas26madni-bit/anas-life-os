@@ -12,9 +12,8 @@ part 'app_database.g.dart';
 class AppDatabase extends _$AppDatabase {
   AppDatabase(super.executor);
 
-  factory AppDatabase.inMemory(DatabaseKey key) => AppDatabase(
-    DatabaseConnectionFactory.openInMemory(key),
-  );
+  factory AppDatabase.inMemory(DatabaseKey key) =>
+      AppDatabase(DatabaseConnectionFactory.openInMemory(key));
 
   @override
   int get schemaVersion => DatabaseConstants.schemaVersion;
@@ -31,7 +30,9 @@ class AppDatabase extends _$AppDatabase {
     },
     beforeOpen: (details) async {
       await customStatement('PRAGMA foreign_keys = ON;');
-      final foreignKeys = await customSelect('PRAGMA foreign_keys;').getSingle();
+      final foreignKeys = await customSelect(
+        'PRAGMA foreign_keys;',
+      ).getSingle();
       if (foreignKeys.read<int>('foreign_keys') != 1) {
         throw StateError('SQLite foreign-key enforcement is unavailable.');
       }

@@ -18,16 +18,18 @@ final class DriftMigrationHistoryRepository
     required String name,
     required DateTime startedAt,
   }) async {
-    final id = await _database.into(_database.migrationHistory).insert(
-      MigrationHistoryCompanion.insert(
-        uuid: uuid,
-        fromVersion: fromVersion,
-        toVersion: toVersion,
-        migrationName: name,
-        startedAt: startedAt.toUtc().microsecondsSinceEpoch,
-        status: MigrationStatus.running,
-      ),
-    );
+    final id = await _database
+        .into(_database.migrationHistory)
+        .insert(
+          MigrationHistoryCompanion.insert(
+            uuid: uuid,
+            fromVersion: fromVersion,
+            toVersion: toVersion,
+            migrationName: name,
+            startedAt: startedAt.toUtc().microsecondsSinceEpoch,
+            status: MigrationStatus.running,
+          ),
+        );
     return MigrationRecord(
       id: id,
       uuid: uuid,
@@ -82,16 +84,10 @@ final class DriftMigrationHistoryRepository
     fromVersion: row.fromVersion,
     toVersion: row.toVersion,
     name: row.migrationName,
-    startedAt: DateTime.fromMicrosecondsSinceEpoch(
-      row.startedAt,
-      isUtc: true,
-    ),
+    startedAt: DateTime.fromMicrosecondsSinceEpoch(row.startedAt, isUtc: true),
     completedAt: row.completedAt == null
         ? null
-        : DateTime.fromMicrosecondsSinceEpoch(
-            row.completedAt!,
-            isUtc: true,
-          ),
+        : DateTime.fromMicrosecondsSinceEpoch(row.completedAt!, isUtc: true),
     status: row.status,
   );
 }

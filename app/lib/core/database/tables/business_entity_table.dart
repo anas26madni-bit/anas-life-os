@@ -13,8 +13,7 @@ abstract class BusinessEntityTable extends Table {
 
   BoolColumn get isDeleted => boolean().withDefault(const Constant(false))();
 
-  TextColumn get syncStatus =>
-      text().withDefault(const Constant('local'))();
+  TextColumn get syncStatus => text().withDefault(const Constant('local'))();
 
   IntColumn get version => integer().withDefault(const Constant(1))();
 

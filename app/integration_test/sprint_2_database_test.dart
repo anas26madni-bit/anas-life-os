@@ -17,7 +17,9 @@ void main() {
   ) async {
     final directory = await Directory.systemTemp.createTemp('anas_life_os_');
     addTearDown(() => directory.delete(recursive: true));
-    final file = File('${directory.path}${Platform.pathSeparator}integration.db');
+    final file = File(
+      '${directory.path}${Platform.pathSeparator}integration.db',
+    );
     final key = DatabaseKey(
       Uint8List.fromList(List<int>.generate(32, (index) => index + 1)),
     );
