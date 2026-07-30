@@ -9,10 +9,7 @@ abstract interface class TaskSupportRepository {
     required String name,
   });
 
-  Future<Result<void>> attachTag({
-    required int taskId,
-    required String name,
-  });
+  Future<Result<void>> attachTag({required int taskId, required String name});
 
   Future<Result<int>> createChecklist({
     required int taskId,
