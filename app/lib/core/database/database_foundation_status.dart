@@ -1,8 +1,4 @@
-enum DatabaseFoundationStatus {
-  checking,
-  ready,
-  unavailable,
-}
+enum DatabaseFoundationStatus { checking, ready, unavailable }
 
 final class DatabaseFoundationReport {
   const DatabaseFoundationReport({
@@ -13,7 +9,7 @@ final class DatabaseFoundationReport {
   });
 
   const DatabaseFoundationReport.checking()
-      : this(status: DatabaseFoundationStatus.checking);
+    : this(status: DatabaseFoundationStatus.checking);
 
   final DatabaseFoundationStatus status;
   final String? engineVersion;

@@ -35,8 +35,11 @@ class DatabaseInitializer {
         throw StateError('SQLite integrity verification failed.');
       }
 
-      final engineVersion =
-          database.select('SELECT sqlite_version();').single.values.single;
+      final engineVersion = database
+          .select('SELECT sqlite_version();')
+          .single
+          .values
+          .single;
       final cipherVersion = cipherRows.single.values.single;
       _logger.info(
         'Database foundation verified',
@@ -77,8 +80,9 @@ class DatabaseInitializer {
 
   String _createEphemeralKey() {
     final random = Random.secure();
-    return List<int>.generate(32, (_) => random.nextInt(256))
-        .map((byte) => byte.toRadixString(16).padLeft(2, '0'))
-        .join();
+    return List<int>.generate(
+      32,
+      (_) => random.nextInt(256),
+    ).map((byte) => byte.toRadixString(16).padLeft(2, '0')).join();
   }
 }

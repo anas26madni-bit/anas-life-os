@@ -34,8 +34,9 @@ class FoundationPage extends ConsumerWidget {
                 data: (report) => report.isReady
                     ? const _ReadyContent()
                     : _FailureContent(
-                        onRetry: () =>
-                            ref.read(startupControllerProvider.notifier).retry(),
+                        onRetry: () => ref
+                            .read(startupControllerProvider.notifier)
+                            .retry(),
                       ),
               ),
             ),

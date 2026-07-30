@@ -20,7 +20,9 @@ class AnasLifeOsApp extends ConsumerWidget {
         final lightScheme = themePreferences.useDynamicColor
             ? lightDynamic
             : null;
-        final darkScheme = themePreferences.useDynamicColor ? darkDynamic : null;
+        final darkScheme = themePreferences.useDynamicColor
+            ? darkDynamic
+            : null;
 
         return MaterialApp.router(
           debugShowCheckedModeBanner: false,

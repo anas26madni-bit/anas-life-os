@@ -2,10 +2,7 @@ import 'package:meta/meta.dart';
 
 @immutable
 class AiRequest {
-  const AiRequest({
-    required this.operation,
-    required this.inputs,
-  });
+  const AiRequest({required this.operation, required this.inputs});
 
   final String operation;
   final Map<String, Object?> inputs;

@@ -5,8 +5,8 @@ import '../providers/infrastructure_providers.dart';
 
 final startupControllerProvider =
     AsyncNotifierProvider<StartupController, DatabaseFoundationReport>(
-  StartupController.new,
-);
+      StartupController.new,
+    );
 
 class StartupController extends AsyncNotifier<DatabaseFoundationReport> {
   @override

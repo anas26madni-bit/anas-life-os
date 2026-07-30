@@ -47,10 +47,8 @@ class FakeAppLogger implements AppLogger {
 }
 
 class FakeDatabaseInitializer extends DatabaseInitializer {
-  FakeDatabaseInitializer(
-    this.report, {
-    this.delay = Duration.zero,
-  }) : super(FakeAppLogger());
+  FakeDatabaseInitializer(this.report, {this.delay = Duration.zero})
+    : super(FakeAppLogger());
 
   final DatabaseFoundationReport report;
   final Duration delay;
