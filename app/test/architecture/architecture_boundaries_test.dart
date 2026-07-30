@@ -24,12 +24,34 @@ void main() {
     expect(violations, isEmpty);
   });
 
-  test('Sprint 1 contains no product feature source', () {
-    final dartFiles = Directory('lib/features')
+  test('Sprint 2 contains only database foundation feature source', () {
+    final featureFiles = Directory('lib/features')
         .listSync(recursive: true)
         .whereType<File>()
-        .where((file) => file.path.endsWith('.dart'));
+        .where((file) => file.path.endsWith('.dart'))
+        .map((file) => file.path.replaceAll(r'\', '/'));
 
-    expect(dartFiles, isEmpty);
+    expect(
+      featureFiles,
+      everyElement(contains('/features/database_foundation/')),
+    );
+  });
+
+  test('database foundation domain is independent from data and Flutter', () {
+    final violations = <String>[];
+    final domain = Directory('lib/features/database_foundation/domain');
+    for (final file in domain.listSync(recursive: true).whereType<File>()) {
+      if (!file.path.endsWith('.dart')) {
+        continue;
+      }
+      final content = file.readAsStringSync();
+      if (content.contains('/data/') ||
+          content.contains('package:drift/') ||
+          content.contains('package:flutter/')) {
+        violations.add(file.path.replaceAll(r'\', '/'));
+      }
+    }
+
+    expect(violations, isEmpty);
   });
 }
