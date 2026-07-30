@@ -6,8 +6,8 @@ import 'package:sqlite3/sqlite3.dart';
 
 import '../../features/database_foundation/data/database/app_database.dart';
 import '../logging/app_logger.dart';
-import 'database_key.dart';
 import 'database_foundation_status.dart';
+import 'database_key.dart';
 
 @lazySingleton
 class DatabaseInitializer {
@@ -51,8 +51,8 @@ class DatabaseInitializer {
       );
       return DatabaseFoundationReport(
         status: DatabaseFoundationStatus.ready,
-        engineVersion: '$engineVersion',
-        cipherVersion: '$cipherVersion',
+        engineVersion: engineVersion,
+        cipherVersion: cipherVersion,
       );
     } on SqliteException catch (error, stackTrace) {
       _logger.error(
