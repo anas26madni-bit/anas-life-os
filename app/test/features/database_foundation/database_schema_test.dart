@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:anas_life_os/core/database/database_constants.dart';
 import 'package:anas_life_os/core/database/database_key.dart';
 import 'package:anas_life_os/core/database/lifecycle_column_profile.dart';
+import 'package:drift/drift.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../helpers/database_test_harness.dart';
@@ -74,7 +75,7 @@ void main() {
         .customSelect(
           'EXPLAIN QUERY PLAN '
           'SELECT * FROM plugin_registry WHERE plugin_name = ?;',
-          variables: [const Variable<String>('core.descriptor')],
+          variables: [Variable.withString('core.descriptor')],
         )
         .get();
     expect(
