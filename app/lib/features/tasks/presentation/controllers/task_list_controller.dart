@@ -47,8 +47,7 @@ class TaskListController extends AsyncNotifier<List<TaskEntity>> {
   Future<void> _mutate(
     Future<Result<TaskEntity>> Function(TaskUseCases useCases) operation,
   ) async {
-    final previous = state;
-    state = const AsyncLoading<List<TaskEntity>>().copyWithPrevious(previous);
+    state = const AsyncLoading<List<TaskEntity>>();
     state = await AsyncValue.guard(() async {
       final useCases = await ref.read(taskUseCasesProvider.future);
       _unwrap(await operation(useCases));
