@@ -1,7 +1,10 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
 
+// ignore_for_file: type=lint
+
+/// The translations for Urdu (`ur`).
 class AppLocalizationsUr extends AppLocalizations {
   AppLocalizationsUr([String locale = 'ur']) : super(locale);
 
@@ -19,16 +22,14 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get foundationReadyMessage =>
-      'انس لائف او ایس اگلے منظور شدہ اسپرنٹ کے لیے تیار ہے۔ '
-      'ابھی کوئی ذاتی ڈیٹا یا پروڈکٹ فیچر فعال نہیں ہے۔';
+      'انس لائف او ایس اگلے منظور شدہ اسپرنٹ کے لیے تیار ہے۔ ابھی کوئی ذاتی ڈیٹا یا پروڈکٹ فیچر فعال نہیں ہے۔';
 
   @override
   String get foundationErrorTitle => 'محفوظ بنیاد دستیاب نہیں';
 
   @override
   String get foundationErrorMessage =>
-      'مقامی انکرپٹڈ ڈیٹابیس انجن کی تصدیق نہیں ہو سکی۔ '
-      'کوئی ڈیٹا نہیں بنایا گیا۔ انسٹالیشن چیک کرکے دوبارہ کوشش کریں۔';
+      'مقامی انکرپٹڈ ڈیٹابیس انجن کی تصدیق نہیں ہو سکی۔ کوئی ڈیٹا نہیں بنایا گیا۔ انسٹالیشن چیک کرکے دوبارہ کوشش کریں۔';
 
   @override
   String get retry => 'دوبارہ کوشش کریں';

@@ -4,8 +4,8 @@ This roadmap is derived from the approved Part 11 Master. Part 11 remains the so
 
 | Sprint | Phase | Approved deliverables | Status |
 |---:|---|---|---|
-| 1 | Project Foundation | Setup, Flutter/Android configuration, folder structure, DI, logging, theme, localization, RTL, database initialization, CI preparation, standards, documentation, gates; no feature development | Authorized; not started |
-| 2 | Database Foundation | SQLite, entities, repositories, indexes, migrations, soft delete, audit fields, encryption preparation, backup metadata, database tests | Not started |
+| 1 | Project Foundation | Setup, Flutter/Android configuration, folder structure, DI, logging, theme, localization, RTL, database initialization, CI preparation, standards, documentation, gates; no feature development | Complete |
+| 2 | Database Foundation | SQLite, entities, repositories, indexes, migrations, soft delete, audit fields, encryption preparation, backup metadata, database tests | Complete |
 | 3 | Task Engine | Tasks, CRUD, categories, priorities, status, subtasks, attachments, recurrence, validation, repository, tests | Not started |
 | 4 | Reminder Engine | Scheduling, notifications, exact-alarm handling, recurrence, snooze, missed detection, history, tests | Not started |
 | 5 | Knowledge Vault | Notes, Journal, Wiki, Documents, tags, cross-references, knowledge search, attachments | Not started |
@@ -23,7 +23,7 @@ Every sprint must include objectives, features, database changes, business logic
 
 A sprint is complete only when approved work is complete; tests and documentation pass; no critical bug remains; performance, security, and accessibility pass; and explicit approval is recorded.
 
-Completed-sprint changes require impact analysis, approval, a migration plan when applicable, and regression tests. Sprint 2 must not begin before Sprint 1 passes all gates and receives approval.
+Completed-sprint changes require impact analysis, approval, a migration plan when applicable, and regression tests. Sprint 3 must not begin before Sprint 2 passes all gates and receives approval.
 
 ## Future Release
 
