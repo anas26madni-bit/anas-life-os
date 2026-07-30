@@ -15,3 +15,7 @@ final class InitializationFailure extends Failure {
 final class ValidationFailure extends Failure {
   const ValidationFailure({required super.code, required super.safeMessage});
 }
+
+final class DatabaseFailure extends Failure {
+  const DatabaseFailure({required super.code, required super.safeMessage});
+}
