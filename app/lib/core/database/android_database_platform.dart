@@ -8,7 +8,9 @@ import 'database_key_provider.dart';
 
 final class AndroidDatabasePlatform implements DatabaseKeyProvider {
   const AndroidDatabasePlatform({
-    MethodChannel channel = const MethodChannel('com.anaslifeos.app/database'),
+    MethodChannel channel = const MethodChannel(
+      'com.anaslifeos.app/database',
+    ),
   }) : _channel = channel;
 
   final MethodChannel _channel;
@@ -19,7 +21,7 @@ final class AndroidDatabasePlatform implements DatabaseKeyProvider {
       'loadOrCreateDatabaseKey',
     );
     if (bytes == null) {
-      throw const PlatformException(
+      throw PlatformException(
         code: 'database_key_unavailable',
         message: 'Android did not return a database key.',
       );
@@ -30,7 +32,7 @@ final class AndroidDatabasePlatform implements DatabaseKeyProvider {
   Future<Directory> databaseDirectory() async {
     final path = await _channel.invokeMethod<String>('databaseDirectory');
     if (path == null || path.trim().isEmpty) {
-      throw const PlatformException(
+      throw PlatformException(
         code: 'database_directory_unavailable',
         message: 'Android did not return a database directory.',
       );
