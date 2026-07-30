@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:anas_life_os/core/database/database_constants.dart';
 import 'package:anas_life_os/core/database/database_key.dart';
 import 'package:anas_life_os/core/database/lifecycle_column_profile.dart';
