@@ -16,7 +16,7 @@ command -v dart >/dev/null 2>&1 || {
 "$repository_root/scripts/bootstrap_gradle_wrapper.sh"
 
 flutter pub get
-dart run build_runner build --delete-conflicting-outputs
+dart run build_runner build
 dart format --output=none --set-exit-if-changed .
 flutter analyze --fatal-infos --fatal-warnings
 flutter test --coverage --branch-coverage

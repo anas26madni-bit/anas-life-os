@@ -1,11 +1,11 @@
 $ErrorActionPreference = "Stop"
 $repositoryRoot = Split-Path -Parent $PSScriptRoot
 $target = Join-Path $repositoryRoot "app\android\gradle\wrapper\gradle-wrapper.jar"
-$expected = "81a82aaea5abcc8ff68b3dfcb58b3c3c429378efd98e7433460610fecd7ae45f"
+$expected = "7d3a4ac4de1c32b59bc6a4eb8ecb8e612ccd0cf1ae1e99f66902da64df296172"
 
 if (-not (Test-Path $target)) {
     Invoke-WebRequest `
-        -Uri "https://raw.githubusercontent.com/gradle/gradle/v8.13.0/gradle/wrapper/gradle-wrapper.jar" `
+        -Uri "https://raw.githubusercontent.com/gradle/gradle/v8.14.5/gradle/wrapper/gradle-wrapper.jar" `
         -OutFile $target
 }
 

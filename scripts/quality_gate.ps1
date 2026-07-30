@@ -16,7 +16,7 @@ if (-not (Get-Command dart -ErrorAction SilentlyContinue)) {
 Push-Location $applicationRoot
 try {
     flutter pub get
-    dart run build_runner build --delete-conflicting-outputs
+    dart run build_runner build
     dart format --output=none --set-exit-if-changed .
     flutter analyze --fatal-infos --fatal-warnings
     flutter test --coverage --branch-coverage

@@ -2,7 +2,7 @@
 
 - `quality_gate.ps1`: authoritative Windows quality gate.
 - `quality_gate.sh`: equivalent POSIX quality gate for CI and contributors.
-- `bootstrap_gradle_wrapper.*`: downloads the official Gradle 8.13 wrapper JAR
+- `bootstrap_gradle_wrapper.*`: downloads and verifies the official Gradle 8.14.5 wrapper JAR
   and rejects it unless its SHA-256 matches Gradle's published checksum.
 
 Both gates generate approved source, verify formatting and analysis, run tests
