@@ -1,6 +1,7 @@
 name: Sprint 1 quality gates
 
 on:
+  workflow_dispatch:
   pull_request:
   push:
     branches:
