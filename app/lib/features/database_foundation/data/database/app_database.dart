@@ -31,6 +31,7 @@ part 'app_database.g.dart';
     TaskTags,
     TaskDependencies,
     TaskStateHistory,
+    TaskHistory,
     Checklists,
     ChecklistItems,
     Attachments,
@@ -64,6 +65,7 @@ class AppDatabase extends _$AppDatabase {
           await migrator.createTable(taskTags);
           await migrator.createTable(taskDependencies);
           await migrator.createTable(taskStateHistory);
+          await migrator.createTable(taskHistory);
           await migrator.createTable(checklists);
           await migrator.createTable(checklistItems);
           await migrator.createTable(attachments);
