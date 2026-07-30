@@ -29,7 +29,15 @@ void main() {
         .whereType<File>()
         .where((file) => file.path.endsWith('.dart'))
         .map((file) => file.path.replaceAll(r'\', '/'));
-    expect(featureFiles, everyElement(anyOf(contains('/features/database_foundation/'), contains('/features/tasks/'))));
+    expect(
+      featureFiles,
+      everyElement(
+        anyOf(
+          contains('/features/database_foundation/'),
+          contains('/features/tasks/'),
+        ),
+      ),
+    );
   });
 
   test('feature domains are independent from data and Flutter', () {
@@ -41,7 +49,9 @@ void main() {
           continue;
         }
         final content = file.readAsStringSync();
-        if (content.contains('/data/') || content.contains('package:drift/') || content.contains('package:flutter/')) {
+        if (content.contains('/data/') ||
+            content.contains('package:drift/') ||
+            content.contains('package:flutter/')) {
           violations.add(file.path.replaceAll(r'\', '/'));
         }
       }
