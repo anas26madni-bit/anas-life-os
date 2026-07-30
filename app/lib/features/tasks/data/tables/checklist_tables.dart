@@ -12,10 +12,7 @@ class Checklists extends BusinessEntityTable {
 }
 
 @DataClassName('ChecklistItemRow')
-@TableIndex(
-  name: 'idx_checklist_items_list_sort',
-  columns: {#checklistId, #sortOrder},
-)
+@TableIndex(name: 'idx_checklist_items_list_sort', columns: {#checklistId, #sortOrder})
 class ChecklistItems extends BusinessEntityTable {
   IntColumn get checklistId => integer().references(Checklists, #id)();
   TextColumn get title => text().withLength(min: 1, max: 300)();

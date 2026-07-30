@@ -16,11 +16,7 @@ class Categories extends BusinessEntityTable {
 }
 
 @DataClassName('SubcategoryRow')
-@TableIndex(
-  name: 'idx_subcategories_category_name',
-  columns: {#categoryId, #name},
-  unique: true,
-)
+@TableIndex(name: 'idx_subcategories_category_name', columns: {#categoryId, #name}, unique: true)
 class Subcategories extends BusinessEntityTable {
   IntColumn get categoryId => integer().references(Categories, #id)();
   TextColumn get name => text().withLength(min: 1, max: 200)();

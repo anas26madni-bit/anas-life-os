@@ -8,8 +8,7 @@ import '../../domain/entities/task_enums.dart';
 class RepeatRules extends BusinessEntityTable {
   TextColumn get name => text().withLength(min: 1, max: 200)();
   TextColumn get frequency => textEnum<RepeatFrequency>()();
-  IntColumn get recurrenceInterval =>
-      integer().withDefault(const Constant(1))();
+  IntColumn get recurrenceInterval => integer().withDefault(const Constant(1))();
   IntColumn get weekdayMask => integer().withDefault(const Constant(0))();
   IntColumn get dayOfMonth => integer().nullable()();
   IntColumn get monthOfYear => integer().nullable()();
