@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../l10n/app_localizations.dart';
-import '../database/database_foundation_status.dart';
 import '../theme/app_spacing.dart';
 import 'startup_controller.dart';
 

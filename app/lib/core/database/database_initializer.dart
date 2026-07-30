@@ -74,7 +74,7 @@ class DatabaseInitializer {
         failureCode: 'database_capability_missing',
       );
     } finally {
-      database?.dispose();
+      database?.close();
     }
   }
 

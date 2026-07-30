@@ -15,8 +15,32 @@ void main() {
     final theme = AppTheme.highContrastDark(
       seedColor: AppTheme.defaultSeedColor,
     );
+    final standardTheme = AppTheme.dark(
+      seedColor: AppTheme.defaultSeedColor,
+    );
 
     expect(theme.brightness, Brightness.dark);
-    expect(theme.colorScheme.contrastLevel, 1);
+    expect(
+      _contrastRatio(
+        theme.colorScheme.surface,
+        theme.colorScheme.onSurface,
+      ),
+      greaterThan(
+        _contrastRatio(
+          standardTheme.colorScheme.surface,
+          standardTheme.colorScheme.onSurface,
+        ),
+      ),
+    );
   });
+}
+
+double _contrastRatio(Color first, Color second) {
+  final lighter = first.computeLuminance() > second.computeLuminance()
+      ? first.computeLuminance()
+      : second.computeLuminance();
+  final darker = first.computeLuminance() < second.computeLuminance()
+      ? first.computeLuminance()
+      : second.computeLuminance();
+  return (lighter + 0.05) / (darker + 0.05);
 }
