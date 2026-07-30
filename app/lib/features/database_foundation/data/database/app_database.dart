@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart';
 
-import '../../../../core/database/database_constants.dart';
 import '../../../../core/database/database_connection_factory.dart';
+import '../../../../core/database/database_constants.dart';
 import '../../../../core/database/database_key.dart';
 import '../tables/migration_history_table.dart';
 import '../tables/plugin_registry_table.dart';
