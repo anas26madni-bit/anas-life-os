@@ -1,8 +1,36 @@
 # Changelog
 
-All notable project changes are recorded here. Releases will use semantic versioning when implementation begins.
+All notable project changes are recorded here.
 
 ## [Unreleased]
+
+No unreleased implementation changes.
+
+## [0.2.0-sprint2] - 2026-07-30
+
+### Added
+
+- Sprint 2 encrypted Drift database foundation with the approved
+  `anas_life_os.db` identity and schema versioning
+- Purpose-specific lifecycle column profiles for business, history, and schema
+  records
+- Migration history and inert plugin registry tables with constrained fields
+  and justified indexes
+- Typed migration, plugin registry, and backup-metadata repository contracts
+  with Drift implementations
+- Transactional migration coordination with safe rollback and durable outcomes
+- Replaceable database-key provider boundary and background encrypted file
+  opener
+- Sprint 2 schema, repository, migration, rollback, metadata, encryption, and
+  architecture tests
+
+### Validation
+
+- Formatter, analyzer, source generation, unit/widget/database/architecture
+  tests, coverage enforcement, Android debug build, and Android 11 integration
+  tests are enforced by the Sprint 2 hosted quality workflow.
+
+## [0.1.0-sprint1] - 2026-07-30
 
 ### Added
 
@@ -10,7 +38,8 @@ All notable project changes are recorded here. Releases will use semantic versio
 - Clean Architecture foundation with Riverpod state composition and constrained
   `get_it`/`injectable` infrastructure bootstrap
 - Structured privacy-safe local logging and typed failure/result primitives
-- Material 3 light, dark, system, dynamic-color, custom-seed, and high-contrast foundations
+- Material 3 light, dark, system, dynamic-color, custom-seed, and high-contrast
+  foundations
 - English and Urdu localization with RTL/LTR support
 - Typed GoRouter foundation route and recoverable startup status
 - SQLCipher in-memory capability, foreign-key, and integrity verification
