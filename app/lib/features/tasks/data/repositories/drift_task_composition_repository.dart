@@ -85,14 +85,15 @@ final class DriftTaskCompositionRepository
       ),
       'The cloned task could not be created.',
     );
-    final children = await (_database.select(_database.tasks)
-          ..where(
-            (row) =>
-                row.parentTaskId.equals(sourceId) &
-                row.isDeleted.equals(false),
-          )
-          ..orderBy([(row) => OrderingTerm.asc(row.sortOrder)]))
-        .get();
+    final children =
+        await (_database.select(_database.tasks)
+              ..where(
+                (row) =>
+                    row.parentTaskId.equals(sourceId) &
+                    row.isDeleted.equals(false),
+              )
+              ..orderBy([(row) => OrderingTerm.asc(row.sortOrder)]))
+            .get();
     for (final child in children) {
       await _cloneNode(child.id, created.id, false);
     }
@@ -100,48 +101,45 @@ final class DriftTaskCompositionRepository
   }
 
   @override
-  Future<Result<TaskEntity>> move(
-    int taskId, {
-    required int? projectId,
-  }) async {
+  Future<Result<TaskEntity>> move(int taskId, {required int? projectId}) async {
     try {
       return await _database.transaction(() async {
         if (projectId != null) {
-          final project = await (_database.select(_database.projects)
-                ..where(
-                  (row) =>
-                      row.id.equals(projectId) & row.isDeleted.equals(false),
-                ))
-              .getSingleOrNull();
+          final project =
+              await (_database.select(_database.projects)..where(
+                    (row) =>
+                        row.id.equals(projectId) & row.isDeleted.equals(false),
+                  ))
+                  .getSingleOrNull();
           if (project == null) {
             throw const _CompositionRejected(
               'The destination project does not exist.',
             );
           }
         }
-        final root = await (_database.select(_database.tasks)
-              ..where(
-                (row) => row.id.equals(taskId) & row.isDeleted.equals(false),
-              ))
-            .getSingleOrNull();
+        final root =
+            await (_database.select(_database.tasks)..where(
+                  (row) => row.id.equals(taskId) & row.isDeleted.equals(false),
+                ))
+                .getSingleOrNull();
         if (root == null) {
           throw const _CompositionRejected('The task does not exist.');
         }
         final ids = await _subtreeIds(taskId);
         final now = _clock().toUtc();
-        final rows = await (_database.select(_database.tasks)
-              ..where((row) => row.id.isIn(ids)))
-            .get();
+        final rows = await (_database.select(
+          _database.tasks,
+        )..where((row) => row.id.isIn(ids))).get();
         for (final row in rows) {
-          await (_database.update(_database.tasks)
-                ..where((candidate) => candidate.id.equals(row.id)))
-              .write(
-                TasksCompanion(
-                  projectId: Value(projectId),
-                  updatedAt: Value(now.microsecondsSinceEpoch),
-                  version: Value(row.version + 1),
-                ),
-              );
+          await (_database.update(
+            _database.tasks,
+          )..where((candidate) => candidate.id.equals(row.id))).write(
+            TasksCompanion(
+              projectId: Value(projectId),
+              updatedAt: Value(now.microsecondsSinceEpoch),
+              version: Value(row.version + 1),
+            ),
+          );
           await _support.recordMutation(
             taskId: row.id,
             action: 'move',
@@ -197,9 +195,7 @@ final class DriftTaskCompositionRepository
             'A source task does not exist.',
           );
           if (source == null) {
-            throw const _CompositionRejected(
-              'A source task does not exist.',
-            );
+            throw const _CompositionRejected('A source task does not exist.');
           }
         }
         final merged = _unwrap(
@@ -263,8 +259,7 @@ final class DriftTaskCompositionRepository
                   description: draft.description,
                   projectId: draft.projectId ?? source.projectId,
                   categoryId: draft.categoryId ?? source.categoryId,
-                  subcategoryId:
-                      draft.subcategoryId ?? source.subcategoryId,
+                  subcategoryId: draft.subcategoryId ?? source.subcategoryId,
                   parentTaskId: draft.parentTaskId ?? source.parentTaskId,
                   sortOrder: draft.sortOrder,
                   isMandatory: draft.isMandatory,
@@ -318,13 +313,14 @@ final class DriftTaskCompositionRepository
     while (pending.isNotEmpty) {
       final current = pending.removeLast();
       ids.add(current);
-      final children = await (_database.selectOnly(_database.tasks)
-            ..addColumns([_database.tasks.id])
-            ..where(
-              _database.tasks.parentTaskId.equals(current) &
-                  _database.tasks.isDeleted.equals(false),
-            ))
-          .get();
+      final children =
+          await (_database.selectOnly(_database.tasks)
+                ..addColumns([_database.tasks.id])
+                ..where(
+                  _database.tasks.parentTaskId.equals(current) &
+                      _database.tasks.isDeleted.equals(false),
+                ))
+              .get();
       pending.addAll(
         children.map((row) => row.read(_database.tasks.id)!).toList(),
       );

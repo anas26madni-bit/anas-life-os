@@ -5,8 +5,14 @@ import 'project_tables.dart';
 import 'task_table.dart';
 
 @DataClassName('AttachmentRow')
-@TableIndex(name: 'idx_attachments_task_created', columns: {#taskId, #createdAt})
-@TableIndex(name: 'idx_attachments_project_created', columns: {#projectId, #createdAt})
+@TableIndex(
+  name: 'idx_attachments_task_created',
+  columns: {#taskId, #createdAt},
+)
+@TableIndex(
+  name: 'idx_attachments_project_created',
+  columns: {#projectId, #createdAt},
+)
 @TableIndex(name: 'idx_attachments_checksum', columns: {#checksumSha256})
 class Attachments extends BusinessEntityTable {
   IntColumn get taskId => integer().nullable().references(Tasks, #id)();

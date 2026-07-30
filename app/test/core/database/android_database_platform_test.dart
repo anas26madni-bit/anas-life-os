@@ -16,7 +16,9 @@ void main() {
   });
 
   test('retrieves a persistent 256-bit database key', () async {
-    final expected = Uint8List.fromList(List<int>.generate(32, (index) => index));
+    final expected = Uint8List.fromList(
+      List<int>.generate(32, (index) => index),
+    );
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(channel, (call) async {
           expect(call.method, 'loadOrCreateDatabaseKey');
@@ -25,7 +27,10 @@ void main() {
 
     final key = await platform.loadOrCreate();
 
-    expect(key.hexadecimal, expected.map((byte) => byte.toRadixString(16).padLeft(2, '0')).join());
+    expect(
+      key.hexadecimal,
+      expected.map((byte) => byte.toRadixString(16).padLeft(2, '0')).join(),
+    );
   });
 
   test('fails closed when Android returns no key', () async {

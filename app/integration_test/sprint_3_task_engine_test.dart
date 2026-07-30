@@ -30,10 +30,10 @@ void main() {
       DatabaseConnectionFactory.openFile(file: file, key: key),
     );
     var repository = DriftTaskRepository(database);
-    final created = (await repository.create(
-      const TaskDraft(title: 'Persisted task'),
-    ) as Success<TaskEntity>)
-        .value;
+    final created =
+        (await repository.create(const TaskDraft(title: 'Persisted task'))
+                as Success<TaskEntity>)
+            .value;
     await repository.softDelete(created.id);
     await repository.restore(created.id);
     await database.close();
@@ -48,9 +48,8 @@ void main() {
     );
     addTearDown(database.close);
     repository = DriftTaskRepository(database);
-    final reopened = (await repository.findById(created.id)
-            as Success<TaskEntity?>)
-        .value;
+    final reopened =
+        (await repository.findById(created.id) as Success<TaskEntity?>).value;
     expect(reopened?.title, 'Persisted task');
     expect(reopened?.isDeleted, isFalse);
     await database.verifyIntegrity();

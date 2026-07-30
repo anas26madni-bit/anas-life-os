@@ -18,10 +18,13 @@ import 'taxonomy_tables.dart';
 @TableIndex(name: 'idx_tasks_updated_at', columns: {#updatedAt})
 class Tasks extends BusinessEntityTable {
   IntColumn get projectId => integer().nullable().references(Projects, #id)();
-  IntColumn get categoryId => integer().nullable().references(Categories, #id)();
-  IntColumn get subcategoryId => integer().nullable().references(Subcategories, #id)();
+  IntColumn get categoryId =>
+      integer().nullable().references(Categories, #id)();
+  IntColumn get subcategoryId =>
+      integer().nullable().references(Subcategories, #id)();
   IntColumn get parentTaskId => integer().nullable().references(Tasks, #id)();
-  IntColumn get repeatRuleId => integer().nullable().references(RepeatRules, #id)();
+  IntColumn get repeatRuleId =>
+      integer().nullable().references(RepeatRules, #id)();
   TextColumn get title => text().withLength(min: 1, max: 300)();
   TextColumn get description => text().nullable()();
   TextColumn get status => textEnum<TaskStatus>()();

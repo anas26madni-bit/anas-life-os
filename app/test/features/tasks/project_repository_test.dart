@@ -20,10 +20,7 @@ void main() {
     );
 
     expect(created, isA<Success<ProjectEntity>>());
-    expect(
-      (created as Success<ProjectEntity>).value.currencyCode,
-      'PKR',
-    );
+    expect((created as Success<ProjectEntity>).value.currencyCode, 'PKR');
     expect(
       (await repository.list() as Success<List<ProjectEntity>>).value,
       hasLength(1),
@@ -39,9 +36,9 @@ void main() {
     addTearDown(database.close);
     final projects = DriftProjectRepository(database);
     final tasks = DriftTaskRepository(database);
-    final project = (await projects.create(title: 'Active')
-            as Success<ProjectEntity>)
-        .value;
+    final project =
+        (await projects.create(title: 'Active') as Success<ProjectEntity>)
+            .value;
     await tasks.create(TaskDraft(title: 'Task', projectId: project.id));
 
     expect(await projects.softDelete(project.id), isA<FailureResult<void>>());

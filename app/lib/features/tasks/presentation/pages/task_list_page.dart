@@ -17,9 +17,9 @@ class TaskListPage extends ConsumerWidget {
     final tasks = ref.watch(taskListControllerProvider);
     ref.listen(taskListControllerProvider, (previous, next) {
       if (next case AsyncError(:final error)) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(error.toString())),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(error.toString())));
       }
     });
 
@@ -34,9 +34,8 @@ class TaskListPage extends ConsumerWidget {
         child: RefreshIndicator(
           onRefresh: ref.read(taskListControllerProvider.notifier).refresh,
           child: tasks.when(
-            loading: () => const Center(
-              child: CircularProgressIndicator.adaptive(),
-            ),
+            loading: () =>
+                const Center(child: CircularProgressIndicator.adaptive()),
             error: (error, stackTrace) => _ErrorState(
               message: error.toString(),
               onRetry: ref.read(taskListControllerProvider.notifier).refresh,

@@ -15,9 +15,10 @@ void main() {
     addTearDown(database.close);
     final tasks = DriftTaskRepository(database);
     final support = DriftTaskSupportRepository(database);
-    final task = (await tasks.create(const TaskDraft(title: 'Prepare release'))
-            as Success<TaskEntity>)
-        .value;
+    final task =
+        (await tasks.create(const TaskDraft(title: 'Prepare release'))
+                as Success<TaskEntity>)
+            .value;
 
     final category = await support.createCategory('Work');
     expect(category, isA<Success<int>>());
@@ -46,9 +47,9 @@ void main() {
       isA<Success<int>>(),
     );
 
-    final stored = await (database.select(database.tasks)
-          ..where((row) => row.id.equals(task.id)))
-        .getSingle();
+    final stored = await (database.select(
+      database.tasks,
+    )..where((row) => row.id.equals(task.id))).getSingle();
     expect(stored.checklistCount, 1);
     expect(await database.select(database.taskTags).get(), hasLength(1));
   });
@@ -58,12 +59,14 @@ void main() {
     addTearDown(database.close);
     final tasks = DriftTaskRepository(database);
     final support = DriftTaskSupportRepository(database);
-    final first = (await tasks.create(const TaskDraft(title: 'First'))
-            as Success<TaskEntity>)
-        .value;
-    final second = (await tasks.create(const TaskDraft(title: 'Second'))
-            as Success<TaskEntity>)
-        .value;
+    final first =
+        (await tasks.create(const TaskDraft(title: 'First'))
+                as Success<TaskEntity>)
+            .value;
+    final second =
+        (await tasks.create(const TaskDraft(title: 'Second'))
+                as Success<TaskEntity>)
+            .value;
     final checksum = List.filled(64, 'a').join();
 
     final firstAttachment = await support.addAttachment(

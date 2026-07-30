@@ -8,9 +8,13 @@ void main() {
     for (final file in Directory('lib').listSync(recursive: true)) {
       if (file is! File || !file.path.endsWith('.dart')) continue;
       final normalized = file.path.replaceAll(r'\', '/');
-      if (!normalized.contains('/presentation/') && !normalized.contains('/startup/')) continue;
+      if (!normalized.contains('/presentation/') &&
+          !normalized.contains('/startup/'))
+        continue;
       final content = file.readAsStringSync();
-      if (content.contains('package:drift/') || content.contains('package:sqlite3/')) violations.add(normalized);
+      if (content.contains('package:drift/') ||
+          content.contains('package:sqlite3/'))
+        violations.add(normalized);
     }
     expect(violations, isEmpty);
   });
@@ -21,7 +25,15 @@ void main() {
         .whereType<File>()
         .where((file) => file.path.endsWith('.dart'))
         .map((file) => file.path.replaceAll(r'\', '/'));
-    expect(featureFiles, everyElement(anyOf(contains('/features/database_foundation/'), contains('/features/tasks/'))));
+    expect(
+      featureFiles,
+      everyElement(
+        anyOf(
+          contains('/features/database_foundation/'),
+          contains('/features/tasks/'),
+        ),
+      ),
+    );
   });
 
   test('feature domains are independent from data and Flutter', () {
@@ -31,7 +43,9 @@ void main() {
       for (final file in domain.listSync(recursive: true).whereType<File>()) {
         if (!file.path.endsWith('.dart')) continue;
         final content = file.readAsStringSync();
-        if (content.contains('/data/') || content.contains('package:drift/') || content.contains('package:flutter/')) {
+        if (content.contains('/data/') ||
+            content.contains('package:drift/') ||
+            content.contains('package:flutter/')) {
           violations.add(file.path.replaceAll(r'\', '/'));
         }
       }
