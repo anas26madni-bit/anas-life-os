@@ -19,11 +19,11 @@ All notable project changes are recorded here. Releases will use semantic versio
 - Local and GitHub quality-gate automation
 - Sprint 1 architecture, dependency, test, and manual-validation documentation
 
-### Blocked validation
+### Validation
 
-- Formatter, analyzer, tests, coverage, and Android build cannot execute on the
-  current machine because Flutter, Dart, Java, Gradle, Android SDK, and ADB are
-  not installed or discoverable.
+- Formatter, analyzer, source generation, unit/widget/database/architecture
+  tests, 100% line and branch coverage enforcement, Android debug build, and
+  Android 11 integration smoke test passed in the hosted quality pipeline.
 
 ## [0.0.0-documentation-baseline] - 2026-07-29
 
