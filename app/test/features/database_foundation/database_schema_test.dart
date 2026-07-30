@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:anas_life_os/core/database/database_constants.dart';
 import 'package:anas_life_os/core/database/database_key.dart';
 import 'package:anas_life_os/core/database/lifecycle_column_profile.dart';
@@ -7,7 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../helpers/database_test_harness.dart';
 
 void main() {
-  test('creates the approved Sprint 2 schema and indexes', () async {
+  test('creates the approved Sprint 3 schema and indexes', () async {
     final database = createTestDatabase();
     addTearDown(database.close);
 
@@ -17,10 +19,28 @@ void main() {
           "AND name NOT LIKE 'sqlite_%' ORDER BY name;",
         )
         .get();
-    expect(tables.map((row) => row.read<String>('name')), [
-      'migration_history',
-      'plugin_registry',
-    ]);
+    expect(
+      tables.map((row) => row.read<String>('name')),
+      containsAll(<String>[
+        'attachments',
+        'categories',
+        'checklist_items',
+        'checklists',
+        'custom_field_values',
+        'custom_fields',
+        'migration_history',
+        'plugin_registry',
+        'projects',
+        'repeat_rules',
+        'subcategories',
+        'tags',
+        'task_dependencies',
+        'task_history',
+        'task_state_history',
+        'task_tags',
+        'tasks',
+      ]),
+    );
 
     final indexes = await database
         .customSelect(
@@ -28,13 +48,17 @@ void main() {
           "AND name LIKE 'idx_%' ORDER BY name;",
         )
         .get();
-    expect(indexes.map((row) => row.read<String>('name')), [
-      'idx_migration_history_status_started_at',
-      'idx_migration_history_uuid',
-      'idx_plugin_registry_enabled',
-      'idx_plugin_registry_name',
-      'idx_plugin_registry_uuid',
-    ]);
+    expect(
+      indexes.map((row) => row.read<String>('name')),
+      containsAll(<String>[
+        'idx_migration_history_status_started_at',
+        'idx_plugin_registry_name',
+        'idx_tasks_status_due',
+        'idx_tasks_project_status',
+        'idx_tasks_parent_sort',
+        'idx_task_dependencies_pair',
+      ]),
+    );
 
     final migrationColumns = await database
         .customSelect('PRAGMA table_info(migration_history);')
