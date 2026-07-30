@@ -15,23 +15,11 @@ void main() {
     final theme = AppTheme.highContrastDark(
       seedColor: AppTheme.defaultSeedColor,
     );
-    final standardTheme = AppTheme.dark(
-      seedColor: AppTheme.defaultSeedColor,
-    );
+    final scheme = theme.colorScheme;
+    final contrastRatio = _contrastRatio(scheme.surface, scheme.onSurface);
 
     expect(theme.brightness, Brightness.dark);
-    expect(
-      _contrastRatio(
-        theme.colorScheme.surface,
-        theme.colorScheme.onSurface,
-      ),
-      greaterThan(
-        _contrastRatio(
-          standardTheme.colorScheme.surface,
-          standardTheme.colorScheme.onSurface,
-        ),
-      ),
-    );
+    expect(contrastRatio, greaterThanOrEqualTo(7));
   });
 }
 
