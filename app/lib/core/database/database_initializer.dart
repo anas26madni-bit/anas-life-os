@@ -1,9 +1,12 @@
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:injectable/injectable.dart';
 import 'package:sqlite3/sqlite3.dart';
 
+import '../../features/database_foundation/data/database/app_database.dart';
 import '../logging/app_logger.dart';
+import 'database_key.dart';
 import 'database_foundation_status.dart';
 
 @lazySingleton
@@ -13,34 +16,30 @@ class DatabaseInitializer {
   final AppLogger _logger;
 
   Future<DatabaseFoundationReport> verifyFoundation() async {
-    Database? database;
+    AppDatabase? database;
     try {
-      database = sqlite3.openInMemory();
-      final ephemeralKey = _createEphemeralKey();
-      database.execute("PRAGMA key = \"x'$ephemeralKey'\";");
-      database.execute('PRAGMA foreign_keys = ON;');
+      database = AppDatabase.inMemory(_createEphemeralKey());
 
-      final cipherRows = database.select('PRAGMA cipher_version;');
+      final cipherRows = await database
+          .customSelect('PRAGMA cipher_version;')
+          .get();
       if (cipherRows.isEmpty) {
         throw StateError('SQLCipher capability is unavailable.');
       }
 
-      final foreignKeys = database.select('PRAGMA foreign_keys;');
-      if (foreignKeys.single.values.single != 1) {
+      final foreignKeys = await database
+          .customSelect('PRAGMA foreign_keys;')
+          .getSingle();
+      if (foreignKeys.read<int>('foreign_keys') != 1) {
         throw StateError('SQLite foreign-key enforcement is unavailable.');
       }
 
-      final integrity = database.select('PRAGMA quick_check;');
-      if (integrity.single.values.single != 'ok') {
-        throw StateError('SQLite integrity verification failed.');
-      }
+      await database.verifyIntegrity();
 
-      final engineVersion = database
-          .select('SELECT sqlite_version();')
-          .single
-          .values
-          .single;
-      final cipherVersion = cipherRows.single.values.single;
+      final engineVersion = (await database
+          .customSelect('SELECT sqlite_version() AS version;')
+          .getSingle()).read<String>('version');
+      final cipherVersion = cipherRows.single.read<String>('cipher_version');
       _logger.info(
         'Database foundation verified',
         context: {
@@ -74,15 +73,19 @@ class DatabaseInitializer {
         failureCode: 'database_capability_missing',
       );
     } finally {
-      database?.close();
+      await database?.close();
     }
   }
 
-  String _createEphemeralKey() {
+  DatabaseKey _createEphemeralKey() {
     final random = Random.secure();
-    return List<int>.generate(
-      32,
-      (_) => random.nextInt(256),
-    ).map((byte) => byte.toRadixString(16).padLeft(2, '0')).join();
+    return DatabaseKey(
+      Uint8List.fromList(
+        List<int>.generate(
+          32,
+          (_) => random.nextInt(256),
+        ),
+      ),
+    );
   }
 }
