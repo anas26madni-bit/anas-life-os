@@ -16,7 +16,9 @@ void main() {
 
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [appDatabaseProvider.overrideWith((ref) async => database)],
+        overrides: [
+          appDatabaseProvider.overrideWith((ref) async => database),
+        ],
         child: const MaterialApp(
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
@@ -33,6 +35,7 @@ void main() {
     await tester.tap(find.text('Save'));
     await tester.pumpAndSettle();
 
+    expect(tester.takeException(), isNull);
     expect(find.text('Offline task'), findsOneWidget);
     await tester.tap(find.byTooltip('Complete task'));
     await tester.pumpAndSettle();
@@ -46,7 +49,9 @@ void main() {
 
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [appDatabaseProvider.overrideWith((ref) async => database)],
+        overrides: [
+          appDatabaseProvider.overrideWith((ref) async => database),
+        ],
         child: const MediaQuery(
           data: MediaQueryData(textScaler: TextScaler.linear(2)),
           child: MaterialApp(
