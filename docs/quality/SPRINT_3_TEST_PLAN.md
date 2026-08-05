@@ -1,6 +1,6 @@
 # Sprint 3 Test Plan
 
-Status: Validation in progress
+Status: Complete
 
 ## Automated gates
 
@@ -33,3 +33,14 @@ Status: Validation in progress
 - Process death and relaunch preserve data.
 
 Manual device evidence is required before a release candidate; automated Android build and integration evidence are required before Sprint 3 completion.
+
+## Automated results
+
+- Formatting: passed.
+- Source generation: passed.
+- Analyzer: passed with zero warnings or errors.
+- Unit, widget, database, and architecture tests: passed.
+- Coverage enforcement: passed.
+- Android debug APK: built successfully.
+- Android 11 integration tests: passed.
+- Evidence: GitHub Actions run `30984606293`.
