@@ -12,6 +12,7 @@ import '../../../tasks/data/tables/repeat_rule_table.dart';
 import '../../../tasks/data/tables/task_relation_tables.dart';
 import '../../../tasks/data/tables/task_table.dart';
 import '../../../tasks/data/tables/taxonomy_tables.dart';
+import '../../../tasks/domain/entities/task_enums.dart';
 import '../../domain/entities/migration_record.dart';
 import '../tables/migration_history_table.dart';
 import '../tables/plugin_registry_table.dart';
