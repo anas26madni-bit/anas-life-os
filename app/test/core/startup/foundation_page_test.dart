@@ -30,7 +30,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('Foundation ready'), findsOneWidget);
+    expect(find.text('Private workspace ready'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 
@@ -60,6 +60,6 @@ void main() {
       Directionality.of(tester.element(find.byType(Scaffold))),
       TextDirection.rtl,
     );
-    expect(find.text('بنیاد تیار ہے'), findsOneWidget);
+    expect(find.text('نجی جگہ تیار ہے'), findsOneWidget);
   });
 }

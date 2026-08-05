@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../l10n/app_localizations.dart';
+import '../router/app_router.dart';
 import '../theme/app_spacing.dart';
 import 'startup_controller.dart';
 
@@ -61,6 +62,11 @@ class _ReadyContent extends StatelessWidget {
       ),
       title: localization.foundationReadyTitle,
       message: localization.foundationReadyMessage,
+      action: FilledButton.icon(
+        onPressed: () => const TasksRoute().go(context),
+        icon: const Icon(Icons.task_alt),
+        label: Text(localization.openTasks),
+      ),
     );
   }
 }

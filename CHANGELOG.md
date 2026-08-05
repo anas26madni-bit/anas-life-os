@@ -6,6 +6,29 @@ All notable project changes are recorded here.
 
 No unreleased implementation changes.
 
+## [0.3.0-sprint3] - 2026-08-05
+
+### Added
+
+- Complete Sprint 3 Task Engine with validated entities, CRUD, lifecycle,
+  hierarchy, dependencies, categories, subcategories, tags, checklists,
+  attachment metadata, recurrence definitions, history, and project ownership
+- Atomic duplicate, clone, move, merge, and split operations
+- Feature-first Clean Architecture layers with typed repositories, use cases,
+  Riverpod controller, localized task UI, and typed task route
+- Schema version 2 with normalized task-engine tables, foreign keys, indexes,
+  soft-delete rules, versioning, counters, and migration coverage
+- Approved minimal Android Keystore-wrapped SQLCipher database-key custody using
+  a modular provider boundary
+- Sprint 3 architecture, Product Owner decision, quality, and traceability
+  documentation
+
+### Validation
+
+- Formatter, source generation, analyzer, unit/widget/database/architecture
+  tests, coverage enforcement, Android debug APK, and Android 11 integration
+  tests passed in GitHub Actions run `30984606293`.
+
 ## [0.2.0-sprint2] - 2026-07-30
 
 ### Added

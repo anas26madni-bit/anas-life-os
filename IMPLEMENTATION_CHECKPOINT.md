@@ -1,33 +1,32 @@
 # Anas Life OS implementation checkpoint
 
-Updated: 2026-07-30 (Asia/Karachi)
+Updated: 2026-08-05 (Asia/Karachi)
 
 ## Current state
 
 - Sprint 1 is complete and frozen.
-- Sprint 2 database foundation implementation is complete.
-- Sprint 3 is not authorized and no Sprint 3 source exists.
+- Sprint 2 is complete and frozen.
+- Sprint 3 Task Engine implementation and all automated quality gates are complete.
 - Current branch: `main`.
-- Sprint 2 completion tag: `v0.2-sprint2`.
+- Latest verified Sprint 3 branch commit: `178851ab9a07232f9fe05b5aeec1d1e961728b99`.
+- Latest verified quality run: `30984606293`.
 
-## Sprint 2 scope delivered
+## Sprint 3 scope delivered
 
-- SQLCipher-compatible Drift database and background file connection.
-- Replaceable 256-bit database-key provider boundary.
-- Business, history, and schema lifecycle-column profiles.
-- Migration history and inert plugin registry schema tables.
-- Typed repository contracts and Drift implementations.
-- Transactional migration execution, rollback, integrity validation, and
-  durable sanitized outcomes.
-- Read-only backup metadata projection.
-- Schema, lifecycle, repository, migration, rollback, metadata, architecture,
-  encryption-at-rest, regression, and Android integration tests.
+- Complete task and project domain, repository, use-case, controller, and UI
+  vertical slice.
+- Categories, subcategories, tags, checklists, subtasks, dependencies,
+  attachment metadata, recurrence definitions, task history, and state history.
+- Atomic lifecycle and composition operations with schema version 2 migration.
+- Minimal approved Android Keystore-wrapped SQLCipher database-key custody.
+- English/Urdu, RTL, large-text, offline, database, architecture, and Android 11
+  integration verification.
 
 ## Next authorized action
 
-None. Wait for explicit Sprint 3 authorization. Do not implement task or project
-entities, repositories, business logic, or UI before that approval.
+Begin Sprint 4 Reminder Engine from the approved Part 11 scope. Do not implement
+Sprint 5 or later capabilities while Sprint 4 is in progress.
 
 ## Resume command
 
-`Resume from v0.2-sprint2 and begin only the explicitly authorized next sprint.`
+`Resume Sprint 4 from the completed Sprint 3 checkpoint on main; implement only the approved Reminder Engine scope.`

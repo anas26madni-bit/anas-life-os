@@ -20,38 +20,42 @@ void main() {
         violations.add(normalized);
       }
     }
-
     expect(violations, isEmpty);
   });
 
-  test('Sprint 2 contains only database foundation feature source', () {
+  test('Sprint 3 contains only approved feature source', () {
     final featureFiles = Directory('lib/features')
         .listSync(recursive: true)
         .whereType<File>()
         .where((file) => file.path.endsWith('.dart'))
         .map((file) => file.path.replaceAll(r'\', '/'));
-
     expect(
       featureFiles,
-      everyElement(contains('/features/database_foundation/')),
+      everyElement(
+        anyOf(
+          contains('/features/database_foundation/'),
+          contains('/features/tasks/'),
+        ),
+      ),
     );
   });
 
-  test('database foundation domain is independent from data and Flutter', () {
+  test('feature domains are independent from data and Flutter', () {
     final violations = <String>[];
-    final domain = Directory('lib/features/database_foundation/domain');
-    for (final file in domain.listSync(recursive: true).whereType<File>()) {
-      if (!file.path.endsWith('.dart')) {
-        continue;
-      }
-      final content = file.readAsStringSync();
-      if (content.contains('/data/') ||
-          content.contains('package:drift/') ||
-          content.contains('package:flutter/')) {
-        violations.add(file.path.replaceAll(r'\', '/'));
+    for (final feature in ['database_foundation', 'tasks']) {
+      final domain = Directory('lib/features/$feature/domain');
+      for (final file in domain.listSync(recursive: true).whereType<File>()) {
+        if (!file.path.endsWith('.dart')) {
+          continue;
+        }
+        final content = file.readAsStringSync();
+        if (content.contains('/data/') ||
+            content.contains('package:drift/') ||
+            content.contains('package:flutter/')) {
+          violations.add(file.path.replaceAll(r'\', '/'));
+        }
       }
     }
-
     expect(violations, isEmpty);
   });
 }

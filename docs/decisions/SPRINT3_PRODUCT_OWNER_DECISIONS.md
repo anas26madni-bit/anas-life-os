@@ -85,3 +85,10 @@ Traceability: `P4-OI-022`; TASK-006–010; NFR-PERF; Part 4 counter columns.
 - Foreign keys and indexes are verified by schema tests.
 - Soft delete, state history, rollback, hierarchy, and dependency cycles require automated tests.
 - These decisions authorize no Sprint 4 scheduling or Future Release capability.
+## Approved sequencing exception — database-key custody
+
+The Product Owner approved moving only persistent SQLCipher database-key generation, Android Keystore wrapping, secure retrieval, and production encrypted database opening from Sprint 10 into Sprint 3. The native provider creates a non-exportable AES-256-GCM wrapping key in Android Keystore, wraps a randomly generated 256-bit SQLCipher key, stores only ciphertext and IV in private application preferences, and fails closed if an existing wrapped key cannot be decrypted. The database file is stored in the app no-backup directory. PIN, biometric authentication, app lock, hidden items, secure notes/media, security UI, authentication flows, and all other security policy remain Sprint 10.
+
+Rationale: Sprint 3 requires durable encrypted CRUD; delaying key custody would make task data unrecoverable or force insecure key storage. Moving the smallest provider boundary preserves the approved architecture and Sprint 10 ownership. The database opener depends on a replaceable key-provider contract, so future cryptographic providers or algorithms can be substituted without redesigning application architecture.
+
+Traceability: Product Owner approval 2026-07-30; NFR-SEC-001; Part 4 encrypted SQLite decision; Part 11 Sprint 3 Task Engine and Sprint 10 Security.
