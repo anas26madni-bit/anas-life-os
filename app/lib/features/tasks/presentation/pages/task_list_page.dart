@@ -17,9 +17,9 @@ class TaskListPage extends ConsumerWidget {
     final tasks = ref.watch(taskListControllerProvider);
     ref.listen(taskListControllerProvider, (previous, next) {
       if (next case AsyncError(:final error)) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(error.toString())));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(error.toString())),
+        );
       }
     });
 
@@ -34,8 +34,9 @@ class TaskListPage extends ConsumerWidget {
         child: RefreshIndicator(
           onRefresh: ref.read(taskListControllerProvider.notifier).refresh,
           child: tasks.when(
-            loading: () =>
-                const Center(child: CircularProgressIndicator.adaptive()),
+            loading: () => const Center(
+              child: CircularProgressIndicator.adaptive(),
+            ),
             error: (error, stackTrace) => _ErrorState(
               message: error.toString(),
               onRetry: ref.read(taskListControllerProvider.notifier).refresh,
@@ -73,8 +74,8 @@ class TaskListPage extends ConsumerWidget {
 
   Future<void> _showCreateDialog(BuildContext context, WidgetRef ref) async {
     final localization = AppLocalizations.of(context);
-    final controller = TextEditingController();
     final formKey = GlobalKey<FormState>();
+    var taskTitle = '';
     final title = await showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
@@ -82,17 +83,17 @@ class TaskListPage extends ConsumerWidget {
         content: Form(
           key: formKey,
           child: TextFormField(
-            controller: controller,
             autofocus: true,
             maxLength: 300,
             textInputAction: TextInputAction.done,
             decoration: InputDecoration(labelText: localization.taskTitle),
+            onChanged: (value) => taskTitle = value,
             validator: (value) => value == null || value.trim().isEmpty
                 ? localization.taskTitleRequired
                 : null,
             onFieldSubmitted: (_) {
               if (formKey.currentState!.validate()) {
-                Navigator.of(context).pop(controller.text.trim());
+                Navigator.of(context).pop(taskTitle.trim());
               }
             },
           ),
@@ -105,7 +106,7 @@ class TaskListPage extends ConsumerWidget {
           FilledButton(
             onPressed: () {
               if (formKey.currentState!.validate()) {
-                Navigator.of(context).pop(controller.text.trim());
+                Navigator.of(context).pop(taskTitle.trim());
               }
             },
             child: Text(localization.save),
@@ -113,7 +114,6 @@ class TaskListPage extends ConsumerWidget {
         ],
       ),
     );
-    controller.dispose();
     if (title != null && context.mounted) {
       await ref
           .read(taskListControllerProvider.notifier)
