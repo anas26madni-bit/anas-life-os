@@ -5,6 +5,7 @@ import '../../../../core/database/database_constants.dart';
 import '../../../../core/database/database_key.dart';
 import '../../../../core/database/uuid_generator.dart';
 import '../../../reminders/data/tables/reminder_tables.dart';
+import '../../../reminders/domain/entities/reminder_enums.dart';
 import '../../../tasks/data/tables/attachment_table.dart';
 import '../../../tasks/data/tables/checklist_tables.dart';
 import '../../../tasks/data/tables/custom_field_tables.dart';
