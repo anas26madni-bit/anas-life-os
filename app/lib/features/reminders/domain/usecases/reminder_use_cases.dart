@@ -1,4 +1,3 @@
-import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/result.dart';
 import '../entities/reminder_draft.dart';
 import '../entities/reminder_entity.dart';
