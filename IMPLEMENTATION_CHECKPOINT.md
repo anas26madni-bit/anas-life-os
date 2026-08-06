@@ -1,32 +1,46 @@
 # Anas Life OS implementation checkpoint
 
-Updated: 2026-08-05 (Asia/Karachi)
+Updated: 2026-08-06 (Asia/Karachi)
 
 ## Current state
 
-- Sprint 1 is complete and frozen.
-- Sprint 2 is complete and frozen.
-- Sprint 3 Task Engine implementation and all automated quality gates are complete.
-- Current branch: `main`.
-- Latest verified Sprint 3 branch commit: `178851ab9a07232f9fe05b5aeec1d1e961728b99`.
-- Latest verified quality run: `30984606293`.
+- Current sprint: Sprint 4.
+- Current feature: Offline Reminder Engine.
+- Sprint 1, Sprint 2, and Sprint 3 are complete and frozen.
+- Current branch: `codex/sprint-4-reminder-engine`.
+- Current implementation commit before this checkpoint:
+  `80cefe7df00adc556a74d88a5ec4b5ca3ed9961d`.
+- Current remote implementation commit before this checkpoint:
+  `80cefe7df00adc556a74d88a5ec4b5ca3ed9961d`.
+- Working tree status: clean before this checkpoint update; the checkpoint commit
+  is the only subsequent change.
+- Pending Git operations: commit and push this checkpoint only.
 
-## Sprint 3 scope delivered
+## Last completed task
 
-- Complete task and project domain, repository, use-case, controller, and UI
-  vertical slice.
-- Categories, subcategories, tags, checklists, subtasks, dependencies,
-  attachment metadata, recurrence definitions, task history, and state history.
-- Atomic lifecycle and composition operations with schema version 2 migration.
-- Minimal approved Android Keystore-wrapped SQLCipher database-key custody.
-- English/Urdu, RTL, large-text, offline, database, architecture, and Android 11
-  integration verification.
+Resolved the final Sprint 4 compilation and CI-infrastructure defects without
+changing scope or architecture:
 
-## Next authorized action
+- corrected reminder precision-selection syntax;
+- resolved analyzer findings;
+- made the formatter workflow path-safe and normalized its line endings;
+- exposed reminder enums to Drift's generated database library;
+- verified formatting and analyzer gates pass;
+- verified all 49 unit, widget, architecture, and database tests pass.
 
-Begin Sprint 4 Reminder Engine from the approved Part 11 scope. Do not implement
-Sprint 5 or later capabilities while Sprint 4 is in progress.
+## Next pending task
+
+Increase business-layer line coverage from the verified `83.57%` to the required
+minimum `90%` by adding focused Reminder Engine use-case tests. Then rerun the
+coverage gate, debug APK build, Android integration test, and remaining Sprint 4
+quality gates. Do not restart or recreate the completed Reminder Engine work.
+
+## Blocker
+
+No external or architectural blocker. Sprint 4 is incomplete only because the
+coverage quality gate is below its approved threshold. A test-expansion patch was
+attempted but did not apply, so no partial or broken test changes exist.
 
 ## Resume command
 
-`Resume Sprint 4 from the completed Sprint 3 checkpoint on main; implement only the approved Reminder Engine scope.`
+`Resume Sprint 4 from IMPLEMENTATION_CHECKPOINT.md on codex/sprint-4-reminder-engine; begin with focused reminder use-case coverage tests and do not repeat completed work.`
