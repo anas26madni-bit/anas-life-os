@@ -19,7 +19,9 @@ void main() {
     final database = createTestDatabase();
     addTearDown(database.close);
     final task =
-        (await DriftTaskRepository(database).create(const TaskDraft(title: 'Task'))
+        (await DriftTaskRepository(
+                  database,
+                ).create(const TaskDraft(title: 'Task'))
                 as Success<TaskEntity>)
             .value;
     final scheduler = FakeReminderScheduler();
@@ -57,7 +59,9 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('supports Urdu RTL and large text without overflow', (tester) async {
+  testWidgets('supports Urdu RTL and large text without overflow', (
+    tester,
+  ) async {
     final database = createTestDatabase();
     addTearDown(database.close);
     await tester.pumpWidget(
@@ -78,7 +82,10 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    expect(Directionality.of(tester.element(find.byType(Scaffold))), TextDirection.rtl);
+    expect(
+      Directionality.of(tester.element(find.byType(Scaffold))),
+      TextDirection.rtl,
+    );
     expect(tester.takeException(), isNull);
   });
 }

@@ -127,8 +127,8 @@ final class ReminderUseCases {
     final exact = await _scheduler.canScheduleExactAlarms();
     final precision = switch (exact) {
       Success<bool>(value: true) => ReminderSchedulePrecision.exact,
-      Success<bool>() || FailureResult<bool>() =>
-        ReminderSchedulePrecision.inexact,
+      Success<bool>() ||
+      FailureResult<bool>() => ReminderSchedulePrecision.inexact,
     };
     return _scheduler.schedule(
       ReminderScheduleRequest(

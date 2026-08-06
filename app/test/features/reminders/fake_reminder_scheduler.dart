@@ -32,4 +32,3 @@ final class FakeReminderScheduler implements ReminderScheduler {
     return const Success(null);
   }
 }
-

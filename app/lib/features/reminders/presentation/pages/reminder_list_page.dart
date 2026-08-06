@@ -17,9 +17,9 @@ class ReminderListPage extends ConsumerWidget {
     final reminders = ref.watch(reminderListControllerProvider);
     ref.listen(reminderListControllerProvider, (previous, next) {
       if (next case AsyncError(:final error)) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(error.toString())),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(error.toString())));
       }
     });
     return Scaffold(
@@ -33,12 +33,13 @@ class ReminderListPage extends ConsumerWidget {
         child: RefreshIndicator(
           onRefresh: ref.read(reminderListControllerProvider.notifier).refresh,
           child: reminders.when(
-            loading: () => const Center(
-              child: CircularProgressIndicator.adaptive(),
-            ),
+            loading: () =>
+                const Center(child: CircularProgressIndicator.adaptive()),
             error: (error, stackTrace) => _ReminderErrorState(
               message: error.toString(),
-              onRetry: ref.read(reminderListControllerProvider.notifier).refresh,
+              onRetry: ref
+                  .read(reminderListControllerProvider.notifier)
+                  .refresh,
             ),
             data: (items) => items.isEmpty
                 ? _ReminderEmptyState(
@@ -113,7 +114,8 @@ class ReminderListPage extends ConsumerWidget {
                         labelText: localization.reminderTitle,
                       ),
                       onChanged: (value) => title = value,
-                      validator: (value) => value == null || value.trim().isEmpty
+                      validator: (value) =>
+                          value == null || value.trim().isEmpty
                           ? localization.reminderTitleRequired
                           : null,
                     ),
@@ -122,13 +124,23 @@ class ReminderListPage extends ConsumerWidget {
                       contentPadding: EdgeInsets.zero,
                       leading: const Icon(Icons.schedule_outlined),
                       title: Text(localization.reminderDateTime),
-                      subtitle: Text(MaterialLocalizations.of(context).formatFullDate(scheduledAt)),
-                      trailing: Text(MaterialLocalizations.of(context).formatTimeOfDay(TimeOfDay.fromDateTime(scheduledAt))),
+                      subtitle: Text(
+                        MaterialLocalizations.of(
+                          context,
+                        ).formatFullDate(scheduledAt),
+                      ),
+                      trailing: Text(
+                        MaterialLocalizations.of(
+                          context,
+                        ).formatTimeOfDay(TimeOfDay.fromDateTime(scheduledAt)),
+                      ),
                       onTap: () async {
                         final date = await showDatePicker(
                           context: context,
                           firstDate: DateTime.now(),
-                          lastDate: DateTime.now().add(const Duration(days: 3650)),
+                          lastDate: DateTime.now().add(
+                            const Duration(days: 3650),
+                          ),
                           initialDate: scheduledAt,
                         );
                         if (date == null || !context.mounted) return;
@@ -234,15 +246,20 @@ class _ReminderCard extends StatelessWidget {
     return Card(
       child: ListTile(
         leading: const Icon(Icons.notifications_active_outlined),
-        title: Text(reminder.title, maxLines: 2, overflow: TextOverflow.ellipsis),
-        subtitle: Text(MaterialLocalizations.of(context).formatFullDate(reminder.scheduledAt.toLocal())),
+        title: Text(
+          reminder.title,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
+        subtitle: Text(
+          MaterialLocalizations.of(
+            context,
+          ).formatFullDate(reminder.scheduledAt.toLocal()),
+        ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Switch(
-              value: reminder.enabled,
-              onChanged: onEnabledChanged,
-            ),
+            Switch(value: reminder.enabled, onChanged: onEnabledChanged),
             IconButton(
               tooltip: localization.delete,
               onPressed: onDelete,
@@ -268,9 +285,17 @@ class _ReminderEmptyState extends StatelessWidget {
       padding: const EdgeInsets.all(AppSpacing.xl),
       children: [
         const SizedBox(height: 96),
-        Icon(Icons.notifications_none, size: 72, color: Theme.of(context).colorScheme.primary),
+        Icon(
+          Icons.notifications_none,
+          size: 72,
+          color: Theme.of(context).colorScheme.primary,
+        ),
         const SizedBox(height: AppSpacing.lg),
-        Text(localization.noRemindersTitle, textAlign: TextAlign.center, style: Theme.of(context).textTheme.headlineSmall),
+        Text(
+          localization.noRemindersTitle,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
         const SizedBox(height: AppSpacing.sm),
         Text(localization.noRemindersMessage, textAlign: TextAlign.center),
         const SizedBox(height: AppSpacing.lg),
@@ -300,9 +325,17 @@ class _ReminderErrorState extends StatelessWidget {
       padding: const EdgeInsets.all(AppSpacing.xl),
       children: [
         const SizedBox(height: 96),
-        Icon(Icons.error_outline, size: 72, color: Theme.of(context).colorScheme.error),
+        Icon(
+          Icons.error_outline,
+          size: 72,
+          color: Theme.of(context).colorScheme.error,
+        ),
         const SizedBox(height: AppSpacing.lg),
-        Text(localization.remindersErrorTitle, textAlign: TextAlign.center, style: Theme.of(context).textTheme.headlineSmall),
+        Text(
+          localization.remindersErrorTitle,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
         const SizedBox(height: AppSpacing.sm),
         Text(message, textAlign: TextAlign.center),
         const SizedBox(height: AppSpacing.lg),

@@ -65,7 +65,9 @@ final projectRepositoryProvider = FutureProvider<ProjectRepository>((
   return DriftProjectRepository(database);
 });
 
-final reminderRepositoryProvider = FutureProvider<ReminderRepository>((ref) async {
+final reminderRepositoryProvider = FutureProvider<ReminderRepository>((
+  ref,
+) async {
   final database = await ref.watch(appDatabaseProvider.future);
   return DriftReminderRepository(database);
 });

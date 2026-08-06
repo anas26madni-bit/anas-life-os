@@ -73,4 +73,3 @@ final class ReminderHistoryEntity {
   final DateTime occurredAt;
   final int snoozeCount;
 }
-

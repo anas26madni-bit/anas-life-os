@@ -43,7 +43,8 @@ class ReminderListController extends AsyncNotifier<List<ReminderEntity>> {
   }
 
   Future<void> _mutate(
-    Future<Result<ReminderEntity>> Function(ReminderUseCases useCases) operation,
+    Future<Result<ReminderEntity>> Function(ReminderUseCases useCases)
+    operation,
   ) async {
     state = const AsyncLoading<List<ReminderEntity>>();
     state = await AsyncValue.guard(() async {

@@ -37,4 +37,3 @@ final class ReminderDraft {
   final bool autoSnooze;
   final int escalationStep;
 }
-

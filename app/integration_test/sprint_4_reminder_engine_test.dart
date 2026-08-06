@@ -19,41 +19,60 @@ import 'package:integration_test/integration_test.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('persists and schedules a private offline reminder on Android 11', (
-    tester,
-  ) async {
-    final directory = await Directory.systemTemp.createTemp('reminder_engine_');
-    addTearDown(() => directory.delete(recursive: true));
-    final file = File('${directory.path}${Platform.pathSeparator}reminder_engine.db');
-    final key = DatabaseKey(
-      Uint8List.fromList(List<int>.generate(32, (index) => index + 17)),
-    );
-    var database = AppDatabase(DatabaseConnectionFactory.openFile(file: file, key: key));
-    final task =
-        (await DriftTaskRepository(database).create(const TaskDraft(title: 'Private task'))
-                as Success<TaskEntity>)
-            .value;
-    final useCases = ReminderUseCases(
-      DriftReminderRepository(database),
-      const AndroidReminderScheduler(),
-    );
-    final scheduledAt = DateTime.now().toUtc().add(const Duration(hours: 1));
-    final created = await useCases.create(
-      ReminderDraft(
-        taskId: task.id,
-        title: 'Private reminder',
-        scheduledAt: scheduledAt,
-        timezoneId: 'UTC',
-      ),
-    );
-    expect(created, isA<Success<ReminderEntity>>());
-    await database.close();
+  testWidgets(
+    'persists and schedules a private offline reminder on Android 11',
+    (tester) async {
+      final directory = await Directory.systemTemp.createTemp(
+        'reminder_engine_',
+      );
+      addTearDown(() => directory.delete(recursive: true));
+      final file = File(
+        '${directory.path}${Platform.pathSeparator}reminder_engine.db',
+      );
+      final key = DatabaseKey(
+        Uint8List.fromList(List<int>.generate(32, (index) => index + 17)),
+      );
+      var database = AppDatabase(
+        DatabaseConnectionFactory.openFile(file: file, key: key),
+      );
+      final task =
+          (await DriftTaskRepository(
+                    database,
+                  ).create(const TaskDraft(title: 'Private task'))
+                  as Success<TaskEntity>)
+              .value;
+      final useCases = ReminderUseCases(
+        DriftReminderRepository(database),
+        const AndroidReminderScheduler(),
+      );
+      final scheduledAt = DateTime.now().toUtc().add(const Duration(hours: 1));
+      final created = await useCases.create(
+        ReminderDraft(
+          taskId: task.id,
+          title: 'Private reminder',
+          scheduledAt: scheduledAt,
+          timezoneId: 'UTC',
+        ),
+      );
+      expect(created, isA<Success<ReminderEntity>>());
+      await database.close();
 
-    expect(String.fromCharCodes(await file.readAsBytes()).contains('Private reminder'), isFalse);
-    database = AppDatabase(DatabaseConnectionFactory.openFile(file: file, key: key));
-    addTearDown(database.close);
-    final reminders = await DriftReminderRepository(database).list();
-    expect((reminders as Success<List<ReminderEntity>>).value.single.title, 'Private reminder');
-    await database.verifyIntegrity();
-  });
+      expect(
+        String.fromCharCodes(
+          await file.readAsBytes(),
+        ).contains('Private reminder'),
+        isFalse,
+      );
+      database = AppDatabase(
+        DatabaseConnectionFactory.openFile(file: file, key: key),
+      );
+      addTearDown(database.close);
+      final reminders = await DriftReminderRepository(database).list();
+      expect(
+        (reminders as Success<List<ReminderEntity>>).value.single.title,
+        'Private reminder',
+      );
+      await database.verifyIntegrity();
+    },
+  );
 }

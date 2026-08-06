@@ -36,29 +36,31 @@ final class DriftReminderRepository implements ReminderRepository {
       return await _database.transaction(() async {
         await _requireTask(value.taskId);
         final now = _clock().toUtc().microsecondsSinceEpoch;
-        final id = await _database.into(_database.reminders).insert(
-          RemindersCompanion.insert(
-            uuid: _uuidFactory(),
-            taskId: value.taskId,
-            title: value.title,
-            scheduledAt: value.scheduledAt.microsecondsSinceEpoch,
-            timezoneId: value.timezoneId,
-            priority: value.priority,
-            createdAt: now,
-            updatedAt: now,
-            message: Value(value.message),
-            repeatRuleId: Value(value.repeatRuleId),
-            sound: Value(value.sound),
-            vibration: Value(value.vibration),
-            flash: Value(value.flash),
-            voiceEnabled: Value(value.voiceEnabled),
-            fullScreen: Value(value.fullScreen),
-            snoozeMinutes: Value(value.snoozeMinutes),
-            maxSnoozes: Value(value.maxSnoozes),
-            autoSnooze: Value(value.autoSnooze),
-            escalationStep: Value(value.escalationStep),
-          ),
-        );
+        final id = await _database
+            .into(_database.reminders)
+            .insert(
+              RemindersCompanion.insert(
+                uuid: _uuidFactory(),
+                taskId: value.taskId,
+                title: value.title,
+                scheduledAt: value.scheduledAt.microsecondsSinceEpoch,
+                timezoneId: value.timezoneId,
+                priority: value.priority,
+                createdAt: now,
+                updatedAt: now,
+                message: Value(value.message),
+                repeatRuleId: Value(value.repeatRuleId),
+                sound: Value(value.sound),
+                vibration: Value(value.vibration),
+                flash: Value(value.flash),
+                voiceEnabled: Value(value.voiceEnabled),
+                fullScreen: Value(value.fullScreen),
+                snoozeMinutes: Value(value.snoozeMinutes),
+                maxSnoozes: Value(value.maxSnoozes),
+                autoSnooze: Value(value.autoSnooze),
+                escalationStep: Value(value.escalationStep),
+              ),
+            );
         return Success(_map(await _requireRow(id, includeDeleted: false)));
       });
     } on StateError catch (error) {
@@ -136,10 +138,11 @@ final class DriftReminderRepository implements ReminderRepository {
   @override
   Future<Result<ReminderEntity?>> findById(int id) async {
     try {
-      final row = await (_database.select(_database.reminders)..where(
-            (row) => row.id.equals(id) & row.isDeleted.equals(false),
-          ))
-          .getSingleOrNull();
+      final row =
+          await (_database.select(_database.reminders)..where(
+                (row) => row.id.equals(id) & row.isDeleted.equals(false),
+              ))
+              .getSingleOrNull();
       return Success(row == null ? null : _map(row));
     } on Object {
       return const FailureResult(
@@ -286,17 +289,19 @@ final class DriftReminderRepository implements ReminderRepository {
     }
     try {
       await _requireRow(reminderId, includeDeleted: true);
-      await _database.into(_database.reminderHistory).insert(
-        ReminderHistoryCompanion.insert(
-          uuid: _uuidFactory(),
-          reminderId: reminderId,
-          occurrenceUuid: occurrenceUuid,
-          action: action,
-          occurredAt: occurredAt.toUtc().microsecondsSinceEpoch,
-          snoozeCount: Value(snoozeCount),
-        ),
-        mode: InsertMode.insertOrIgnore,
-      );
+      await _database
+          .into(_database.reminderHistory)
+          .insert(
+            ReminderHistoryCompanion.insert(
+              uuid: _uuidFactory(),
+              reminderId: reminderId,
+              occurrenceUuid: occurrenceUuid,
+              action: action,
+              occurredAt: occurredAt.toUtc().microsecondsSinceEpoch,
+              snoozeCount: Value(snoozeCount),
+            ),
+            mode: InsertMode.insertOrIgnore,
+          );
       return const Success(null);
     } on Object {
       return const FailureResult(
@@ -361,12 +366,13 @@ final class DriftReminderRepository implements ReminderRepository {
       return Success(ReminderRepeatPattern.none(reminder.timezoneId));
     }
     try {
-      final row = await (_database.select(_database.repeatRules)..where(
-            (row) =>
-                row.id.equals(reminder.repeatRuleId!) &
-                row.isDeleted.equals(false),
-          ))
-          .getSingleOrNull();
+      final row =
+          await (_database.select(_database.repeatRules)..where(
+                (row) =>
+                    row.id.equals(reminder.repeatRuleId!) &
+                    row.isDeleted.equals(false),
+              ))
+              .getSingleOrNull();
       if (row == null) {
         return const FailureResult(
           ValidationFailure(
@@ -399,10 +405,11 @@ final class DriftReminderRepository implements ReminderRepository {
   }
 
   Future<void> _requireTask(int taskId) async {
-    final task = await (_database.select(
-      _database.tasks,
-    )..where((row) => row.id.equals(taskId) & row.isDeleted.equals(false)))
-        .getSingleOrNull();
+    final task =
+        await (_database.select(_database.tasks)..where(
+              (row) => row.id.equals(taskId) & row.isDeleted.equals(false),
+            ))
+            .getSingleOrNull();
     if (task == null) {
       throw StateError('The reminder task does not exist.');
     }
