@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../helpers/database_test_harness.dart';
 
 void main() {
-  test('creates the approved Sprint 3 schema and indexes', () async {
+  test('creates the approved schema through Sprint 4 with indexes', () async {
     final database = createTestDatabase();
     addTearDown(database.close);
 
@@ -30,6 +30,8 @@ void main() {
         'plugin_registry',
         'projects',
         'repeat_rules',
+        'reminder_history',
+        'reminders',
         'subcategories',
         'tags',
         'task_dependencies',
@@ -55,6 +57,9 @@ void main() {
         'idx_tasks_project_status',
         'idx_tasks_parent_sort',
         'idx_task_dependencies_pair',
+        'idx_reminders_schedule',
+        'idx_reminders_task',
+        'idx_reminder_history_occurrence_action',
       ]),
     );
 

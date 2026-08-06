@@ -23,7 +23,7 @@ void main() {
     expect(violations, isEmpty);
   });
 
-  test('Sprint 3 contains only approved feature source', () {
+  test('implemented sprints contain only approved feature source', () {
     final featureFiles = Directory('lib/features')
         .listSync(recursive: true)
         .whereType<File>()
@@ -35,6 +35,7 @@ void main() {
         anyOf(
           contains('/features/database_foundation/'),
           contains('/features/tasks/'),
+          contains('/features/reminders/'),
         ),
       ),
     );
@@ -42,7 +43,7 @@ void main() {
 
   test('feature domains are independent from data and Flutter', () {
     final violations = <String>[];
-    for (final feature in ['database_foundation', 'tasks']) {
+    for (final feature in ['database_foundation', 'tasks', 'reminders']) {
       final domain = Directory('lib/features/$feature/domain');
       for (final file in domain.listSync(recursive: true).whereType<File>()) {
         if (!file.path.endsWith('.dart')) {
