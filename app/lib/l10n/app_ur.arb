@@ -21,5 +21,21 @@
   "delete": "حذف کریں",
   "noTasksTitle": "ابھی کوئی کام نہیں",
   "noTasksMessage": "اپنا پہلا نجی آف لائن کام بنائیں۔",
-  "tasksErrorTitle": "کام دستیاب نہیں"
+  "tasksErrorTitle": "کام دستیاب نہیں",
+  "openReminders": "یاد دہانیاں کھولیں",
+  "remindersTitle": "یاد دہانیاں",
+  "createReminder": "یاد دہانی بنائیں",
+  "reminderTaskId": "کام کی شناخت",
+  "reminderTaskRequired": "درست کام کی شناخت درج کریں۔",
+  "reminderTitle": "یاد دہانی کا عنوان",
+  "reminderTitleRequired": "یاد دہانی کا عنوان درج کریں۔",
+  "reminderDateTime": "یاد دہانی کی تاریخ اور وقت",
+  "reminderVibration": "وائبریشن",
+  "reminderVoice": "آواز کی یاد دہانی",
+  "reminderFlash": "فلیش الرٹ",
+  "reminderFullScreen": "فل اسکرین الرٹ",
+  "reminderAutoSnooze": "خودکار اسنوز",
+  "noRemindersTitle": "ابھی کوئی یاد دہانی نہیں",
+  "noRemindersMessage": "کسی کام کے لیے نجی آف لائن یاد دہانی بنائیں۔",
+  "remindersErrorTitle": "یاد دہانیاں دستیاب نہیں"
 }

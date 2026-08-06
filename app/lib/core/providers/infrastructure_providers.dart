@@ -5,6 +5,10 @@ import '../../features/tasks/data/repositories/drift_project_repository.dart';
 import '../../features/tasks/data/repositories/drift_task_composition_repository.dart';
 import '../../features/tasks/data/repositories/drift_task_repository.dart';
 import '../../features/tasks/data/repositories/drift_task_support_repository.dart';
+import '../../features/reminders/data/repositories/drift_reminder_repository.dart';
+import '../../features/reminders/data/services/android_reminder_scheduler.dart';
+import '../../features/reminders/domain/repositories/reminder_repository.dart';
+import '../../features/reminders/domain/services/reminder_scheduler.dart';
 import '../../features/tasks/domain/repositories/project_repository.dart';
 import '../../features/tasks/domain/repositories/task_composition_repository.dart';
 import '../../features/tasks/domain/repositories/task_repository.dart';
@@ -60,3 +64,12 @@ final projectRepositoryProvider = FutureProvider<ProjectRepository>((
   final database = await ref.watch(appDatabaseProvider.future);
   return DriftProjectRepository(database);
 });
+
+final reminderRepositoryProvider = FutureProvider<ReminderRepository>((ref) async {
+  final database = await ref.watch(appDatabaseProvider.future);
+  return DriftReminderRepository(database);
+});
+
+final reminderSchedulerProvider = Provider<ReminderScheduler>(
+  (ref) => const AndroidReminderScheduler(),
+);
