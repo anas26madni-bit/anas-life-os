@@ -16,7 +16,9 @@ void main() {
   ) async {
     final database = createTestDatabase();
     addTearDown(database.close);
-    final repository = DriftSearchRepository(await database.verifySearchSession());
+    final repository = DriftSearchRepository(
+      await database.verifySearchSession(),
+    );
     final now = DateTime.now().toUtc().microsecondsSinceEpoch;
     await database.customStatement(
       'INSERT INTO search_documents('
@@ -25,10 +27,10 @@ void main() {
       ['note', 1, 'Offline اردو', 'private local search', '', '', now, now],
     );
 
-    final results = (await repository.search(
-      const SearchQuery(text: 'Offline اردو'),
-    ) as Success<List<SearchResultItem>>)
-        .value;
+    final results =
+        (await repository.search(const SearchQuery(text: 'Offline اردو'))
+                as Success<List<SearchResultItem>>)
+            .value;
     expect(results.single.entityId, 1);
 
     const voice = AndroidVoiceSearchService();

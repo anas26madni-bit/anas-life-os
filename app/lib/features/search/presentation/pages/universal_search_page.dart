@@ -135,9 +135,8 @@ class _UniversalSearchPageState extends ConsumerState<UniversalSearchPage> {
                         itemCount: state.results.length,
                         separatorBuilder: (_, _) =>
                             const SizedBox(height: AppSpacing.xs),
-                        itemBuilder: (context, index) => _ResultCard(
-                          item: state.results[index],
-                        ),
+                        itemBuilder: (context, index) =>
+                            _ResultCard(item: state.results[index]),
                       ),
               ),
             ),
@@ -160,7 +159,9 @@ class _UniversalSearchPageState extends ConsumerState<UniversalSearchPage> {
           child: TextFormField(
             autofocus: true,
             maxLength: 200,
-            decoration: InputDecoration(labelText: localization.savedSearchName),
+            decoration: InputDecoration(
+              labelText: localization.savedSearchName,
+            ),
             onChanged: (value) => name = value,
             validator: (value) => value == null || value.trim().isEmpty
                 ? localization.savedSearchName
@@ -188,10 +189,7 @@ class _UniversalSearchPageState extends ConsumerState<UniversalSearchPage> {
     }
   }
 
-  Future<void> _showFilters(
-    BuildContext context,
-    SearchQuery initial,
-  ) async {
+  Future<void> _showFilters(BuildContext context, SearchQuery initial) async {
     final localization = AppLocalizations.of(context);
     var query = initial;
     var projectText = initial.projectId?.toString() ?? '';
@@ -220,17 +218,19 @@ class _UniversalSearchPageState extends ConsumerState<UniversalSearchPage> {
                   const SizedBox(height: AppSpacing.sm),
                   Wrap(
                     spacing: AppSpacing.xs,
-                    children: SearchEntityType.values.map((type) {
-                      return FilterChip(
-                        label: Text(_entityLabel(localization, type)),
-                        selected: query.entityTypes.contains(type),
-                        onSelected: (active) => setState(() {
-                          final types = {...query.entityTypes};
-                          active ? types.add(type) : types.remove(type);
-                          query = query.copyWith(entityTypes: types);
-                        }),
-                      );
-                    }).toList(growable: false),
+                    children: SearchEntityType.values
+                        .map((type) {
+                          return FilterChip(
+                            label: Text(_entityLabel(localization, type)),
+                            selected: query.entityTypes.contains(type),
+                            onSelected: (active) => setState(() {
+                              final types = {...query.entityTypes};
+                              active ? types.add(type) : types.remove(type);
+                              query = query.copyWith(entityTypes: types);
+                            }),
+                          );
+                        })
+                        .toList(growable: false),
                   ),
                   TextField(
                     keyboardType: TextInputType.number,
@@ -250,16 +250,14 @@ class _UniversalSearchPageState extends ConsumerState<UniversalSearchPage> {
                   _DateFilterTile(
                     label: localization.searchFromDate,
                     date: query.dateFrom,
-                    onChanged: (date) => setState(
-                      () => query = query.copyWith(dateFrom: date),
-                    ),
+                    onChanged: (date) =>
+                        setState(() => query = query.copyWith(dateFrom: date)),
                   ),
                   _DateFilterTile(
                     label: localization.searchToDate,
                     date: query.dateTo,
-                    onChanged: (date) => setState(
-                      () => query = query.copyWith(dateTo: date),
-                    ),
+                    onChanged: (date) =>
+                        setState(() => query = query.copyWith(dateTo: date)),
                   ),
                   Row(
                     children: [

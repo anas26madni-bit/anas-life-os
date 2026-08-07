@@ -10,62 +10,69 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('supports mixed text, large type, RTL, filters, and saved search', (
-    tester,
-  ) async {
-    final repository = _FakeSearchRepository();
-    await tester.pumpWidget(
-      ProviderScope(
-        overrides: [
-          searchRepositoryProvider.overrideWith((ref) async => repository),
-          voiceSearchServiceProvider.overrideWithValue(_UnavailableVoice()),
-        ],
-        child: const MaterialApp(
-          locale: Locale('ur'),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          home: MediaQuery(
-            data: MediaQueryData(textScaler: TextScaler.linear(1.4)),
-            child: UniversalSearchPage(),
+  testWidgets(
+    'supports mixed text, large type, RTL, filters, and saved search',
+    (tester) async {
+      final repository = _FakeSearchRepository();
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            searchRepositoryProvider.overrideWith((ref) async => repository),
+            voiceSearchServiceProvider.overrideWithValue(_UnavailableVoice()),
+          ],
+          child: const MaterialApp(
+            locale: Locale('ur'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: MediaQuery(
+              data: MediaQueryData(textScaler: TextScaler.linear(1.4)),
+              child: UniversalSearchPage(),
+            ),
           ),
         ),
-      ),
-    );
-    await tester.pumpAndSettle();
+      );
+      await tester.pumpAndSettle();
 
-    expect(
-      Directionality.of(tester.element(find.byType(Scaffold))),
-      TextDirection.rtl,
-    );
-    await tester.enterText(find.byType(SearchBar), 'offline نجی');
-    await tester.testTextInput.receiveAction(TextInputAction.done);
-    await tester.pumpAndSettle();
-    expect(find.text('Offline نجی note'), findsOneWidget);
+      expect(
+        Directionality.of(tester.element(find.byType(Scaffold))),
+        TextDirection.rtl,
+      );
+      await tester.enterText(find.byType(SearchBar), 'offline نجی');
+      await tester.testTextInput.receiveAction(TextInputAction.done);
+      await tester.pumpAndSettle();
+      expect(find.text('Offline نجی note'), findsOneWidget);
 
-    await tester.tap(find.byIcon(Icons.filter_alt_outlined));
-    await tester.pumpAndSettle();
-    expect(find.byType(FilterChip), findsNWidgets(SearchEntityType.values.length));
-    expect(tester.takeException(), isNull);
-  });
+      await tester.tap(find.byIcon(Icons.filter_alt_outlined));
+      await tester.pumpAndSettle();
+      expect(
+        find.byType(FilterChip),
+        findsNWidgets(SearchEntityType.values.length),
+      );
+      expect(tester.takeException(), isNull);
+    },
+  );
 }
 
 final class _FakeSearchRepository implements SearchRepository {
   @override
-  Future<Result<List<SearchResultItem>>> search(SearchQuery query) async => Success([
-    SearchResultItem(
-      entityType: SearchEntityType.note,
-      entityId: 1,
-      title: 'Offline نجی note',
-      updatedAt: DateTime.utc(2026, 8, 7),
-    ),
-  ]);
+  Future<Result<List<SearchResultItem>>> search(SearchQuery query) async =>
+      Success([
+        SearchResultItem(
+          entityType: SearchEntityType.note,
+          entityId: 1,
+          title: 'Offline نجی note',
+          updatedAt: DateTime.utc(2026, 8, 7),
+        ),
+      ]);
 
   @override
   Future<Result<void>> rebuildIndex() async => const Success(null);
   @override
-  Future<Result<List<RecentSearch>>> recent({int limit = 10}) async => const Success([]);
+  Future<Result<List<RecentSearch>>> recent({int limit = 10}) async =>
+      const Success([]);
   @override
-  Future<Result<SavedSearch>> save(SavedSearchDraft draft) => throw UnimplementedError();
+  Future<Result<SavedSearch>> save(SavedSearchDraft draft) =>
+      throw UnimplementedError();
   @override
   Future<Result<List<SavedSearch>>> saved() async => const Success([]);
   @override

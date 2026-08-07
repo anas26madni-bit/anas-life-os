@@ -91,10 +91,11 @@ final class DriftSearchRepository implements SearchRepository {
       );
     }
     try {
-      final rows = await (_database.select(_database.searchHistory)
-            ..orderBy([(row) => OrderingTerm.desc(row.searchedAt)])
-            ..limit(limit))
-          .get();
+      final rows =
+          await (_database.select(_database.searchHistory)
+                ..orderBy([(row) => OrderingTerm.desc(row.searchedAt)])
+                ..limit(limit))
+              .get();
       return Success(
         rows
             .map(
@@ -129,7 +130,9 @@ final class DriftSearchRepository implements SearchRepository {
     if (validation != null) return FailureResult(validation);
     try {
       final now = _now;
-      final id = await _database.into(_database.savedSearches).insert(
+      final id = await _database
+          .into(_database.savedSearches)
+          .insert(
             SavedSearchesCompanion.insert(
               uuid: _uuidFactory(),
               name: draft.name.trim(),
@@ -154,10 +157,11 @@ final class DriftSearchRepository implements SearchRepository {
   @override
   Future<Result<List<SavedSearch>>> saved() async {
     try {
-      final rows = await (_database.select(_database.savedSearches)
-            ..where((row) => row.isDeleted.equals(false))
-            ..orderBy([(row) => OrderingTerm.asc(row.name)]))
-          .get();
+      final rows =
+          await (_database.select(_database.savedSearches)
+                ..where((row) => row.isDeleted.equals(false))
+                ..orderBy([(row) => OrderingTerm.asc(row.name)]))
+              .get();
       return Success(rows.map(_mapSaved).toList(growable: false));
     } on Object {
       return const FailureResult(
@@ -172,15 +176,17 @@ final class DriftSearchRepository implements SearchRepository {
   @override
   Future<Result<void>> deleteSaved(int id) async {
     try {
-      final updated = await (_database.update(
-        _database.savedSearches,
-      )..where((row) => row.id.equals(id) & row.isDeleted.equals(false))).write(
-        SavedSearchesCompanion(
-          isDeleted: const Value(true),
-          deletedAt: Value(_now),
-          updatedAt: Value(_now),
-        ),
-      );
+      final updated =
+          await (_database.update(_database.savedSearches)..where(
+                (row) => row.id.equals(id) & row.isDeleted.equals(false),
+              ))
+              .write(
+                SavedSearchesCompanion(
+                  isDeleted: const Value(true),
+                  deletedAt: Value(_now),
+                  updatedAt: Value(_now),
+                ),
+              );
       if (updated != 1) throw StateError('Saved search does not exist.');
       return const Success(null);
     } on Object {
@@ -275,7 +281,9 @@ final class DriftSearchRepository implements SearchRepository {
   }
 
   Future<void> _recordHistory(SearchQuery query, int count) async {
-    await _database.into(_database.searchHistory).insert(
+    await _database
+        .into(_database.searchHistory)
+        .insert(
           SearchHistoryCompanion.insert(
             queryText: query.text.trim(),
             filtersJson: SearchQueryCodec.encode(query),
@@ -326,9 +334,7 @@ final class DriftSearchRepository implements SearchRepository {
   }
 
   String? _ftsMatch(String value) {
-    final sanitized = value
-        .replaceAll(RegExp(r'["*:^()\[\]{}]'), ' ')
-        .trim();
+    final sanitized = value.replaceAll(RegExp(r'["*:^()\[\]{}]'), ' ').trim();
     final tokens = sanitized
         .split(RegExp(r'\s+'))
         .where((token) => token.isNotEmpty)

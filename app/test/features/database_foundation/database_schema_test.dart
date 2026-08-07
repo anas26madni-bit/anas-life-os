@@ -129,7 +129,9 @@ void main() {
         .getSingle();
     expect(foreignKeys.read<int>('foreign_keys'), 1);
 
-    final temporaryStorage = await database.customSelect('PRAGMA temp_store;').getSingle();
+    final temporaryStorage = await database
+        .customSelect('PRAGMA temp_store;')
+        .getSingle();
     expect(temporaryStorage.read<int>('temp_store'), 2);
     await database.verifySearchSession();
 

@@ -278,13 +278,17 @@ class AppDatabase extends _$AppDatabase {
     if (cipher.isEmpty) {
       throw StateError('Encrypted search requires SQLCipher.');
     }
-    await customSelect('SELECT count(*) AS count FROM sqlite_master;').getSingle();
+    await customSelect(
+      'SELECT count(*) AS count FROM sqlite_master;',
+    ).getSingle();
     await verifyIntegrity();
     final temporaryStorage = await customSelect(
       'PRAGMA temp_store;',
     ).getSingle();
     if (temporaryStorage.read<int>('temp_store') != 2) {
-      throw StateError('Encrypted search requires memory-only temporary storage.');
+      throw StateError(
+        'Encrypted search requires memory-only temporary storage.',
+      );
     }
     return VerifiedSearchDatabaseSession._(this);
   }

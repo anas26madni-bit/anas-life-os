@@ -29,14 +29,17 @@ void main() {
     expect(calls.every((call) => call.arguments['locale'] == 'ur-PK'), isTrue);
   });
 
-  test('keeps typed fallback when on-device recognition is unavailable', () async {
-    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-        .setMockMethodCallHandler(channel, (call) async => false);
-    const service = AndroidVoiceSearchService(channel: channel);
+  test(
+    'keeps typed fallback when on-device recognition is unavailable',
+    () async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async => false);
+      const service = AndroidVoiceSearchService(channel: channel);
 
-    expect(
-      await service.listen(VoiceSearchLocale.english),
-      isA<VoiceSearchUnavailable>(),
-    );
-  });
+      expect(
+        await service.listen(VoiceSearchLocale.english),
+        isA<VoiceSearchUnavailable>(),
+      );
+    },
+  );
 }
