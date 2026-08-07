@@ -56,6 +56,13 @@ jobs:
         run: dart run ../tools/verify_coverage.dart coverage/lcov.info
       - name: Build debug APK
         run: flutter build apk --debug
+      - name: Upload debug APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: anas-life-os-sprint-7-debug-apk
+          path: app/build/app/outputs/flutter-apk/app-debug.apk
+          if-no-files-found: error
+          retention-days: 14
 
   integration:
     needs: validate
