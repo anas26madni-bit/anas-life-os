@@ -6,6 +6,7 @@ import '../../../../core/database/database_key.dart';
 import '../../../../core/database/uuid_generator.dart';
 import '../../../calendar/data/tables/calendar_tables.dart';
 import '../../../dashboard/data/tables/dashboard_tables.dart';
+import '../../../dashboard/domain/entities/dashboard_models.dart';
 import '../../../knowledge/data/tables/document_tables.dart';
 import '../../../knowledge/data/tables/knowledge_tables.dart';
 import '../../../knowledge/domain/entities/knowledge_enums.dart';
