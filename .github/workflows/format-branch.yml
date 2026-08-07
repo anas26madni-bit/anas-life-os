@@ -34,11 +34,11 @@ jobs:
       - name: Commit formatting when required
         shell: bash
         run: |
-          if git diff --quiet; then
+          if git diff --quiet -- app; then
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add app
-          git commit -m "Format Sprint 3 source"
+          git commit -m "Format Flutter source"
           git push origin HEAD:${GITHUB_REF_NAME}

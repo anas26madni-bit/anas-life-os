@@ -62,10 +62,21 @@ class _ReadyContent extends StatelessWidget {
       ),
       title: localization.foundationReadyTitle,
       message: localization.foundationReadyMessage,
-      action: FilledButton.icon(
-        onPressed: () => const TasksRoute().go(context),
-        icon: const Icon(Icons.task_alt),
-        label: Text(localization.openTasks),
+      action: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FilledButton.icon(
+            onPressed: () => const TasksRoute().go(context),
+            icon: const Icon(Icons.task_alt),
+            label: Text(localization.openTasks),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          OutlinedButton.icon(
+            onPressed: () => const RemindersRoute().go(context),
+            icon: const Icon(Icons.notifications_active_outlined),
+            label: Text(localization.openReminders),
+          ),
+        ],
       ),
     );
   }

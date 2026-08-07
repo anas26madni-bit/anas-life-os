@@ -21,5 +21,21 @@
   "delete": "Delete",
   "noTasksTitle": "No tasks yet",
   "noTasksMessage": "Create your first private offline task.",
-  "tasksErrorTitle": "Tasks are unavailable"
+  "tasksErrorTitle": "Tasks are unavailable",
+  "openReminders": "Open reminders",
+  "remindersTitle": "Reminders",
+  "createReminder": "Create reminder",
+  "reminderTaskId": "Task ID",
+  "reminderTaskRequired": "Enter a valid task ID.",
+  "reminderTitle": "Reminder title",
+  "reminderTitleRequired": "Enter a reminder title.",
+  "reminderDateTime": "Reminder date and time",
+  "reminderVibration": "Vibration",
+  "reminderVoice": "Voice reminder",
+  "reminderFlash": "Flash alert",
+  "reminderFullScreen": "Full-screen alert",
+  "reminderAutoSnooze": "Automatic snooze",
+  "noRemindersTitle": "No reminders yet",
+  "noRemindersMessage": "Create a private offline reminder for a task.",
+  "remindersErrorTitle": "Reminders are unavailable"
 }

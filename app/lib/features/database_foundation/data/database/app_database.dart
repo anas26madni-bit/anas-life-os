@@ -4,6 +4,8 @@ import '../../../../core/database/database_connection_factory.dart';
 import '../../../../core/database/database_constants.dart';
 import '../../../../core/database/database_key.dart';
 import '../../../../core/database/uuid_generator.dart';
+import '../../../reminders/data/tables/reminder_tables.dart';
+import '../../../reminders/domain/entities/reminder_enums.dart';
 import '../../../tasks/data/tables/attachment_table.dart';
 import '../../../tasks/data/tables/checklist_tables.dart';
 import '../../../tasks/data/tables/custom_field_tables.dart';
@@ -38,6 +40,8 @@ part 'app_database.g.dart';
     Attachments,
     CustomFields,
     CustomFieldValues,
+    Reminders,
+    ReminderHistory,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -55,7 +59,7 @@ class AppDatabase extends _$AppDatabase {
       await migrator.createAll();
     },
     onUpgrade: (migrator, from, to) async {
-      if (from == 1 && to == 2) {
+      if (from == 1 && to >= 2) {
         await transaction(() async {
           await migrator.createTable(categories);
           await migrator.createTable(subcategories);
@@ -77,8 +81,30 @@ class AppDatabase extends _$AppDatabase {
             MigrationHistoryCompanion.insert(
               uuid: UuidGenerator().generate(),
               fromVersion: from,
-              toVersion: to,
+              toVersion: 2,
               migrationName: 'sprint_3_task_engine',
+              startedAt: now,
+              completedAt: Value(now),
+              status: MigrationStatus.succeeded,
+            ),
+          );
+          await verifyIntegrity();
+        });
+        if (to == 2) {
+          return;
+        }
+      }
+      if (from <= 2 && to == 3) {
+        await transaction(() async {
+          await migrator.createTable(reminders);
+          await migrator.createTable(reminderHistory);
+          final now = DateTime.now().toUtc().microsecondsSinceEpoch;
+          await into(migrationHistory).insert(
+            MigrationHistoryCompanion.insert(
+              uuid: UuidGenerator().generate(),
+              fromVersion: 2,
+              toVersion: 3,
+              migrationName: 'sprint_4_reminder_engine',
               startedAt: now,
               completedAt: Value(now),
               status: MigrationStatus.succeeded,

@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Anas Life OS</string>
+    <string name="reminder_notification_title">Anas Life OS reminder</string>
+    <string name="reminder_notification_body">Open Anas Life OS to view this private reminder.</string>
+    <string name="reminder_action_snooze">Snooze</string>
+    <string name="reminder_action_complete">Complete</string>
+    <string name="reminder_channel_normal">Reminders</string>
+    <string name="reminder_channel_normal_description">Task reminders scheduled by Anas Life OS</string>
+    <string name="reminder_channel_urgent">Urgent reminders</string>
+    <string name="reminder_channel_urgent_description">High-priority task reminders</string>
+    <string name="reminder_voice_message">Anas Life OS reminder</string>
 </resources>
