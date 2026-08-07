@@ -91,7 +91,9 @@ void main() {
     final database = createTestDatabase();
     addTearDown(database.close);
     final task =
-        (await DriftTaskRepository(database).create(const TaskDraft(title: 'Task'))
+        (await DriftTaskRepository(
+                  database,
+                ).create(const TaskDraft(title: 'Task'))
                 as Success<TaskEntity>)
             .value;
     final repository = DriftReminderRepository(database);
@@ -133,7 +135,9 @@ void main() {
     final database = createTestDatabase();
     addTearDown(database.close);
     final task =
-        (await DriftTaskRepository(database).create(const TaskDraft(title: 'Task'))
+        (await DriftTaskRepository(
+                  database,
+                ).create(const TaskDraft(title: 'Task'))
                 as Success<TaskEntity>)
             .value;
     final repository = DriftReminderRepository(database);
