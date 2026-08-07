@@ -23,21 +23,24 @@ final class DriftKnowledgeRepository implements KnowledgeRepository {
   @override
   Future<Result<int>> ensureDefaultSpace() async {
     try {
-      final existing = await (_database.select(_database.knowledgeSpaces)
-            ..where((row) => row.isDeleted.equals(false))
-            ..orderBy([(row) => OrderingTerm.asc(row.id)])
-            ..limit(1))
-          .getSingleOrNull();
+      final existing =
+          await (_database.select(_database.knowledgeSpaces)
+                ..where((row) => row.isDeleted.equals(false))
+                ..orderBy([(row) => OrderingTerm.asc(row.id)])
+                ..limit(1))
+              .getSingleOrNull();
       if (existing != null) return Success(existing.id);
       final now = _now;
-      final id = await _database.into(_database.knowledgeSpaces).insert(
-        KnowledgeSpacesCompanion.insert(
-          uuid: _uuidFactory(),
-          name: 'Personal',
-          createdAt: now,
-          updatedAt: now,
-        ),
-      );
+      final id = await _database
+          .into(_database.knowledgeSpaces)
+          .insert(
+            KnowledgeSpacesCompanion.insert(
+              uuid: _uuidFactory(),
+              name: 'Personal',
+              createdAt: now,
+              updatedAt: now,
+            ),
+          );
       return Success(id);
     } on Object {
       return const FailureResult(
@@ -58,25 +61,27 @@ final class DriftKnowledgeRepository implements KnowledgeRepository {
         await _requireSpace(draft.spaceId);
         await _validateFolder(draft.spaceId, draft.folderId);
         final now = _now;
-        final id = await _database.into(_database.knowledgeNotes).insert(
-          KnowledgeNotesCompanion.insert(
-            uuid: _uuidFactory(),
-            spaceId: draft.spaceId,
-            title: draft.title.trim(),
-            content: draft.content,
-            noteType: draft.type,
-            contentFormat: draft.format,
-            status: draft.status,
-            createdAt: now,
-            updatedAt: now,
-            folderId: Value(draft.folderId),
-            summary: Value(_blankToNull(draft.summary)),
-            favorite: Value(draft.favorite),
-            pinned: Value(draft.pinned),
-            wordCount: Value(_wordCount(draft.content)),
-            readingMinutes: Value(_readingMinutes(draft.content)),
-          ),
-        );
+        final id = await _database
+            .into(_database.knowledgeNotes)
+            .insert(
+              KnowledgeNotesCompanion.insert(
+                uuid: _uuidFactory(),
+                spaceId: draft.spaceId,
+                title: draft.title.trim(),
+                content: draft.content,
+                noteType: draft.type,
+                contentFormat: draft.format,
+                status: draft.status,
+                createdAt: now,
+                updatedAt: now,
+                folderId: Value(draft.folderId),
+                summary: Value(_blankToNull(draft.summary)),
+                favorite: Value(draft.favorite),
+                pinned: Value(draft.pinned),
+                wordCount: Value(_wordCount(draft.content)),
+                readingMinutes: Value(_readingMinutes(draft.content)),
+              ),
+            );
         await _appendVersion(id, 1, draft, now);
         return Success(await _require(id));
       });
@@ -98,10 +103,7 @@ final class DriftKnowledgeRepository implements KnowledgeRepository {
   }
 
   @override
-  Future<Result<KnowledgeNote>> update(
-    int id,
-    KnowledgeNoteDraft draft,
-  ) async {
+  Future<Result<KnowledgeNote>> update(int id, KnowledgeNoteDraft draft) async {
     final validation = _validate(draft);
     if (validation != null) return FailureResult(validation);
     try {
@@ -197,9 +199,11 @@ final class DriftKnowledgeRepository implements KnowledgeRepository {
   @override
   Future<Result<KnowledgeNote?>> findById(int id) async {
     try {
-      final row = await (_database.select(_database.knowledgeNotes)
-            ..where((row) => row.id.equals(id) & row.isDeleted.equals(false)))
-          .getSingleOrNull();
+      final row =
+          await (_database.select(_database.knowledgeNotes)..where(
+                (row) => row.id.equals(id) & row.isDeleted.equals(false),
+              ))
+              .getSingleOrNull();
       return Success(row == null ? null : _map(row));
     } on Object {
       return const FailureResult(
@@ -266,10 +270,11 @@ final class DriftKnowledgeRepository implements KnowledgeRepository {
   Future<Result<List<KnowledgeVersion>>> versions(int noteId) async {
     try {
       await _requireRow(noteId, includeDeleted: true);
-      final rows = await (_database.select(_database.knowledgeVersions)
-            ..where((row) => row.noteId.equals(noteId))
-            ..orderBy([(row) => OrderingTerm.desc(row.versionNumber)]))
-          .get();
+      final rows =
+          await (_database.select(_database.knowledgeVersions)
+                ..where((row) => row.noteId.equals(noteId))
+                ..orderBy([(row) => OrderingTerm.desc(row.versionNumber)]))
+              .get();
       return Success(
         rows
             .map(
@@ -318,21 +323,28 @@ final class DriftKnowledgeRepository implements KnowledgeRepository {
           )..where((row) => row.name.equals(name))).getSingleOrNull();
           if (tag == null) {
             final now = _now;
-            final id = await _database.into(_database.knowledgeTags).insert(
-              KnowledgeTagsCompanion.insert(
-                uuid: _uuidFactory(),
-                name: name,
-                createdAt: now,
-                updatedAt: now,
-              ),
-            );
+            final id = await _database
+                .into(_database.knowledgeTags)
+                .insert(
+                  KnowledgeTagsCompanion.insert(
+                    uuid: _uuidFactory(),
+                    name: name,
+                    createdAt: now,
+                    updatedAt: now,
+                  ),
+                );
             tag = await (_database.select(
               _database.knowledgeTags,
             )..where((row) => row.id.equals(id))).getSingle();
           }
-          await _database.into(_database.knowledgeNoteTags).insert(
-            KnowledgeNoteTagsCompanion.insert(noteId: noteId, tagId: tag.id),
-          );
+          await _database
+              .into(_database.knowledgeNoteTags)
+              .insert(
+                KnowledgeNoteTagsCompanion.insert(
+                  noteId: noteId,
+                  tagId: tag.id,
+                ),
+              );
         }
         await _recountTags();
       });
@@ -365,16 +377,18 @@ final class DriftKnowledgeRepository implements KnowledgeRepository {
       await _database.transaction(() async {
         await _requireRow(sourceNoteId);
         await _requireRow(targetNoteId);
-        await _database.into(_database.knowledgeLinks).insert(
-          KnowledgeLinksCompanion.insert(
-            uuid: _uuidFactory(),
-            sourceNoteId: sourceNoteId,
-            targetNoteId: targetNoteId,
-            linkType: type,
-            createdAt: _now,
-          ),
-          mode: InsertMode.insertOrIgnore,
-        );
+        await _database
+            .into(_database.knowledgeLinks)
+            .insert(
+              KnowledgeLinksCompanion.insert(
+                uuid: _uuidFactory(),
+                sourceNoteId: sourceNoteId,
+                targetNoteId: targetNoteId,
+                linkType: type,
+                createdAt: _now,
+              ),
+              mode: InsertMode.insertOrIgnore,
+            );
       });
       return const Success(null);
     } on Object {
@@ -398,22 +412,23 @@ final class DriftKnowledgeRepository implements KnowledgeRepository {
   }
 
   Future<void> _requireSpace(int id) async {
-    final row = await (_database.select(_database.knowledgeSpaces)
-          ..where((row) => row.id.equals(id) & row.isDeleted.equals(false)))
-        .getSingleOrNull();
+    final row =
+        await (_database.select(_database.knowledgeSpaces)
+              ..where((row) => row.id.equals(id) & row.isDeleted.equals(false)))
+            .getSingleOrNull();
     if (row == null) throw StateError('The knowledge space does not exist.');
   }
 
   Future<void> _validateFolder(int spaceId, int? folderId) async {
     if (folderId == null) return;
-    final row = await (_database.select(_database.knowledgeFolders)
-          ..where(
-            (row) =>
-                row.id.equals(folderId) &
-                row.spaceId.equals(spaceId) &
-                row.isDeleted.equals(false),
-          ))
-        .getSingleOrNull();
+    final row =
+        await (_database.select(_database.knowledgeFolders)..where(
+              (row) =>
+                  row.id.equals(folderId) &
+                  row.spaceId.equals(spaceId) &
+                  row.isDeleted.equals(false),
+            ))
+            .getSingleOrNull();
     if (row == null) throw StateError('The knowledge folder is invalid.');
   }
 
@@ -422,31 +437,37 @@ final class DriftKnowledgeRepository implements KnowledgeRepository {
     int version,
     KnowledgeNoteDraft draft,
     int now,
-  ) => _database.into(_database.knowledgeVersions).insert(
-    KnowledgeVersionsCompanion.insert(
-      uuid: _uuidFactory(),
-      noteId: noteId,
-      versionNumber: version,
-      title: draft.title.trim(),
-      content: draft.content,
-      summary: Value(_blankToNull(draft.summary)),
-      createdAt: now,
-    ),
-  );
+  ) => _database
+      .into(_database.knowledgeVersions)
+      .insert(
+        KnowledgeVersionsCompanion.insert(
+          uuid: _uuidFactory(),
+          noteId: noteId,
+          versionNumber: version,
+          title: draft.title.trim(),
+          content: draft.content,
+          summary: Value(_blankToNull(draft.summary)),
+          createdAt: now,
+        ),
+      );
 
   Future<void> _recountTags() async {
     final tags = await _database.select(_database.knowledgeTags).get();
     for (final tag in tags) {
       final countExpression = _database.knowledgeNoteTags.id.count();
-      final count = await (_database.selectOnly(_database.knowledgeNoteTags)
-            ..addColumns([countExpression])
-            ..where(_database.knowledgeNoteTags.tagId.equals(tag.id)))
-          .map((row) => row.read(countExpression) ?? 0)
-          .getSingle();
+      final count =
+          await (_database.selectOnly(_database.knowledgeNoteTags)
+                ..addColumns([countExpression])
+                ..where(_database.knowledgeNoteTags.tagId.equals(tag.id)))
+              .map((row) => row.read(countExpression) ?? 0)
+              .getSingle();
       await (_database.update(
         _database.knowledgeTags,
       )..where((row) => row.id.equals(tag.id))).write(
-        KnowledgeTagsCompanion(usageCount: Value(count), updatedAt: Value(_now)),
+        KnowledgeTagsCompanion(
+          usageCount: Value(count),
+          updatedAt: Value(_now),
+        ),
       );
     }
   }
@@ -463,10 +484,8 @@ final class DriftKnowledgeRepository implements KnowledgeRepository {
     return row;
   }
 
-  Future<KnowledgeNote> _require(
-    int id, {
-    bool includeDeleted = false,
-  }) async => _map(await _requireRow(id, includeDeleted: includeDeleted));
+  Future<KnowledgeNote> _require(int id, {bool includeDeleted = false}) async =>
+      _map(await _requireRow(id, includeDeleted: includeDeleted));
 
   KnowledgeNote _map(KnowledgeNoteRow row) => KnowledgeNote(
     id: row.id,

@@ -9,7 +9,8 @@ import 'task_table.dart';
 @DataClassName('AttachmentFolderRow')
 @TableIndex(name: 'idx_attachment_folders_parent', columns: {#parentFolderId})
 class AttachmentFolders extends BusinessEntityTable {
-  IntColumn get parentFolderId => integer().nullable().references(AttachmentFolders, #id)();
+  IntColumn get parentFolderId =>
+      integer().nullable().references(AttachmentFolders, #id)();
   TextColumn get name => text().withLength(min: 1, max: 200)();
   TextColumn get description => text().nullable()();
   TextColumn get icon => text().nullable()();
@@ -28,10 +29,12 @@ class AttachmentFolders extends BusinessEntityTable {
 )
 @TableIndex(name: 'idx_attachments_checksum', columns: {#checksumSha256})
 class Attachments extends BusinessEntityTable {
-  IntColumn get folderId => integer().nullable().references(AttachmentFolders, #id)();
+  IntColumn get folderId =>
+      integer().nullable().references(AttachmentFolders, #id)();
   IntColumn get taskId => integer().nullable().references(Tasks, #id)();
   IntColumn get projectId => integer().nullable().references(Projects, #id)();
-  IntColumn get knowledgeNoteId => integer().nullable().references(KnowledgeNotes, #id)();
+  IntColumn get knowledgeNoteId =>
+      integer().nullable().references(KnowledgeNotes, #id)();
   IntColumn get documentId => integer().nullable().references(Documents, #id)();
   TextColumn get fileName => text().withLength(min: 1, max: 500)();
   TextColumn get originalFileName => text().nullable()();
@@ -51,11 +54,16 @@ class Attachments extends BusinessEntityTable {
 }
 
 @DataClassName('AttachmentVersionRow')
-@TableIndex(name: 'idx_attachment_versions_attachment_version', columns: {#attachmentId, #versionNumber}, unique: true)
+@TableIndex(
+  name: 'idx_attachment_versions_attachment_version',
+  columns: {#attachmentId, #versionNumber},
+  unique: true,
+)
 class AttachmentVersions extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get uuid => text().withLength(min: 36, max: 36).unique()();
-  IntColumn get attachmentId => integer().references(Attachments, #id, onDelete: KeyAction.cascade)();
+  IntColumn get attachmentId =>
+      integer().references(Attachments, #id, onDelete: KeyAction.cascade)();
   IntColumn get versionNumber => integer()();
   TextColumn get storagePath => text().withLength(min: 1, max: 2000)();
   TextColumn get checksumSha256 => text().withLength(min: 64, max: 64)();
@@ -63,11 +71,16 @@ class AttachmentVersions extends Table {
 }
 
 @DataClassName('AttachmentPreviewRow')
-@TableIndex(name: 'idx_attachment_previews_attachment', columns: {#attachmentId}, unique: true)
+@TableIndex(
+  name: 'idx_attachment_previews_attachment',
+  columns: {#attachmentId},
+  unique: true,
+)
 class AttachmentPreviewCache extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get uuid => text().withLength(min: 36, max: 36).unique()();
-  IntColumn get attachmentId => integer().references(Attachments, #id, onDelete: KeyAction.cascade)();
+  IntColumn get attachmentId =>
+      integer().references(Attachments, #id, onDelete: KeyAction.cascade)();
   TextColumn get previewPath => text().withLength(min: 1, max: 2000)();
   IntColumn get width => integer().nullable()();
   IntColumn get height => integer().nullable()();
@@ -87,9 +100,18 @@ class AttachmentLabels extends Table {
 }
 
 @DataClassName('AttachmentLabelMapRow')
-@TableIndex(name: 'idx_attachment_label_map_pair', columns: {#attachmentId, #labelId}, unique: true)
+@TableIndex(
+  name: 'idx_attachment_label_map_pair',
+  columns: {#attachmentId, #labelId},
+  unique: true,
+)
 class AttachmentLabelMap extends Table {
   IntColumn get id => integer().autoIncrement()();
-  IntColumn get attachmentId => integer().references(Attachments, #id, onDelete: KeyAction.cascade)();
-  IntColumn get labelId => integer().references(AttachmentLabels, #id, onDelete: KeyAction.cascade)();
+  IntColumn get attachmentId =>
+      integer().references(Attachments, #id, onDelete: KeyAction.cascade)();
+  IntColumn get labelId => integer().references(
+    AttachmentLabels,
+    #id,
+    onDelete: KeyAction.cascade,
+  )();
 }

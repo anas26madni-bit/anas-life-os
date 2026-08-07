@@ -27,21 +27,40 @@ void main() {
   test('validates supported types, checksum, and low storage', () {
     const validator = DocumentValidator();
     expect(validator.validate(draft()), isNull);
-    expect(validator.validate(draft(availableBytes: 10))?.code, 'document_storage_unavailable');
-    expect(validator.validate(draft(fileName: 'unsafe.exe'))?.code, 'unsupported_document_type');
+    expect(
+      validator.validate(draft(availableBytes: 10))?.code,
+      'document_storage_unavailable',
+    );
+    expect(
+      validator.validate(draft(fileName: 'unsafe.exe'))?.code,
+      'unsupported_document_type',
+    );
   });
 
-  test('persists metadata without storing file bytes and soft deletes', () async {
-    final database = createTestDatabase();
-    addTearDown(database.close);
-    final repository = DriftDocumentRepository(database);
-    final created = await repository.create(draft());
-    expect(created, isA<Success<KnowledgeDocument>>());
-    final items = (await repository.list() as Success<List<KnowledgeDocument>>).value;
-    expect(items.single.checksumSha256, checksum);
-    expect(items.single.encrypted, isTrue);
-    expect(await repository.softDelete(items.single.id), isA<Success<KnowledgeDocument>>());
-    expect((await repository.list() as Success<List<KnowledgeDocument>>).value, isEmpty);
-    expect(await repository.restore(items.single.id), isA<Success<KnowledgeDocument>>());
-  });
+  test(
+    'persists metadata without storing file bytes and soft deletes',
+    () async {
+      final database = createTestDatabase();
+      addTearDown(database.close);
+      final repository = DriftDocumentRepository(database);
+      final created = await repository.create(draft());
+      expect(created, isA<Success<KnowledgeDocument>>());
+      final items =
+          (await repository.list() as Success<List<KnowledgeDocument>>).value;
+      expect(items.single.checksumSha256, checksum);
+      expect(items.single.encrypted, isTrue);
+      expect(
+        await repository.softDelete(items.single.id),
+        isA<Success<KnowledgeDocument>>(),
+      );
+      expect(
+        (await repository.list() as Success<List<KnowledgeDocument>>).value,
+        isEmpty,
+      );
+      expect(
+        await repository.restore(items.single.id),
+        isA<Success<KnowledgeDocument>>(),
+      );
+    },
+  );
 }

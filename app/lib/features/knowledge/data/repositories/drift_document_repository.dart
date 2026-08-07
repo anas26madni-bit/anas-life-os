@@ -29,53 +29,60 @@ final class DriftDocumentRepository implements DocumentRepository {
     try {
       return await _database.transaction(() async {
         if (draft.folderId != null) {
-          final folder = await (_database.select(_database.documentFolders)
-                ..where(
-                  (row) =>
-                      row.id.equals(draft.folderId!) &
-                      row.isDeleted.equals(false),
-                ))
-              .getSingleOrNull();
-          if (folder == null) throw StateError('The document folder is invalid.');
+          final folder =
+              await (_database.select(_database.documentFolders)..where(
+                    (row) =>
+                        row.id.equals(draft.folderId!) &
+                        row.isDeleted.equals(false),
+                  ))
+                  .getSingleOrNull();
+          if (folder == null)
+            throw StateError('The document folder is invalid.');
         }
         final now = _now;
-        final documentId = await _database.into(_database.documents).insert(
-          DocumentsCompanion.insert(
-            uuid: _uuidFactory(),
-            title: draft.title.trim(),
-            createdAt: now,
-            updatedAt: now,
-            folderId: Value(draft.folderId),
-            hidden: Value(draft.hidden),
-          ),
-        );
-        await _database.into(_database.attachments).insert(
-          AttachmentsCompanion.insert(
-            uuid: _uuidFactory(),
-            fileName: draft.fileName,
-            storagePath: draft.storagePath,
-            fileSize: draft.fileSize,
-            checksumSha256: draft.checksumSha256.toLowerCase(),
-            createdAt: now,
-            updatedAt: now,
-            documentId: Value(documentId),
-            mimeType: Value(draft.mimeType),
-            extension: Value(_extension(draft.fileName)),
-            isHidden: Value(draft.hidden),
-            isEncrypted: Value(draft.encrypted),
-          ),
-        );
-        await _database.into(_database.documentVersions).insert(
-          DocumentVersionsCompanion.insert(
-            uuid: _uuidFactory(),
-            documentId: documentId,
-            versionNumber: 1,
-            storagePath: draft.storagePath,
-            checksumSha256: draft.checksumSha256.toLowerCase(),
-            fileSize: draft.fileSize,
-            createdAt: now,
-          ),
-        );
+        final documentId = await _database
+            .into(_database.documents)
+            .insert(
+              DocumentsCompanion.insert(
+                uuid: _uuidFactory(),
+                title: draft.title.trim(),
+                createdAt: now,
+                updatedAt: now,
+                folderId: Value(draft.folderId),
+                hidden: Value(draft.hidden),
+              ),
+            );
+        await _database
+            .into(_database.attachments)
+            .insert(
+              AttachmentsCompanion.insert(
+                uuid: _uuidFactory(),
+                fileName: draft.fileName,
+                storagePath: draft.storagePath,
+                fileSize: draft.fileSize,
+                checksumSha256: draft.checksumSha256.toLowerCase(),
+                createdAt: now,
+                updatedAt: now,
+                documentId: Value(documentId),
+                mimeType: Value(draft.mimeType),
+                extension: Value(_extension(draft.fileName)),
+                isHidden: Value(draft.hidden),
+                isEncrypted: Value(draft.encrypted),
+              ),
+            );
+        await _database
+            .into(_database.documentVersions)
+            .insert(
+              DocumentVersionsCompanion.insert(
+                uuid: _uuidFactory(),
+                documentId: documentId,
+                versionNumber: 1,
+                storagePath: draft.storagePath,
+                checksumSha256: draft.checksumSha256.toLowerCase(),
+                fileSize: draft.fileSize,
+                createdAt: now,
+              ),
+            );
         return Success(await _require(documentId));
       });
     } on StateError catch (error) {
@@ -116,9 +123,9 @@ final class DriftDocumentRepository implements DocumentRepository {
           _database.attachments,
           _database.attachments.documentId.equalsExp(_database.documents.id),
         ),
-      ])
-        ..where(_database.documents.isDeleted.equals(false));
-      if (!includeHidden) joined.where(_database.documents.hidden.equals(false));
+      ])..where(_database.documents.isDeleted.equals(false));
+      if (!includeHidden)
+        joined.where(_database.documents.hidden.equals(false));
       final term = query?.trim();
       if (term != null && term.isNotEmpty) {
         joined.where(
@@ -142,8 +149,7 @@ final class DriftDocumentRepository implements DocumentRepository {
   }
 
   @override
-  Future<Result<KnowledgeDocument>> softDelete(int id) =>
-      _setDeleted(id, true);
+  Future<Result<KnowledgeDocument>> softDelete(int id) => _setDeleted(id, true);
 
   @override
   Future<Result<KnowledgeDocument>> restore(int id) => _setDeleted(id, false);
@@ -205,9 +211,9 @@ final class DriftDocumentRepository implements DocumentRepository {
         _database.attachments,
         _database.attachments.documentId.equalsExp(_database.documents.id),
       ),
-    ])
-      ..where(_database.documents.id.equals(id));
-    if (!includeDeleted) joined.where(_database.documents.isDeleted.equals(false));
+    ])..where(_database.documents.id.equals(id));
+    if (!includeDeleted)
+      joined.where(_database.documents.isDeleted.equals(false));
     return _mapJoined(await joined.getSingle());
   }
 

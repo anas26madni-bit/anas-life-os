@@ -5,8 +5,22 @@ final class DocumentValidator {
   const DocumentValidator();
 
   static const supportedExtensions = <String>{
-    'jpg', 'jpeg', 'png', 'webp', 'gif', 'pdf', 'doc', 'docx', 'xls',
-    'xlsx', 'mp4', 'webm', 'mp3', 'wav', 'm4a', 'zip',
+    'jpg',
+    'jpeg',
+    'png',
+    'webp',
+    'gif',
+    'pdf',
+    'doc',
+    'docx',
+    'xls',
+    'xlsx',
+    'mp4',
+    'webm',
+    'mp3',
+    'wav',
+    'm4a',
+    'zip',
   };
 
   ValidationFailure? validate(KnowledgeDocumentDraft draft) {

@@ -28,7 +28,8 @@ void main() {
       DatabaseConnectionFactory.openFile(file: file, key: key),
     );
     var repository = DriftKnowledgeRepository(database);
-    final spaceId = (await repository.ensureDefaultSpace() as Success<int>).value;
+    final spaceId =
+        (await repository.ensureDefaultSpace() as Success<int>).value;
     final created = await repository.create(
       KnowledgeNoteDraft(
         spaceId: spaceId,
@@ -40,9 +41,9 @@ void main() {
     await database.close();
 
     expect(
-      String.fromCharCodes(await file.readAsBytes()).contains(
-        'Private offline content',
-      ),
+      String.fromCharCodes(
+        await file.readAsBytes(),
+      ).contains('Private offline content'),
       isFalse,
     );
     database = AppDatabase(
@@ -50,7 +51,8 @@ void main() {
     );
     addTearDown(database.close);
     repository = DriftKnowledgeRepository(database);
-    final notes = (await repository.list() as Success<List<KnowledgeNote>>).value;
+    final notes =
+        (await repository.list() as Success<List<KnowledgeNote>>).value;
     expect(notes.single.title, 'Encrypted knowledge');
     await database.verifyIntegrity();
   });

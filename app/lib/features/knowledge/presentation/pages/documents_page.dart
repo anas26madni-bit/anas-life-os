@@ -28,10 +28,7 @@ class DocumentsPage extends StatelessWidget {
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(height: AppSpacing.sm),
-            Text(
-              localization.noDocumentsMessage,
-              textAlign: TextAlign.center,
-            ),
+            Text(localization.noDocumentsMessage, textAlign: TextAlign.center),
           ],
         ),
       ),

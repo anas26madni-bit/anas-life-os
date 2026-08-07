@@ -17,9 +17,9 @@ class KnowledgeHomePage extends ConsumerWidget {
     final notes = ref.watch(knowledgeListControllerProvider);
     ref.listen(knowledgeListControllerProvider, (previous, next) {
       if (next case AsyncError(:final error)) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(error.toString())),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(error.toString())));
       }
     });
     return Scaffold(
@@ -61,7 +61,10 @@ class KnowledgeHomePage extends ConsumerWidget {
               padding: const EdgeInsets.all(AppSpacing.sm),
               child: SegmentedButton<KnowledgeNoteType?>(
                 segments: [
-                  ButtonSegment(value: null, label: Text(localization.allNotes)),
+                  ButtonSegment(
+                    value: null,
+                    label: Text(localization.allNotes),
+                  ),
                   ButtonSegment(
                     value: KnowledgeNoteType.note,
                     label: Text(localization.notesLabel),
@@ -83,9 +86,8 @@ class KnowledgeHomePage extends ConsumerWidget {
             ),
             Expanded(
               child: notes.when(
-                loading: () => const Center(
-                  child: CircularProgressIndicator.adaptive(),
-                ),
+                loading: () =>
+                    const Center(child: CircularProgressIndicator.adaptive()),
                 error: (error, stackTrace) => _KnowledgeMessage(
                   icon: Icons.error_outline,
                   title: localization.knowledgeErrorTitle,
@@ -160,7 +162,8 @@ class KnowledgeHomePage extends ConsumerWidget {
                         labelText: localization.noteTitle,
                       ),
                       onChanged: (value) => title = value,
-                      validator: (value) => value == null || value.trim().isEmpty
+                      validator: (value) =>
+                          value == null || value.trim().isEmpty
                           ? localization.noteTitleRequired
                           : null,
                     ),
@@ -227,12 +230,9 @@ class KnowledgeHomePage extends ConsumerWidget {
       ),
     );
     if (saved == true && context.mounted) {
-      await ref.read(knowledgeListControllerProvider.notifier).create(
-        title: title,
-        content: content,
-        type: type,
-        format: format,
-      );
+      await ref
+          .read(knowledgeListControllerProvider.notifier)
+          .create(title: title, content: content, type: type, format: format);
     }
   }
 }
@@ -257,7 +257,9 @@ class _KnowledgeCard extends StatelessWidget {
       }),
       title: Text(note.title, maxLines: 1, overflow: TextOverflow.ellipsis),
       subtitle: Text(
-        note.content.isEmpty ? AppLocalizations.of(context).emptyNote : note.content,
+        note.content.isEmpty
+            ? AppLocalizations.of(context).emptyNote
+            : note.content,
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
       ),
