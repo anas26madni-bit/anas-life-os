@@ -94,6 +94,12 @@ class _ReadyContent extends StatelessWidget {
             icon: const Icon(Icons.calendar_month_outlined),
             label: Text(localization.openCalendar),
           ),
+          const SizedBox(height: AppSpacing.sm),
+          OutlinedButton.icon(
+            onPressed: () => const SearchRoute().go(context),
+            icon: const Icon(Icons.manage_search),
+            label: Text(localization.openSearch),
+          ),
         ],
       ),
     );
