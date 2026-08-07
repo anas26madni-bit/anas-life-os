@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../helpers/database_test_harness.dart';
 
 void main() {
-  test('creates the approved schema through Sprint 5 with indexes', () async {
+  test('creates the approved schema through Sprint 6 with indexes', () async {
     final database = createTestDatabase();
     addTearDown(database.close);
 
@@ -27,6 +27,7 @@ void main() {
         'attachment_preview_cache',
         'attachment_versions',
         'categories',
+        'calendar_events',
         'checklist_items',
         'checklists',
         'custom_field_values',
@@ -35,6 +36,7 @@ void main() {
         'document_metadata',
         'document_versions',
         'documents',
+        'dashboard_widget_preferences',
         'knowledge_folders',
         'knowledge_links',
         'knowledge_note_tags',
@@ -81,6 +83,8 @@ void main() {
         'idx_knowledge_versions_note_version',
         'idx_documents_folder_updated',
         'idx_attachment_versions_attachment_version',
+        'idx_calendar_events_range',
+        'idx_dashboard_widget_kind',
       ]),
     );
 

@@ -66,6 +66,12 @@ class _ReadyContent extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           FilledButton.icon(
+            onPressed: () => const DashboardRoute().go(context),
+            icon: const Icon(Icons.dashboard_outlined),
+            label: Text(localization.openDashboard),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          FilledButton.icon(
             onPressed: () => const TasksRoute().go(context),
             icon: const Icon(Icons.task_alt),
             label: Text(localization.openTasks),
@@ -81,6 +87,12 @@ class _ReadyContent extends StatelessWidget {
             onPressed: () => const KnowledgeRoute().go(context),
             icon: const Icon(Icons.auto_stories_outlined),
             label: Text(localization.openKnowledge),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          OutlinedButton.icon(
+            onPressed: () => const CalendarRoute().go(context),
+            icon: const Icon(Icons.calendar_month_outlined),
+            label: Text(localization.openCalendar),
           ),
         ],
       ),
