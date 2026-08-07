@@ -12,7 +12,6 @@ enum DashboardWidgetKind {
 
 enum DashboardWidgetSize { compact, regular, expanded }
 
-
 final class DashboardWidgetPreference {
   const DashboardWidgetPreference({
     required this.kind,

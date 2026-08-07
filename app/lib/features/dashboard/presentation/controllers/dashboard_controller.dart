@@ -28,21 +28,18 @@ class DashboardController extends AsyncNotifier<DashboardState> {
   Future<void> toggle(DashboardWidgetKind kind) => _update((items) {
     return items
         .map(
-          (item) => item.kind == kind
-              ? item.copyWith(visible: !item.visible)
-              : item,
+          (item) =>
+              item.kind == kind ? item.copyWith(visible: !item.visible) : item,
         )
         .toList(growable: false);
   });
 
-  Future<void> resize(
-    DashboardWidgetKind kind,
-    DashboardWidgetSize size,
-  ) => _update(
-    (items) => items
-        .map((item) => item.kind == kind ? item.copyWith(size: size) : item)
-        .toList(growable: false),
-  );
+  Future<void> resize(DashboardWidgetKind kind, DashboardWidgetSize size) =>
+      _update(
+        (items) => items
+            .map((item) => item.kind == kind ? item.copyWith(size: size) : item)
+            .toList(growable: false),
+      );
 
   Future<void> move(DashboardWidgetKind kind, int delta) => _update((items) {
     final mutable = [...items];
@@ -71,12 +68,12 @@ class DashboardController extends AsyncNotifier<DashboardState> {
   Future<void> _update(
     List<DashboardWidgetPreference> Function(
       List<DashboardWidgetPreference> items,
-    ) transform,
+    )
+    transform,
   ) async {
     final repository = await ref.read(dashboardRepositoryProvider.future);
     final current = state.requireValue;
-    final next = transform(current.preferences)
-        .indexed
+    final next = transform(current.preferences).indexed
         .map((entry) => entry.$2.copyWith(sortOrder: entry.$1))
         .toList(growable: false);
     _unwrap(await repository.savePreferences(next));

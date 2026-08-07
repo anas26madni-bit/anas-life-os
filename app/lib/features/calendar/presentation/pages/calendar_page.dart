@@ -67,9 +67,8 @@ class CalendarPage extends ConsumerWidget {
                     ),
                     IconButton(
                       tooltip: localization.nextPeriod,
-                      onPressed: () => ref
-                          .read(calendarControllerProvider.notifier)
-                          .move(1),
+                      onPressed: () =>
+                          ref.read(calendarControllerProvider.notifier).move(1),
                       icon: const Icon(Icons.chevron_right),
                     ),
                   ],
@@ -102,7 +101,9 @@ class CalendarPage extends ConsumerWidget {
                 TextFormField(
                   autofocus: true,
                   maxLength: 300,
-                  decoration: InputDecoration(labelText: localization.eventTitle),
+                  decoration: InputDecoration(
+                    labelText: localization.eventTitle,
+                  ),
                   validator: (value) => value == null || value.trim().isEmpty
                       ? localization.eventTitleRequired
                       : null,
@@ -171,12 +172,12 @@ class CalendarPage extends ConsumerWidget {
 
   static String _periodLabel(DateTime date, CalendarViewMode view) =>
       switch (view) {
-        CalendarViewMode.day || CalendarViewMode.timeline =>
-          DateFormat.yMMMMd().format(date),
-        CalendarViewMode.week || CalendarViewMode.agenda =>
-          'Week of ${DateFormat.yMMMd().format(date)}',
-        CalendarViewMode.month || CalendarViewMode.heatMap =>
-          DateFormat.yMMMM().format(date),
+        CalendarViewMode.day ||
+        CalendarViewMode.timeline => DateFormat.yMMMMd().format(date),
+        CalendarViewMode.week ||
+        CalendarViewMode.agenda => 'Week of ${DateFormat.yMMMd().format(date)}',
+        CalendarViewMode.month ||
+        CalendarViewMode.heatMap => DateFormat.yMMMM().format(date),
         CalendarViewMode.year => DateFormat.y().format(date),
       };
 }
@@ -190,15 +191,14 @@ class _CalendarContent extends StatelessWidget {
     if (state.view == CalendarViewMode.heatMap) {
       final counts = <int, int>{};
       for (final item in state.items) {
-        counts.update(item.startAt.day, (count) => count + 1, ifAbsent: () => 1);
+        counts.update(
+          item.startAt.day,
+          (count) => count + 1,
+          ifAbsent: () => 1,
+        );
       }
       return GridView.builder(
-        padding: const EdgeInsets.fromLTRB(
-          AppSpacing.md,
-          0,
-          AppSpacing.md,
-          96,
-        ),
+        padding: const EdgeInsets.fromLTRB(AppSpacing.md, 0, AppSpacing.md, 96),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 7,
         ),
@@ -221,17 +221,10 @@ class _CalendarContent extends StatelessWidget {
       );
     }
     if (state.items.isEmpty) {
-      return Center(
-        child: Text(AppLocalizations.of(context).noCalendarItems),
-      );
+      return Center(child: Text(AppLocalizations.of(context).noCalendarItems));
     }
     return ListView.separated(
-      padding: const EdgeInsets.fromLTRB(
-        AppSpacing.md,
-        0,
-        AppSpacing.md,
-        96,
-      ),
+      padding: const EdgeInsets.fromLTRB(AppSpacing.md, 0, AppSpacing.md, 96),
       itemCount: state.items.length,
       separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.xs),
       itemBuilder: (context, index) {

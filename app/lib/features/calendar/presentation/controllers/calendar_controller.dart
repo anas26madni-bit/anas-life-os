@@ -42,12 +42,15 @@ class CalendarController extends AsyncNotifier<CalendarState> {
 
   Future<void> move(int direction) async {
     _anchor = switch (_view) {
-      CalendarViewMode.day || CalendarViewMode.timeline =>
-        _anchor.add(Duration(days: direction)),
-      CalendarViewMode.week || CalendarViewMode.agenda =>
-        _anchor.add(Duration(days: direction * 7)),
-      CalendarViewMode.month || CalendarViewMode.heatMap =>
-        DateTime(_anchor.year, _anchor.month + direction, _anchor.day),
+      CalendarViewMode.day ||
+      CalendarViewMode.timeline => _anchor.add(Duration(days: direction)),
+      CalendarViewMode.week ||
+      CalendarViewMode.agenda => _anchor.add(Duration(days: direction * 7)),
+      CalendarViewMode.month || CalendarViewMode.heatMap => DateTime(
+        _anchor.year,
+        _anchor.month + direction,
+        _anchor.day,
+      ),
       CalendarViewMode.year => DateTime(_anchor.year + direction, 1),
     };
     state = await AsyncValue.guard(build);
@@ -66,14 +69,15 @@ class CalendarController extends AsyncNotifier<CalendarState> {
   (DateTime, DateTime) _range(DateTime anchor, CalendarViewMode view) {
     final day = DateTime(anchor.year, anchor.month, anchor.day);
     return switch (view) {
-      CalendarViewMode.day || CalendarViewMode.timeline =>
-        (day, day.add(const Duration(days: 1))),
-      CalendarViewMode.week || CalendarViewMode.agenda =>
-        (day, day.add(const Duration(days: 7))),
-      CalendarViewMode.month || CalendarViewMode.heatMap =>
-        (DateTime(day.year, day.month), DateTime(day.year, day.month + 1)),
-      CalendarViewMode.year =>
-        (DateTime(day.year), DateTime(day.year + 1)),
+      CalendarViewMode.day ||
+      CalendarViewMode.timeline => (day, day.add(const Duration(days: 1))),
+      CalendarViewMode.week ||
+      CalendarViewMode.agenda => (day, day.add(const Duration(days: 7))),
+      CalendarViewMode.month || CalendarViewMode.heatMap => (
+        DateTime(day.year, day.month),
+        DateTime(day.year, day.month + 1),
+      ),
+      CalendarViewMode.year => (DateTime(day.year), DateTime(day.year + 1)),
     };
   }
 

@@ -43,8 +43,9 @@ class DashboardPage extends ConsumerWidget {
               const Center(child: CircularProgressIndicator.adaptive()),
           error: (error, stackTrace) => Center(child: Text(error.toString())),
           data: (state) {
-            final visible = [...state.preferences]
-              ..sort((left, right) => left.sortOrder.compareTo(right.sortOrder));
+            final visible = [
+              ...state.preferences,
+            ]..sort((left, right) => left.sortOrder.compareTo(right.sortOrder));
             return RefreshIndicator(
               onRefresh: ref.read(dashboardControllerProvider.notifier).refresh,
               child: CustomScrollView(
@@ -60,8 +61,9 @@ class DashboardPage extends ConsumerWidget {
                             mainAxisSpacing: AppSpacing.sm,
                           ),
                       delegate: SliverChildListDelegate.fixed([
-                        for (final preference
-                            in visible.where((item) => item.visible))
+                        for (final preference in visible.where(
+                          (item) => item.visible,
+                        ))
                           _DashboardCard(
                             preference: preference,
                             value: _value(state.snapshot, preference.kind),
@@ -95,9 +97,8 @@ class DashboardPage extends ConsumerWidget {
             ListTile(
               title: Text(AppLocalizations.of(context).customizeDashboard),
               trailing: TextButton(
-                onPressed: () => ref
-                    .read(dashboardControllerProvider.notifier)
-                    .reset(),
+                onPressed: () =>
+                    ref.read(dashboardControllerProvider.notifier).reset(),
                 child: Text(AppLocalizations.of(context).reset),
               ),
             ),
@@ -138,9 +139,7 @@ class DashboardPage extends ConsumerWidget {
                           onPressed: index == 0
                               ? null
                               : () => ref
-                                    .read(
-                                      dashboardControllerProvider.notifier,
-                                    )
+                                    .read(dashboardControllerProvider.notifier)
                                     .move(item.kind, -1),
                           icon: const Icon(Icons.arrow_upward),
                         ),
@@ -149,9 +148,7 @@ class DashboardPage extends ConsumerWidget {
                           onPressed: index == state.preferences.length - 1
                               ? null
                               : () => ref
-                                    .read(
-                                      dashboardControllerProvider.notifier,
-                                    )
+                                    .read(dashboardControllerProvider.notifier)
                                     .move(item.kind, 1),
                           icon: const Icon(Icons.arrow_downward),
                         ),
@@ -167,21 +164,19 @@ class DashboardPage extends ConsumerWidget {
     ),
   );
 
-  static String _value(
-    DashboardSnapshot snapshot,
-    DashboardWidgetKind kind,
-  ) => switch (kind) {
-    DashboardWidgetKind.today => '${snapshot.today}',
-    DashboardWidgetKind.tomorrow => '${snapshot.tomorrow}',
-    DashboardWidgetKind.pending => '${snapshot.pending}',
-    DashboardWidgetKind.overdue => '${snapshot.overdue}',
-    DashboardWidgetKind.completedToday => '${snapshot.completedToday}',
-    DashboardWidgetKind.upcoming => '${snapshot.upcoming}',
-    DashboardWidgetKind.favorites => '${snapshot.favorites}',
-    DashboardWidgetKind.progress =>
-      '${(snapshot.completionRate * 100).round()}%',
-    DashboardWidgetKind.recentKnowledge => '${snapshot.recentKnowledge}',
-  };
+  static String _value(DashboardSnapshot snapshot, DashboardWidgetKind kind) =>
+      switch (kind) {
+        DashboardWidgetKind.today => '${snapshot.today}',
+        DashboardWidgetKind.tomorrow => '${snapshot.tomorrow}',
+        DashboardWidgetKind.pending => '${snapshot.pending}',
+        DashboardWidgetKind.overdue => '${snapshot.overdue}',
+        DashboardWidgetKind.completedToday => '${snapshot.completedToday}',
+        DashboardWidgetKind.upcoming => '${snapshot.upcoming}',
+        DashboardWidgetKind.favorites => '${snapshot.favorites}',
+        DashboardWidgetKind.progress =>
+          '${(snapshot.completionRate * 100).round()}%',
+        DashboardWidgetKind.recentKnowledge => '${snapshot.recentKnowledge}',
+      };
 
   static String _label(DashboardWidgetKind kind) => switch (kind) {
     DashboardWidgetKind.today => 'Today',

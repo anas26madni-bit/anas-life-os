@@ -54,7 +54,8 @@ final class DriftDashboardRepository implements DashboardRepository {
         GeneratedColumn<int> column,
         DateTime lower,
         DateTime upper,
-      ) => column.isBiggerOrEqualValue(_micros(lower)) &
+      ) =>
+          column.isBiggerOrEqualValue(_micros(lower)) &
           column.isSmallerThanValue(_micros(upper));
 
       final completed = await count(
@@ -157,15 +158,17 @@ final class DriftDashboardRepository implements DashboardRepository {
   }
 
   Future<List<DashboardWidgetPreferenceRow>> _preferenceRows() =>
-      (_database.select(_database.dashboardWidgetPreferences)
-            ..orderBy([(row) => OrderingTerm.asc(row.sortOrder)]))
-          .get();
+      (_database.select(
+        _database.dashboardWidgetPreferences,
+      )..orderBy([(row) => OrderingTerm.asc(row.sortOrder)])).get();
 
   Future<void> _write(List<DashboardWidgetPreference> preferences) =>
       _database.transaction(() async {
         await _database.delete(_database.dashboardWidgetPreferences).go();
         for (final entry in preferences.indexed) {
-          await _database.into(_database.dashboardWidgetPreferences).insert(
+          await _database
+              .into(_database.dashboardWidgetPreferences)
+              .insert(
                 DashboardWidgetPreferencesCompanion.insert(
                   kind: entry.$2.kind,
                   visible: Value(entry.$2.visible),

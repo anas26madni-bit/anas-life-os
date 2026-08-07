@@ -25,7 +25,9 @@ final class DriftCalendarRepository implements CalendarRepository {
     if (failure != null) return FailureResult(failure);
     try {
       final now = _micros(_clock());
-      final id = await _database.into(_database.calendarEvents).insert(
+      final id = await _database
+          .into(_database.calendarEvents)
+          .insert(
             CalendarEventsCompanion.insert(
               uuid: _uuidFactory(),
               title: draft.title.trim(),
@@ -52,10 +54,7 @@ final class DriftCalendarRepository implements CalendarRepository {
   }
 
   @override
-  Future<Result<CalendarEvent>> update(
-    int id,
-    CalendarEventDraft draft,
-  ) async {
+  Future<Result<CalendarEvent>> update(int id, CalendarEventDraft draft) async {
     final failure = _validate(draft);
     if (failure != null) return FailureResult(failure);
     try {
@@ -129,22 +128,22 @@ final class DriftCalendarRepository implements CalendarRepository {
     try {
       final startValue = _micros(start);
       final endValue = _micros(end);
-      final events = await (_database.select(_database.calendarEvents)
-            ..where(
-              (row) =>
-                  row.isDeleted.equals(false) &
-                  row.startAt.isSmallerThanValue(endValue) &
-                  row.endAt.isBiggerOrEqualValue(startValue),
-            ))
-          .get();
-      final tasks = await (_database.select(_database.tasks)
-            ..where(
-              (row) =>
-                  row.isDeleted.equals(false) &
-                  row.dueAt.isBiggerOrEqualValue(startValue) &
-                  row.dueAt.isSmallerThanValue(endValue),
-            ))
-          .get();
+      final events =
+          await (_database.select(_database.calendarEvents)..where(
+                (row) =>
+                    row.isDeleted.equals(false) &
+                    row.startAt.isSmallerThanValue(endValue) &
+                    row.endAt.isBiggerOrEqualValue(startValue),
+              ))
+              .get();
+      final tasks =
+          await (_database.select(_database.tasks)..where(
+                (row) =>
+                    row.isDeleted.equals(false) &
+                    row.dueAt.isBiggerOrEqualValue(startValue) &
+                    row.dueAt.isSmallerThanValue(endValue),
+              ))
+              .get();
       final items = <CalendarItem>[
         ...events.map(
           (event) => CalendarItem(
@@ -202,9 +201,10 @@ final class DriftCalendarRepository implements CalendarRepository {
   }
 
   Future<CalendarEventRow> _requireRow(int id) async {
-    final row = await (_database.select(_database.calendarEvents)
-          ..where((row) => row.id.equals(id) & row.isDeleted.equals(false)))
-        .getSingleOrNull();
+    final row =
+        await (_database.select(_database.calendarEvents)
+              ..where((row) => row.id.equals(id) & row.isDeleted.equals(false)))
+            .getSingleOrNull();
     if (row == null) throw StateError('The calendar event does not exist.');
     return row;
   }

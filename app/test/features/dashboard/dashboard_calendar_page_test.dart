@@ -12,7 +12,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('dashboard supports large text and customization', (tester) async {
+  testWidgets('dashboard supports large text and customization', (
+    tester,
+  ) async {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
@@ -39,10 +41,7 @@ void main() {
             (ref) async => _FakeCalendarRepository(),
           ),
         ],
-        child: const _TestApp(
-          home: CalendarPage(),
-          locale: Locale('ur'),
-        ),
+        child: const _TestApp(home: CalendarPage(), locale: Locale('ur')),
       ),
     );
     await tester.pumpAndSettle();
@@ -50,7 +49,15 @@ void main() {
       Directionality.of(tester.element(find.byType(Scaffold))),
       TextDirection.rtl,
     );
-    for (final label in ['دن', 'ہفتہ', 'مہینہ', 'سال', 'ایجنڈا', 'ٹائم لائن', 'ہیٹ میپ']) {
+    for (final label in [
+      'دن',
+      'ہفتہ',
+      'مہینہ',
+      'سال',
+      'ایجنڈا',
+      'ٹائم لائن',
+      'ہیٹ میپ',
+    ]) {
       expect(find.text(label), findsOneWidget);
     }
     expect(tester.takeException(), isNull);
@@ -68,7 +75,9 @@ class _TestApp extends StatelessWidget {
     localizationsDelegates: AppLocalizations.localizationsDelegates,
     supportedLocales: AppLocalizations.supportedLocales,
     builder: (context, child) => MediaQuery(
-      data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.4)),
+      data: MediaQuery.of(
+        context,
+      ).copyWith(textScaler: const TextScaler.linear(1.4)),
       child: child!,
     ),
     home: home,
