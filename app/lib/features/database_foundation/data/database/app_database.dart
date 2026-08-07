@@ -4,6 +4,9 @@ import '../../../../core/database/database_connection_factory.dart';
 import '../../../../core/database/database_constants.dart';
 import '../../../../core/database/database_key.dart';
 import '../../../../core/database/uuid_generator.dart';
+import '../../../knowledge/data/tables/document_tables.dart';
+import '../../../knowledge/data/tables/knowledge_tables.dart';
+import '../../../knowledge/domain/entities/knowledge_enums.dart';
 import '../../../reminders/data/tables/reminder_tables.dart';
 import '../../../reminders/domain/entities/reminder_enums.dart';
 import '../../../tasks/data/tables/attachment_table.dart';
@@ -37,11 +40,27 @@ part 'app_database.g.dart';
     TaskHistory,
     Checklists,
     ChecklistItems,
+    AttachmentFolders,
     Attachments,
+    AttachmentVersions,
+    AttachmentPreviewCache,
+    AttachmentLabels,
+    AttachmentLabelMap,
     CustomFields,
     CustomFieldValues,
     Reminders,
     ReminderHistory,
+    KnowledgeSpaces,
+    KnowledgeFolders,
+    KnowledgeNotes,
+    KnowledgeTags,
+    KnowledgeNoteTags,
+    KnowledgeLinks,
+    KnowledgeVersions,
+    DocumentFolders,
+    Documents,
+    DocumentVersions,
+    DocumentMetadata,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -94,7 +113,7 @@ class AppDatabase extends _$AppDatabase {
           return;
         }
       }
-      if (from <= 2 && to == 3) {
+      if (from <= 2 && to >= 3) {
         await transaction(() async {
           await migrator.createTable(reminders);
           await migrator.createTable(reminderHistory);
@@ -105,6 +124,51 @@ class AppDatabase extends _$AppDatabase {
               fromVersion: 2,
               toVersion: 3,
               migrationName: 'sprint_4_reminder_engine',
+              startedAt: now,
+              completedAt: Value(now),
+              status: MigrationStatus.succeeded,
+            ),
+          );
+          await verifyIntegrity();
+        });
+        if (to == 3) {
+          return;
+        }
+      }
+      if (from <= 3 && to == 4) {
+        await transaction(() async {
+          await migrator.createTable(knowledgeSpaces);
+          await migrator.createTable(knowledgeFolders);
+          await migrator.createTable(knowledgeNotes);
+          await migrator.createTable(knowledgeTags);
+          await migrator.createTable(knowledgeNoteTags);
+          await migrator.createTable(knowledgeLinks);
+          await migrator.createTable(knowledgeVersions);
+          await migrator.createTable(documentFolders);
+          await migrator.createTable(documents);
+          await migrator.createTable(documentVersions);
+          await migrator.createTable(documentMetadata);
+          await migrator.createTable(attachmentFolders);
+          await migrator.addColumn(attachments, attachments.folderId);
+          await migrator.addColumn(attachments, attachments.knowledgeNoteId);
+          await migrator.addColumn(attachments, attachments.documentId);
+          await migrator.addColumn(attachments, attachments.thumbnailPath);
+          await migrator.addColumn(attachments, attachments.width);
+          await migrator.addColumn(attachments, attachments.height);
+          await migrator.addColumn(attachments, attachments.durationSeconds);
+          await migrator.addColumn(attachments, attachments.pageCount);
+          await migrator.addColumn(attachments, attachments.isFavorite);
+          await migrator.createTable(attachmentVersions);
+          await migrator.createTable(attachmentPreviewCache);
+          await migrator.createTable(attachmentLabels);
+          await migrator.createTable(attachmentLabelMap);
+          final now = DateTime.now().toUtc().microsecondsSinceEpoch;
+          await into(migrationHistory).insert(
+            MigrationHistoryCompanion.insert(
+              uuid: UuidGenerator().generate(),
+              fromVersion: 3,
+              toVersion: 4,
+              migrationName: 'sprint_5_knowledge_vault',
               startedAt: now,
               completedAt: Value(now),
               status: MigrationStatus.succeeded,

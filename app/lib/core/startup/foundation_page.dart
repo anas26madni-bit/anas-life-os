@@ -76,6 +76,12 @@ class _ReadyContent extends StatelessWidget {
             icon: const Icon(Icons.notifications_active_outlined),
             label: Text(localization.openReminders),
           ),
+          const SizedBox(height: AppSpacing.sm),
+          OutlinedButton.icon(
+            onPressed: () => const KnowledgeRoute().go(context),
+            icon: const Icon(Icons.auto_stories_outlined),
+            label: Text(localization.openKnowledge),
+          ),
         ],
       ),
     );

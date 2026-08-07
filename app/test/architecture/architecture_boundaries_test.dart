@@ -36,6 +36,7 @@ void main() {
           contains('/features/database_foundation/'),
           contains('/features/tasks/'),
           contains('/features/reminders/'),
+          contains('/features/knowledge/'),
         ),
       ),
     );
@@ -43,7 +44,12 @@ void main() {
 
   test('feature domains are independent from data and Flutter', () {
     final violations = <String>[];
-    for (final feature in ['database_foundation', 'tasks', 'reminders']) {
+    for (final feature in [
+      'database_foundation',
+      'tasks',
+      'reminders',
+      'knowledge',
+    ]) {
       final domain = Directory('lib/features/$feature/domain');
       for (final file in domain.listSync(recursive: true).whereType<File>()) {
         if (!file.path.endsWith('.dart')) {

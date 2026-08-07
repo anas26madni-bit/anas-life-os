@@ -1,6 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../features/database_foundation/data/database/app_database.dart';
+import '../../features/knowledge/data/repositories/drift_document_repository.dart';
+import '../../features/knowledge/data/repositories/drift_knowledge_repository.dart';
+import '../../features/knowledge/domain/repositories/document_repository.dart';
+import '../../features/knowledge/domain/repositories/knowledge_repository.dart';
 import '../../features/reminders/data/repositories/drift_reminder_repository.dart';
 import '../../features/reminders/data/services/android_reminder_scheduler.dart';
 import '../../features/reminders/domain/repositories/reminder_repository.dart';
@@ -75,3 +79,17 @@ final reminderRepositoryProvider = FutureProvider<ReminderRepository>((
 final reminderSchedulerProvider = Provider<ReminderScheduler>(
   (ref) => const AndroidReminderScheduler(),
 );
+
+final knowledgeRepositoryProvider = FutureProvider<KnowledgeRepository>((
+  ref,
+) async {
+  final database = await ref.watch(appDatabaseProvider.future);
+  return DriftKnowledgeRepository(database);
+});
+
+final documentRepositoryProvider = FutureProvider<DocumentRepository>((
+  ref,
+) async {
+  final database = await ref.watch(appDatabaseProvider.future);
+  return DriftDocumentRepository(database);
+});
