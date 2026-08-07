@@ -1,5 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../features/calendar/data/repositories/drift_calendar_repository.dart';
+import '../../features/calendar/domain/repositories/calendar_repository.dart';
+import '../../features/dashboard/data/repositories/drift_dashboard_repository.dart';
+import '../../features/dashboard/domain/repositories/dashboard_repository.dart';
 import '../../features/database_foundation/data/database/app_database.dart';
 import '../../features/knowledge/data/repositories/drift_document_repository.dart';
 import '../../features/knowledge/data/repositories/drift_knowledge_repository.dart';
@@ -92,4 +96,18 @@ final documentRepositoryProvider = FutureProvider<DocumentRepository>((
 ) async {
   final database = await ref.watch(appDatabaseProvider.future);
   return DriftDocumentRepository(database);
+});
+
+final dashboardRepositoryProvider = FutureProvider<DashboardRepository>((
+  ref,
+) async {
+  final database = await ref.watch(appDatabaseProvider.future);
+  return DriftDashboardRepository(database);
+});
+
+final calendarRepositoryProvider = FutureProvider<CalendarRepository>((
+  ref,
+) async {
+  final database = await ref.watch(appDatabaseProvider.future);
+  return DriftCalendarRepository(database);
 });

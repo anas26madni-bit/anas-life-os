@@ -4,6 +4,8 @@ import '../../../../core/database/database_connection_factory.dart';
 import '../../../../core/database/database_constants.dart';
 import '../../../../core/database/database_key.dart';
 import '../../../../core/database/uuid_generator.dart';
+import '../../../calendar/data/tables/calendar_tables.dart';
+import '../../../dashboard/data/tables/dashboard_tables.dart';
 import '../../../knowledge/data/tables/document_tables.dart';
 import '../../../knowledge/data/tables/knowledge_tables.dart';
 import '../../../knowledge/domain/entities/knowledge_enums.dart';
@@ -61,6 +63,8 @@ part 'app_database.g.dart';
     Documents,
     DocumentVersions,
     DocumentMetadata,
+    DashboardWidgetPreferences,
+    CalendarEvents,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -135,7 +139,7 @@ class AppDatabase extends _$AppDatabase {
           return;
         }
       }
-      if (from <= 3 && to == 4) {
+      if (from <= 3 && to >= 4) {
         await transaction(() async {
           await migrator.createTable(knowledgeSpaces);
           await migrator.createTable(knowledgeFolders);
@@ -169,6 +173,28 @@ class AppDatabase extends _$AppDatabase {
               fromVersion: 3,
               toVersion: 4,
               migrationName: 'sprint_5_knowledge_vault',
+              startedAt: now,
+              completedAt: Value(now),
+              status: MigrationStatus.succeeded,
+            ),
+          );
+          await verifyIntegrity();
+        });
+        if (to == 4) {
+          return;
+        }
+      }
+      if (from <= 4 && to == 5) {
+        await transaction(() async {
+          await migrator.createTable(dashboardWidgetPreferences);
+          await migrator.createTable(calendarEvents);
+          final now = DateTime.now().toUtc().microsecondsSinceEpoch;
+          await into(migrationHistory).insert(
+            MigrationHistoryCompanion.insert(
+              uuid: UuidGenerator().generate(),
+              fromVersion: 4,
+              toVersion: 5,
+              migrationName: 'sprint_6_dashboard_calendar',
               startedAt: now,
               completedAt: Value(now),
               status: MigrationStatus.succeeded,

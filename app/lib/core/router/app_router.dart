@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/calendar/presentation/pages/calendar_page.dart';
+import '../../features/dashboard/presentation/pages/dashboard_page.dart';
 import '../../features/knowledge/presentation/pages/documents_page.dart';
 import '../../features/knowledge/presentation/pages/knowledge_home_page.dart';
 import '../../features/reminders/presentation/pages/reminder_list_page.dart';
@@ -16,6 +18,26 @@ class FoundationRoute extends GoRouteData with $FoundationRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const FoundationPage();
+  }
+}
+
+@TypedGoRoute<DashboardRoute>(path: '/dashboard')
+class DashboardRoute extends GoRouteData with $DashboardRoute {
+  const DashboardRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const DashboardPage();
+  }
+}
+
+@TypedGoRoute<CalendarRoute>(path: '/calendar')
+class CalendarRoute extends GoRouteData with $CalendarRoute {
+  const CalendarRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const CalendarPage();
   }
 }
 

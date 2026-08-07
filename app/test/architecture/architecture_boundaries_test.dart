@@ -37,6 +37,8 @@ void main() {
           contains('/features/tasks/'),
           contains('/features/reminders/'),
           contains('/features/knowledge/'),
+          contains('/features/dashboard/'),
+          contains('/features/calendar/'),
         ),
       ),
     );
@@ -49,6 +51,8 @@ void main() {
       'tasks',
       'reminders',
       'knowledge',
+      'dashboard',
+      'calendar',
     ]) {
       final domain = Directory('lib/features/$feature/domain');
       for (final file in domain.listSync(recursive: true).whereType<File>()) {
