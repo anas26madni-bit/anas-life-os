@@ -36,8 +36,9 @@ final class DriftDocumentRepository implements DocumentRepository {
                         row.isDeleted.equals(false),
                   ))
                   .getSingleOrNull();
-          if (folder == null)
+          if (folder == null) {
             throw StateError('The document folder is invalid.');
+          }
         }
         final now = _now;
         final documentId = await _database
@@ -124,8 +125,9 @@ final class DriftDocumentRepository implements DocumentRepository {
           _database.attachments.documentId.equalsExp(_database.documents.id),
         ),
       ])..where(_database.documents.isDeleted.equals(false));
-      if (!includeHidden)
+      if (!includeHidden) {
         joined.where(_database.documents.hidden.equals(false));
+      }
       final term = query?.trim();
       if (term != null && term.isNotEmpty) {
         joined.where(
@@ -212,8 +214,9 @@ final class DriftDocumentRepository implements DocumentRepository {
         _database.attachments.documentId.equalsExp(_database.documents.id),
       ),
     ])..where(_database.documents.id.equals(id));
-    if (!includeDeleted)
+    if (!includeDeleted) {
       joined.where(_database.documents.isDeleted.equals(false));
+    }
     return _mapJoined(await joined.getSingle());
   }
 

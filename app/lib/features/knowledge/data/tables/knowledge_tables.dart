@@ -100,8 +100,10 @@ class KnowledgeNoteTags extends Table {
 class KnowledgeLinks extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get uuid => text().withLength(min: 36, max: 36).unique()();
+  @ReferenceName('outgoingKnowledgeLinks')
   IntColumn get sourceNoteId =>
       integer().references(KnowledgeNotes, #id, onDelete: KeyAction.cascade)();
+  @ReferenceName('incomingKnowledgeLinks')
   IntColumn get targetNoteId =>
       integer().references(KnowledgeNotes, #id, onDelete: KeyAction.cascade)();
   TextColumn get linkType => textEnum<KnowledgeLinkType>()();
