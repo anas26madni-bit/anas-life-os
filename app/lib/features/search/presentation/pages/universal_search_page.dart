@@ -98,9 +98,9 @@ class _UniversalSearchPageState extends ConsumerState<UniversalSearchPage> {
                 onChanged: ref
                     .read(universalSearchControllerProvider.notifier)
                     .scheduleText,
-                onSubmitted: (text) {
+                onSubmitted: (text) async {
                   final current = search.value?.query ?? const SearchQuery();
-                  ref
+                  await ref
                       .read(universalSearchControllerProvider.notifier)
                       .execute(current.copyWith(text: text));
                 },

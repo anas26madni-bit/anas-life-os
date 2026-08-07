@@ -295,8 +295,8 @@ class AppDatabase extends _$AppDatabase {
 
   Future<void> _installSearchInfrastructure() async {
     await customStatement(
-      "CREATE VIRTUAL TABLE IF NOT EXISTS search_fts USING fts5("
-      "title, body, metadata, tag_keys, "
+      'CREATE VIRTUAL TABLE IF NOT EXISTS search_fts USING fts5('
+      'title, body, metadata, tag_keys, '
       "content='search_documents', content_rowid='id', "
       "tokenize='unicode61 remove_diacritics 2');",
     );
@@ -307,15 +307,15 @@ class AppDatabase extends _$AppDatabase {
       '(new.id,new.title,new.body,new.metadata,new.tag_keys); END;',
     );
     await customStatement(
-      "CREATE TRIGGER IF NOT EXISTS search_documents_ad AFTER DELETE ON "
-      "search_documents BEGIN INSERT INTO search_fts("
-      "search_fts,rowid,title,body,metadata,tag_keys) VALUES "
+      'CREATE TRIGGER IF NOT EXISTS search_documents_ad AFTER DELETE ON '
+      'search_documents BEGIN INSERT INTO search_fts('
+      'search_fts,rowid,title,body,metadata,tag_keys) VALUES '
       "('delete',old.id,old.title,old.body,old.metadata,old.tag_keys); END;",
     );
     await customStatement(
-      "CREATE TRIGGER IF NOT EXISTS search_documents_au AFTER UPDATE ON "
-      "search_documents BEGIN INSERT INTO search_fts("
-      "search_fts,rowid,title,body,metadata,tag_keys) VALUES "
+      'CREATE TRIGGER IF NOT EXISTS search_documents_au AFTER UPDATE ON '
+      'search_documents BEGIN INSERT INTO search_fts('
+      'search_fts,rowid,title,body,metadata,tag_keys) VALUES '
       "('delete',old.id,old.title,old.body,old.metadata,old.tag_keys); "
       'INSERT INTO search_fts(rowid,title,body,metadata,tag_keys) VALUES '
       '(new.id,new.title,new.body,new.metadata,new.tag_keys); END;',

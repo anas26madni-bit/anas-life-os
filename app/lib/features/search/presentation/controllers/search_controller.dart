@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/errors/result.dart';
 import '../../../../core/providers/infrastructure_providers.dart';
 import '../../domain/entities/search_models.dart';
-import '../../domain/repositories/search_repository.dart';
 import '../../domain/services/voice_search_service.dart';
 
 final universalSearchControllerProvider =

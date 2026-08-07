@@ -256,7 +256,7 @@ final class DriftSearchRepository implements SearchRepository {
       variables.add(Variable.withInt(query.projectId!));
     }
     for (final tag in _normalizedTags(query.tags)) {
-      where.add("instr(d.tag_keys,?)>0");
+      where.add('instr(d.tag_keys,?)>0');
       variables.add(Variable.withString('|$tag|'));
     }
     final order = switch (query.sortMode) {

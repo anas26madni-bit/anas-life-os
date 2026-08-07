@@ -26,7 +26,13 @@ void main() {
     expect(result, isA<VoiceSearchTranscript>());
     expect((result as VoiceSearchTranscript).text, 'نجی تلاش');
     expect(calls, hasLength(2));
-    expect(calls.every((call) => call.arguments['locale'] == 'ur-PK'), isTrue);
+    expect(
+      calls.every(
+        (call) =>
+            (call.arguments as Map<Object?, Object?>)['locale'] == 'ur-PK',
+      ),
+      isTrue,
+    );
   });
 
   test(
