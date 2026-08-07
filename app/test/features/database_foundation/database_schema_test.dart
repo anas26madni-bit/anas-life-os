@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../helpers/database_test_harness.dart';
 
 void main() {
-  test('creates the approved schema through Sprint 6 with indexes', () async {
+  test('creates the approved schema through Sprint 7 with indexes', () async {
     final database = createTestDatabase();
     addTearDown(database.close);
 
@@ -50,6 +50,11 @@ void main() {
         'repeat_rules',
         'reminder_history',
         'reminders',
+        'saved_searches',
+        'search_documents',
+        'search_fts',
+        'search_history',
+        'search_index_queue',
         'subcategories',
         'tags',
         'task_dependencies',
@@ -85,6 +90,9 @@ void main() {
         'idx_attachment_versions_attachment_version',
         'idx_calendar_events_range',
         'idx_dashboard_widget_kind',
+        'idx_saved_searches_name',
+        'idx_search_documents_entity',
+        'idx_search_history_searched',
       ]),
     );
 
@@ -120,6 +128,12 @@ void main() {
         .customSelect('PRAGMA foreign_keys;')
         .getSingle();
     expect(foreignKeys.read<int>('foreign_keys'), 1);
+
+    final temporaryStorage = await database
+        .customSelect('PRAGMA temp_store;')
+        .getSingle();
+    expect(temporaryStorage.read<int>('temp_store'), 2);
+    await database.verifySearchSession();
 
     final plan = await database
         .customSelect(

@@ -30,6 +30,14 @@ Never bypass repositories, put business logic in widgets, block the UI isolate, 
 ## Important Decisions
 Application ID: com.anaslifeos.app. Minimum SDK: 30. Database: anas_life_os.db through Drift with SQLCipher-compatible SQLite. Business/entity tables use complete lifecycle fields; join, audit, FTS, cache, history, and schema tables use purpose-appropriate fields. Use AES-256-GCM, Android Keystore-wrapped master key, Argon2id backup keys, and replaceable crypto providers. Version 1 has no failed-PIN wipe. Default theme seed is #3F51B5 with dynamic color and user customization. Knowledge Vault owns Notes, Journal, Wiki, and Documents.
 
+Sprint 7 search uses local FTS5 inside SQLCipher and is available only through
+a verified opened database session. It indexes authorized tasks, projects,
+notes, documents, and attachment metadata; supports Urdu/English mixed text,
+structured filters and saved queries, and deterministic title-weighted ranking.
+No plaintext snippets are persisted. Voice search is explicit tap-to-use,
+on-device Urdu/English only, with runtime microphone permission and typed
+fallback; online voice, wake words, OCR, and command execution remain future.
+
 ## Things Never To Change
 Never modify an approved Project Bible master without owner approval. Never weaken offline privacy, local data ownership, Clean Architecture, database-first sequencing, soft-delete policy, cryptographic modularity, accessibility, localization/RTL, traceability, or quality gates. Never require cloud, login, analytics, advertising, or tracking for core functionality.
 

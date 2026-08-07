@@ -6,6 +6,7 @@ import '../../features/dashboard/presentation/pages/dashboard_page.dart';
 import '../../features/knowledge/presentation/pages/documents_page.dart';
 import '../../features/knowledge/presentation/pages/knowledge_home_page.dart';
 import '../../features/reminders/presentation/pages/reminder_list_page.dart';
+import '../../features/search/presentation/pages/universal_search_page.dart';
 import '../../features/tasks/presentation/pages/task_list_page.dart';
 import '../startup/foundation_page.dart';
 
@@ -78,6 +79,16 @@ class DocumentsRoute extends GoRouteData with $DocumentsRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const DocumentsPage();
+  }
+}
+
+@TypedGoRoute<SearchRoute>(path: '/search')
+class SearchRoute extends GoRouteData with $SearchRoute {
+  const SearchRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const UniversalSearchPage();
   }
 }
 

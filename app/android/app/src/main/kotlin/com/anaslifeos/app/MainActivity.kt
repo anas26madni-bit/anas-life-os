@@ -15,10 +15,16 @@ import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
 
 class MainActivity : FlutterActivity() {
+    private lateinit var voiceSearch: OnDeviceVoiceSearchPlatform
+
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         val custody = DatabaseKeyCustody(applicationContext)
         ReminderPlatform(this, flutterEngine.dartExecutor.binaryMessenger)
+        voiceSearch = OnDeviceVoiceSearchPlatform(
+            this,
+            flutterEngine.dartExecutor.binaryMessenger,
+        )
         MethodChannel(
             flutterEngine.dartExecutor.binaryMessenger,
             DATABASE_CHANNEL,
@@ -36,6 +42,17 @@ class MainActivity : FlutterActivity() {
                     error.javaClass.simpleName,
                 )
             }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray,
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (::voiceSearch.isInitialized) {
+            voiceSearch.onRequestPermissionsResult(requestCode, grantResults)
         }
     }
 

@@ -21,23 +21,25 @@ class FoundationPage extends ConsumerWidget {
             constraints: const BoxConstraints(maxWidth: 560),
             child: Padding(
               padding: const EdgeInsets.all(AppSpacing.lg),
-              child: startup.when(
-                loading: () => _StatusContent(
-                  icon: const CircularProgressIndicator.adaptive(),
-                  title: localization.startingTitle,
-                  message: localization.startingMessage,
+              child: SingleChildScrollView(
+                child: startup.when(
+                  loading: () => _StatusContent(
+                    icon: const CircularProgressIndicator.adaptive(),
+                    title: localization.startingTitle,
+                    message: localization.startingMessage,
+                  ),
+                  error: (error, stackTrace) => _FailureContent(
+                    onRetry: () =>
+                        ref.read(startupControllerProvider.notifier).retry(),
+                  ),
+                  data: (report) => report.isReady
+                      ? const _ReadyContent()
+                      : _FailureContent(
+                          onRetry: () => ref
+                              .read(startupControllerProvider.notifier)
+                              .retry(),
+                        ),
                 ),
-                error: (error, stackTrace) => _FailureContent(
-                  onRetry: () =>
-                      ref.read(startupControllerProvider.notifier).retry(),
-                ),
-                data: (report) => report.isReady
-                    ? const _ReadyContent()
-                    : _FailureContent(
-                        onRetry: () => ref
-                            .read(startupControllerProvider.notifier)
-                            .retry(),
-                      ),
               ),
             ),
           ),
@@ -93,6 +95,12 @@ class _ReadyContent extends StatelessWidget {
             onPressed: () => const CalendarRoute().go(context),
             icon: const Icon(Icons.calendar_month_outlined),
             label: Text(localization.openCalendar),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          OutlinedButton.icon(
+            onPressed: () => const SearchRoute().go(context),
+            icon: const Icon(Icons.manage_search),
+            label: Text(localization.openSearch),
           ),
         ],
       ),

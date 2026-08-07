@@ -13,6 +13,10 @@ import '../../features/reminders/data/repositories/drift_reminder_repository.dar
 import '../../features/reminders/data/services/android_reminder_scheduler.dart';
 import '../../features/reminders/domain/repositories/reminder_repository.dart';
 import '../../features/reminders/domain/services/reminder_scheduler.dart';
+import '../../features/search/data/repositories/drift_search_repository.dart';
+import '../../features/search/data/services/android_voice_search_service.dart';
+import '../../features/search/domain/repositories/search_repository.dart';
+import '../../features/search/domain/services/voice_search_service.dart';
 import '../../features/tasks/data/repositories/drift_project_repository.dart';
 import '../../features/tasks/data/repositories/drift_task_composition_repository.dart';
 import '../../features/tasks/data/repositories/drift_task_repository.dart';
@@ -111,3 +115,13 @@ final calendarRepositoryProvider = FutureProvider<CalendarRepository>((
   final database = await ref.watch(appDatabaseProvider.future);
   return DriftCalendarRepository(database);
 });
+
+final searchRepositoryProvider = FutureProvider<SearchRepository>((ref) async {
+  final database = await ref.watch(appDatabaseProvider.future);
+  final session = await database.verifySearchSession();
+  return DriftSearchRepository(session);
+});
+
+final voiceSearchServiceProvider = Provider<VoiceSearchService>(
+  (ref) => const AndroidVoiceSearchService(),
+);
