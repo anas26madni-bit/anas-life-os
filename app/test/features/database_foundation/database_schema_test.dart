@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../helpers/database_test_harness.dart';
 
 void main() {
-  test('creates the approved schema through Sprint 4 with indexes', () async {
+  test('creates the approved schema through Sprint 5 with indexes', () async {
     final database = createTestDatabase();
     addTearDown(database.close);
 
@@ -21,11 +21,27 @@ void main() {
       tables.map((row) => row.read<String>('name')),
       containsAll(<String>[
         'attachments',
+        'attachment_folders',
+        'attachment_label_map',
+        'attachment_labels',
+        'attachment_preview_cache',
+        'attachment_versions',
         'categories',
         'checklist_items',
         'checklists',
         'custom_field_values',
         'custom_fields',
+        'document_folders',
+        'document_metadata',
+        'document_versions',
+        'documents',
+        'knowledge_folders',
+        'knowledge_links',
+        'knowledge_note_tags',
+        'knowledge_notes',
+        'knowledge_spaces',
+        'knowledge_tags',
+        'knowledge_versions',
         'migration_history',
         'plugin_registry',
         'projects',
@@ -60,6 +76,11 @@ void main() {
         'idx_reminders_schedule',
         'idx_reminders_task',
         'idx_reminder_history_occurrence_action',
+        'idx_knowledge_notes_space_updated',
+        'idx_knowledge_notes_type_status',
+        'idx_knowledge_versions_note_version',
+        'idx_documents_folder_updated',
+        'idx_attachment_versions_attachment_version',
       ]),
     );
 
