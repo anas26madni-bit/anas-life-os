@@ -11,9 +11,9 @@ Updated: 2026-08-07 (Asia/Karachi)
 - Last verified commit:
   `0fed6edae80328c7c28fd2986f0280cd94a432b1`.
 - Latest verified GitHub Actions run: `31151493154`.
-- Working tree status: uncommitted Sprint 5 implementation changes; no Project
+- Working tree status: clean after the repository formatter commit; no Project
   Bible files changed.
-- Pending Git operations: do not commit or push until Sprint 5 gates pass.
+- Pending Git operations: remote Sprint 5 quality verification and merge.
 
 ## Sprint 5 work present in the working tree
 
@@ -21,25 +21,19 @@ Updated: 2026-08-07 (Asia/Karachi)
   versions, documents, document metadata, and expanded attachment records.
 - Added Knowledge and document domain entities, repository contracts,
   validators, Drift repositories, UI routes, localization, and tests.
-- Generation, formatting, analysis, tests, build, and integration verification
-  have not run because the required local toolchain is unavailable.
+- Remote generation and repository formatting pass. The full analyzer, test,
+  coverage, build, and Android 11 integration gate is pending.
 
 ## Next pending task
 
-Install or expose Flutter 3.44.0 with Dart, Java 17, Android SDK/ADB, and an
-Android 11 test target. Install and authenticate GitHub CLI as required by the
-publishing workflow. From the current working tree, run generation and
-localization, format and analyze, fix all findings, complete any remaining
-Knowledge Vault storage/UI integration, and run the full Sprint 5 gate before
-committing or pushing.
+Run the full Sprint 5 GitHub Actions gate on formatted commit `bb35168`, fix all
+findings, then record the verified commit and merge Sprint 5 before Sprint 6.
 
 ## Blocker
 
-- `flutter`, `dart`, `java`, `javac`, and `adb` are unavailable.
-- GitHub CLI `gh` is unavailable and cannot be authenticated as required by the
-  GitHub publishing workflow.
-- No Sprint 5 commit or push was made; `0fed6eda` remains the verified state.
+No implementation blocker. Local mobile tooling is unavailable, so the existing
+GitHub Actions gate is the verification authority.
 
 ## Resume command
 
-`Resume Sprint 5 on codex/sprint-5-knowledge-vault from the current working tree; first restore the Flutter/Android and authenticated GitHub CLI toolchains, then generate, format, analyze, test, build, and fix the in-progress Knowledge Vault slice without repeating Sprints 1-4.`
+`Resume Sprint 5 on PR #4 at formatted commit bb35168; run and fix the full GitHub Actions gate, update the verified checkpoint, merge to main, then begin Sprint 6 without repeating Sprints 1-4.`
