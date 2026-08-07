@@ -6,6 +6,26 @@ All notable project changes are recorded here.
 
 No unreleased implementation changes.
 
+## [0.4.0-sprint4] - 2026-08-07
+
+### Added
+
+- Complete offline Reminder Engine with normalized reminder and append-only
+  history persistence, exact-alarm fallback, recurrence, snooze, missed-event
+  detection, and reboot/time-change restoration
+- Privacy-safe Android notification delivery with actions, vibration, optional
+  voice, flash, full-screen presentation, and contextual permission handling
+- Feature-first domain, repository, scheduler, use-case, Riverpod, typed route,
+  and accessible English/Urdu UI layers
+- Sprint 4 unit, widget, database, architecture, and Android 11 integration
+  coverage
+
+### Validation
+
+- Formatter, source generation, analyzer, 51 automated tests, 94.69% business
+  line coverage, 100% branch coverage, Android debug APK, and Android 11
+  integration tests passed in GitHub Actions run `31151493154`.
+
 ## [0.3.0-sprint3] - 2026-08-05
 
 ### Added
