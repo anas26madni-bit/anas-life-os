@@ -52,23 +52,18 @@ class DashboardPage extends ConsumerWidget {
                 slivers: [
                   SliverPadding(
                     padding: const EdgeInsets.all(AppSpacing.md),
-                    sliver: SliverGrid(
-                      gridDelegate:
-                          const SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 420,
-                            mainAxisExtent: 128,
-                            crossAxisSpacing: AppSpacing.sm,
-                            mainAxisSpacing: AppSpacing.sm,
-                          ),
-                      delegate: SliverChildListDelegate.fixed([
+                    sliver: SliverList.list(
+                      children: [
                         for (final preference in visible.where(
                           (item) => item.visible,
-                        ))
+                        )) ...[
                           _DashboardCard(
                             preference: preference,
                             value: _value(state.snapshot, preference.kind),
                           ),
-                      ]),
+                          const SizedBox(height: AppSpacing.sm),
+                        ],
+                      ],
                     ),
                   ),
                   const SliverToBoxAdapter(child: SizedBox(height: 96)),
@@ -200,20 +195,25 @@ class _DashboardCard extends StatelessWidget {
   Widget build(BuildContext context) => Semantics(
     label: '${DashboardPage._label(preference.kind)}: $value',
     child: Card(
-      child: Padding(
-        padding: const EdgeInsets.all(AppSpacing.md),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              DashboardPage._label(preference.kind),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: AppSpacing.xs),
-            Text(value, style: Theme.of(context).textTheme.headlineMedium),
-          ],
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight: switch (preference.size) {
+            DashboardWidgetSize.compact => 96,
+            DashboardWidgetSize.regular => 128,
+            DashboardWidgetSize.expanded => 176,
+          },
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.md),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(DashboardPage._label(preference.kind)),
+              const SizedBox(height: AppSpacing.xs),
+              Text(value, style: Theme.of(context).textTheme.headlineMedium),
+            ],
+          ),
         ),
       ),
     ),
