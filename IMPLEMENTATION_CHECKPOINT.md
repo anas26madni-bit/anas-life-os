@@ -7,14 +7,12 @@ Updated: 2026-08-07 (Asia/Karachi)
 - Current sprint: Sprint 4 complete; Sprint 5 is next.
 - Current feature: Offline Reminder Engine complete.
 - Sprint 1, Sprint 2, Sprint 3, and Sprint 4 are complete and frozen.
-- Current branch: `codex/sprint-4-reminder-engine`.
-- Latest verified Sprint 4 implementation commit:
-  `686f678cbe839c14bf3a7b10f655c3babca12e70`.
+- Current branch: `main`.
+- Verified Sprint 4 merge commit:
+  `bd8e5b856dd994d73f223c2cdfb09729f35fdf9b`.
 - Latest verified GitHub Actions run: `31151493154`.
-- Working tree status: clean before this checkpoint update; the checkpoint commit
-  is the only subsequent change.
-- Required close-out: commit and push this completion metadata, then merge the
-  verified Sprint 4 pull request.
+- Working tree status: clean before this checkpoint update.
+- Pending Git operations: commit and push this final checkpoint only.
 
 ## Last completed task
 
@@ -32,8 +30,9 @@ or architecture:
 
 ## Next pending task
 
-Merge the fully verified Sprint 4 pull request into `main`. Begin Sprint 5 only
-from that merged baseline and implement the approved Knowledge Vault scope.
+Create the Sprint 5 development branch from verified `main` commit
+`bd8e5b856dd994d73f223c2cdfb09729f35fdf9b`, then implement the approved
+Knowledge Vault scope. Do not repeat Sprint 4 work.
 
 ## Blocker
 
@@ -41,4 +40,4 @@ No blocker. All Sprint 4 quality gates pass.
 
 ## Resume command
 
-`Resume from IMPLEMENTATION_CHECKPOINT.md; merge verified Sprint 4, then begin Sprint 5 Knowledge Vault from main without repeating completed work.`
+`Resume from IMPLEMENTATION_CHECKPOINT.md at main commit bd8e5b856dd994d73f223c2cdfb09729f35fdf9b; begin Sprint 5 Knowledge Vault without repeating completed work.`
