@@ -184,9 +184,10 @@ class DashboardPage extends ConsumerWidget {
     ),
     DashboardWidgetKind.recentProjects => '${snapshot.recentProjects}',
     DashboardWidgetKind.recentActivity => '${snapshot.recentActivity}',
-    DashboardWidgetKind.productivity => snapshot.productivityScore == null
-        ? AppLocalizations.of(context).notAvailable
-        : '${snapshot.productivityScore}',
+    DashboardWidgetKind.productivity =>
+      snapshot.productivityScore == null
+          ? AppLocalizations.of(context).notAvailable
+          : '${snapshot.productivityScore}',
   };
 
   static String _label(BuildContext context, DashboardWidgetKind kind) =>

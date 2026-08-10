@@ -38,11 +38,13 @@ void main() {
     );
     expect((first as Success<StatisticsReport>).value.productivityScore, 100);
     expect((second as Success<StatisticsReport>).value.productivityScore, 100);
-    final projectionCount = (await database
-        .customSelect(
-          'SELECT COUNT(*) AS total FROM daily_statistics_projections',
-        )
-        .getSingle()).read<int>('total');
+    final projectionCount =
+        (await database
+                .customSelect(
+                  'SELECT COUNT(*) AS total FROM daily_statistics_projections',
+                )
+                .getSingle())
+            .read<int>('total');
     expect(projectionCount, 1);
     await database.verifyIntegrity();
   });

@@ -74,9 +74,8 @@ class _StatisticsPageState extends ConsumerState<StatisticsPage> {
                 loading: LoadingStateView.new,
                 error: (error, _) => ErrorStateView(
                   message: localization.unavailableTitle,
-                  onRetry: () => ref.invalidate(
-                    statisticsReportProvider(_request),
-                  ),
+                  onRetry: () =>
+                      ref.invalidate(statisticsReportProvider(_request)),
                 ),
                 data: (value) => _ReportBody(
                   report: value,
@@ -104,10 +103,7 @@ class _StatisticsPageState extends ConsumerState<StatisticsPage> {
         _selection.month + direction,
         1,
       ),
-      StatisticsGranularity.year => DateTime(
-        _selection.year + direction,
-        1,
-      ),
+      StatisticsGranularity.year => DateTime(_selection.year + direction, 1),
     };
   });
 }
@@ -200,9 +196,7 @@ class _ReportBody extends StatelessWidget {
                 label: localization.averageDelay,
                 value: report.averageDelay == null
                     ? localization.notAvailable
-                    : localization.minutesValue(
-                        report.averageDelay!.inMinutes,
-                      ),
+                    : localization.minutesValue(report.averageDelay!.inMinutes),
               ),
             ],
           ),
@@ -212,17 +206,14 @@ class _ReportBody extends StatelessWidget {
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: AppSpacing.sm),
-          for (final point in report.daily)
-            _TrendRow(point: point),
+          for (final point in report.daily) _TrendRow(point: point),
         ],
       ),
     );
   }
 
-  static String _percentage(
-    AppLocalizations localization,
-    double? value,
-  ) => value == null
+  static String _percentage(AppLocalizations localization, double? value) =>
+      value == null
       ? localization.notAvailable
       : localization.percentageValue(value.round());
 }

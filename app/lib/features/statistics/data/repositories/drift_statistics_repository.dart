@@ -27,14 +27,18 @@ final class DriftStatisticsRepository implements StatisticsRepository {
     }
     try {
       final scope = _scope(projectId);
-      final rows = await (_database.select(
-        _database.dailyStatisticsProjections,
-      )..where(
-        (row) =>
-            row.scopeKey.equals(scope) &
-            row.periodStartUtc.isBiggerOrEqualValue(_micros(range.start)) &
-            row.periodStartUtc.isSmallerThanValue(_micros(range.end)),
-      )..orderBy([(row) => OrderingTerm.asc(row.periodStartUtc)])).get();
+      final rows =
+          await (_database.select(_database.dailyStatisticsProjections)
+                ..where(
+                  (row) =>
+                      row.scopeKey.equals(scope) &
+                      row.periodStartUtc.isBiggerOrEqualValue(
+                        _micros(range.start),
+                      ) &
+                      row.periodStartUtc.isSmallerThanValue(_micros(range.end)),
+                )
+                ..orderBy([(row) => OrderingTerm.asc(row.periodStartUtc)]))
+              .get();
       final daily = rows
           .map(
             (row) => DailyStatistics(
@@ -98,32 +102,35 @@ final class DriftStatisticsRepository implements StatisticsRepository {
     final projectVariable = projectId == null
         ? const <Variable<Object>>[]
         : <Variable<Object>>[Variable.withInt(projectId)];
-    final dueRows = await _database.customSelect(
-      'SELECT t.id, t.due_at, t.status, t.completed_at, '
-      '(SELECT h.new_state FROM task_state_history h '
-      'WHERE h.task_id = t.id AND h.changed_at < ? '
-      'ORDER BY h.changed_at DESC, h.id DESC LIMIT 1) AS state_at_end, '
-      '(SELECT h.changed_at FROM task_state_history h '
-      "WHERE h.task_id = t.id AND h.new_state = 'completed' "
-      'AND h.changed_at < ? ORDER BY h.changed_at DESC, h.id DESC LIMIT 1) '
-      'AS completed_at_end '
-      'FROM tasks t WHERE t.due_at >= ? AND t.due_at < ? $projectClause',
-      variables: [
-        Variable.withInt(endMicros),
-        Variable.withInt(endMicros),
-        Variable.withInt(startMicros),
-        Variable.withInt(endMicros),
-        ...projectVariable,
-      ],
-      readsFrom: {_database.tasks, _database.taskStateHistory},
-    ).get();
+    final dueRows = await _database
+        .customSelect(
+          'SELECT t.id, t.due_at, t.status, t.completed_at, '
+          '(SELECT h.new_state FROM task_state_history h '
+          'WHERE h.task_id = t.id AND h.changed_at < ? '
+          'ORDER BY h.changed_at DESC, h.id DESC LIMIT 1) AS state_at_end, '
+          '(SELECT h.changed_at FROM task_state_history h '
+          "WHERE h.task_id = t.id AND h.new_state = 'completed' "
+          'AND h.changed_at < ? ORDER BY h.changed_at DESC, h.id DESC LIMIT 1) '
+          'AS completed_at_end '
+          'FROM tasks t WHERE t.due_at >= ? AND t.due_at < ? $projectClause',
+          variables: [
+            Variable.withInt(endMicros),
+            Variable.withInt(endMicros),
+            Variable.withInt(startMicros),
+            Variable.withInt(endMicros),
+            ...projectVariable,
+          ],
+          readsFrom: {_database.tasks, _database.taskStateHistory},
+        )
+        .get();
     const excluded = {'draft', 'archived', 'deleted'};
     var eligible = 0;
     var completed = 0;
     var onTime = 0;
     for (final row in dueRows) {
       final state =
-          row.readNullable<String>('state_at_end') ?? row.read<String>('status');
+          row.readNullable<String>('state_at_end') ??
+          row.read<String>('status');
       if (excluded.contains(state)) continue;
       eligible++;
       if (state == 'completed') {
@@ -136,24 +143,26 @@ final class DriftStatisticsRepository implements StatisticsRepository {
       }
     }
 
-    final delayRows = await _database.customSelect(
-      'SELECT t.id, t.due_at, '
-      'COALESCE(MAX(h.changed_at), t.completed_at) AS completed_at '
-      'FROM tasks t LEFT JOIN task_state_history h ON h.task_id = t.id '
-      "AND h.new_state = 'completed' AND h.changed_at >= ? "
-      'AND h.changed_at < ? WHERE t.due_at IS NOT NULL '
-      'AND ((t.completed_at >= ? AND t.completed_at < ?) OR h.id IS NOT NULL) '
-      '$projectClause '
-      'GROUP BY t.id, t.due_at',
-      variables: [
-        Variable.withInt(startMicros),
-        Variable.withInt(endMicros),
-        Variable.withInt(startMicros),
-        Variable.withInt(endMicros),
-        ...projectVariable,
-      ],
-      readsFrom: {_database.tasks, _database.taskStateHistory},
-    ).get();
+    final delayRows = await _database
+        .customSelect(
+          'SELECT t.id, t.due_at, '
+          'COALESCE(MAX(h.changed_at), t.completed_at) AS completed_at '
+          'FROM tasks t LEFT JOIN task_state_history h ON h.task_id = t.id '
+          "AND h.new_state = 'completed' AND h.changed_at >= ? "
+          'AND h.changed_at < ? WHERE t.due_at IS NOT NULL '
+          'AND ((t.completed_at >= ? AND t.completed_at < ?) OR h.id IS NOT NULL) '
+          '$projectClause '
+          'GROUP BY t.id, t.due_at',
+          variables: [
+            Variable.withInt(startMicros),
+            Variable.withInt(endMicros),
+            Variable.withInt(startMicros),
+            Variable.withInt(endMicros),
+            ...projectVariable,
+          ],
+          readsFrom: {_database.tasks, _database.taskStateHistory},
+        )
+        .get();
     var delayTotal = 0;
     for (final row in delayRows) {
       final delay = row.read<int>('completed_at') - row.read<int>('due_at');
@@ -178,7 +187,8 @@ final class DriftStatisticsRepository implements StatisticsRepository {
         );
   }
 
-  String _scope(int? projectId) => projectId == null ? 'all' : 'project:$projectId';
+  String _scope(int? projectId) =>
+      projectId == null ? 'all' : 'project:$projectId';
   int _micros(DateTime value) => value.toUtc().microsecondsSinceEpoch;
   DateTime _date(int value) =>
       DateTime.fromMicrosecondsSinceEpoch(value, isUtc: true).toLocal();
