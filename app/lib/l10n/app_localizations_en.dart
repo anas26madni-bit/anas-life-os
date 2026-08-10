@@ -760,4 +760,75 @@ class AppLocalizationsEn extends AppLocalizations {
   String minutesValue(int minutes) {
     return '$minutes min';
   }
+
+  @override
+  String get backupTitle => 'Backup center';
+
+  @override
+  String get manualBackup => 'Manual backup';
+
+  @override
+  String get importAndRestore => 'Import and restore';
+
+  @override
+  String get automaticBackup => 'Automatic backup';
+
+  @override
+  String get enableAutomaticBackup => 'Enable automatic backups';
+
+  @override
+  String get backupFrequency => 'Backup frequency';
+
+  @override
+  String get daily => 'Daily';
+
+  @override
+  String get weekly => 'Weekly';
+
+  @override
+  String get backupRetention => 'Automatic backups to keep (1–30)';
+
+  @override
+  String get backupDestination => 'Backup destination';
+
+  @override
+  String get destinationNotSelected => 'No destination selected';
+
+  @override
+  String get destinationSelected => 'Destination selected';
+
+  @override
+  String get backupHistory => 'Backup history';
+
+  @override
+  String get noBackupsMessage =>
+      'No backups yet. Create an encrypted backup to protect your data.';
+
+  @override
+  String get backupPassphrase => 'Backup passphrase';
+
+  @override
+  String get confirmPassphrase => 'Confirm backup passphrase';
+
+  @override
+  String get backupPassphraseRequired => 'Enter the backup passphrase.';
+
+  @override
+  String get passphrasesDoNotMatch => 'Passphrases do not match.';
+
+  @override
+  String get continueLabel => 'Continue';
+
+  @override
+  String get restoreBackup => 'Restore backup';
+
+  @override
+  String get restoreWarning =>
+      'The backup will be verified before replacement. If validation fails, your current data will remain unchanged.';
+
+  @override
+  String get backupSucceeded => 'Successful';
+
+  @override
+  String get backupFailed => 'Failed';
 }

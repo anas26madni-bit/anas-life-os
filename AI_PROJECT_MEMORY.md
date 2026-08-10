@@ -45,6 +45,14 @@ Productivity Score is 70% Completion Rate plus 30% On-Time Rate. Task records
 and histories are authoritative, with rebuildable daily projections and
 deterministic higher-period, correction, restore, and migration reconciliation.
 
+Sprint 9 backups use a versioned full container with AES-256-GCM authenticated
+encryption and an Argon2id-derived passphrase key through Android SAF. Restore
+is staged and atomic with active-data preservation on failure and no recovery
+backdoor. Automatic backups use battery/storage-constrained WorkManager,
+default daily or optional weekly scheduling, and retain seven successful
+versions by default with a configurable 1-30 range. Manual/exported backups are
+never automatically pruned.
+
 ## Things Never To Change
 Never modify an approved Project Bible master without owner approval. Never weaken offline privacy, local data ownership, Clean Architecture, database-first sequencing, soft-delete policy, cryptographic modularity, accessibility, localization/RTL, traceability, or quality gates. Never require cloud, login, analytics, advertising, or tracking for core functionality.
 

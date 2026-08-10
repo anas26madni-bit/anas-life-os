@@ -1,5 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../features/backup/data/repositories/drift_backup_repository.dart';
+import '../../features/backup/data/services/android_backup_platform.dart';
+import '../../features/backup/domain/repositories/backup_repository.dart';
+import '../../features/backup/domain/services/backup_platform.dart';
 import '../../features/calendar/data/repositories/drift_calendar_repository.dart';
 import '../../features/calendar/domain/repositories/calendar_repository.dart';
 import '../../features/dashboard/data/repositories/drift_dashboard_repository.dart';
@@ -43,6 +47,10 @@ final databaseInitializerProvider = Provider<DatabaseInitializer>(
 
 final androidDatabasePlatformProvider = Provider<AndroidDatabasePlatform>(
   (ref) => const AndroidDatabasePlatform(),
+);
+
+final backupPlatformProvider = Provider<BackupPlatform>(
+  (ref) => const AndroidBackupPlatform(),
 );
 
 final appDatabaseProvider = FutureProvider<AppDatabase>((ref) async {
@@ -129,6 +137,16 @@ final statisticsRepositoryProvider = FutureProvider<StatisticsRepository>((
 ) async {
   final database = await ref.watch(appDatabaseProvider.future);
   return DriftStatisticsRepository(database);
+});
+
+final backupRepositoryProvider = FutureProvider<BackupRepository>((ref) async {
+  final database = await ref.watch(appDatabaseProvider.future);
+  final databasePlatform = ref.watch(androidDatabasePlatformProvider);
+  return DriftBackupRepository(
+    database,
+    ref.watch(backupPlatformProvider),
+    databasePlatform.databaseDirectory,
+  );
 });
 
 final voiceSearchServiceProvider = Provider<VoiceSearchService>(

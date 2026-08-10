@@ -27,6 +27,10 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
+    packaging {
+        resources.excludes += "META-INF/versions/9/OSGI-INF/MANIFEST.MF"
+    }
+
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
@@ -45,4 +49,9 @@ android {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    implementation("androidx.work:work-runtime-ktx:2.10.5")
+    implementation("org.bouncycastle:bcprov-jdk18on:1.83")
 }

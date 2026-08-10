@@ -43,6 +43,7 @@ void main() {
             anyOf(
               contains('/features/search/'),
               contains('/features/statistics/'),
+              contains('/features/backup/'),
             ),
           ),
           contains('/features/more/'),
@@ -62,6 +63,7 @@ void main() {
       'calendar',
       'search',
       'statistics',
+      'backup',
     ]) {
       final domain = Directory('lib/features/$feature/domain');
       for (final file in domain.listSync(recursive: true).whereType<File>()) {

@@ -10,12 +10,12 @@
 | Sprint 6 | Dashboard and Calendar | Complete | None | Custom dashboard/widgets/calendar/quick actions/stat cards/task summaries |
 | Sprint 7 | Search Engine | Complete | None | Global/knowledge/attachment/tag search, filters/sort, Urdu/English, optimization |
 | Sprint 8 | Statistics | Complete | None | Reports/charts/productivity/completion/delay/trends |
-| Sprint 9 | Backup | Not started | Sprint 8 approval; backup decisions | Encrypted local backup/restore/integrity/export/import/recovery tests |
+| Sprint 9 | Backup | Complete | None | Encrypted local backup/restore/integrity/export/import/recovery tests |
 | Sprint 10 | Security | Not started | Sprint 9 approval; threat/app-lock decisions | PIN, biometric, encryption behavior, hidden items, secure storage, permissions |
 | Sprint 11 | Optimization | Not started | Sprint 10 approval | Memory/battery/performance/accessibility/large-data/regression |
 | Sprint 12 | Release Candidate | Not started | Sprint 11 approval | Final fixes/regression/docs/performance/security/accessibility/release notes/candidate |
 
 ## Current continuation point
 
-Sprint 1-8 and the authorized UI/navigation gap closure are complete. Resume at
-Sprint 9 Backup from the verified Sprint 8 merge baseline.
+Sprint 1-9 and the authorized UI/navigation gap closure are complete. Resume at
+the Sprint 10 Security decision gate from the verified Sprint 9 merge baseline.

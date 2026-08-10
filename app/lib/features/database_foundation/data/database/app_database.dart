@@ -4,6 +4,7 @@ import '../../../../core/database/database_connection_factory.dart';
 import '../../../../core/database/database_constants.dart';
 import '../../../../core/database/database_key.dart';
 import '../../../../core/database/uuid_generator.dart';
+import '../../../backup/data/tables/backup_tables.dart';
 import '../../../calendar/data/tables/calendar_tables.dart';
 import '../../../dashboard/data/tables/dashboard_tables.dart';
 import '../../../dashboard/domain/entities/dashboard_models.dart';
@@ -74,6 +75,9 @@ part 'app_database.g.dart';
     SearchHistory,
     SavedSearches,
     DailyStatisticsProjections,
+    BackupProfiles,
+    BackupHistory,
+    RestoreHistory,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -241,7 +245,7 @@ class AppDatabase extends _$AppDatabase {
           return;
         }
       }
-      if (from <= 6 && to == 7) {
+      if (from <= 6 && to >= 7) {
         await transaction(() async {
           await migrator.createTable(dailyStatisticsProjections);
           final now = DateTime.now().toUtc().microsecondsSinceEpoch;
@@ -251,6 +255,29 @@ class AppDatabase extends _$AppDatabase {
               fromVersion: 6,
               toVersion: 7,
               migrationName: 'sprint_8_statistics',
+              startedAt: now,
+              completedAt: Value(now),
+              status: MigrationStatus.succeeded,
+            ),
+          );
+          await verifyIntegrity();
+        });
+        if (to == 7) {
+          return;
+        }
+      }
+      if (from <= 7 && to == 8) {
+        await transaction(() async {
+          await migrator.createTable(backupProfiles);
+          await migrator.createTable(backupHistory);
+          await migrator.createTable(restoreHistory);
+          final now = DateTime.now().toUtc().microsecondsSinceEpoch;
+          await into(migrationHistory).insert(
+            MigrationHistoryCompanion.insert(
+              uuid: UuidGenerator().generate(),
+              fromVersion: 7,
+              toVersion: 8,
+              migrationName: 'sprint_9_backup_restore',
               startedAt: now,
               completedAt: Value(now),
               status: MigrationStatus.succeeded,

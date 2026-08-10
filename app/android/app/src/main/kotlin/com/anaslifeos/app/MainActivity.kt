@@ -16,11 +16,13 @@ import javax.crypto.spec.GCMParameterSpec
 
 class MainActivity : FlutterActivity() {
     private lateinit var voiceSearch: OnDeviceVoiceSearchPlatform
+    private lateinit var backupPlatform: BackupPlatform
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         val custody = DatabaseKeyCustody(applicationContext)
         ReminderPlatform(this, flutterEngine.dartExecutor.binaryMessenger)
+        backupPlatform = BackupPlatform(this, flutterEngine.dartExecutor.binaryMessenger, custody)
         voiceSearch = OnDeviceVoiceSearchPlatform(
             this,
             flutterEngine.dartExecutor.binaryMessenger,
@@ -45,6 +47,23 @@ class MainActivity : FlutterActivity() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: android.content.Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (::backupPlatform.isInitialized && backupPlatform.onActivityResult(requestCode, resultCode, data)) return
+    }
+
+    override fun onStart() {
+        super.onStart()
+        getSharedPreferences("backup_runtime_v1", Context.MODE_PRIVATE)
+            .edit().putBoolean("app_foreground", true).apply()
+    }
+
+    override fun onStop() {
+        getSharedPreferences("backup_runtime_v1", Context.MODE_PRIVATE)
+            .edit().putBoolean("app_foreground", false).apply()
+        super.onStop()
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -61,7 +80,7 @@ class MainActivity : FlutterActivity() {
     }
 }
 
-private class DatabaseKeyCustody(context: Context) {
+internal class DatabaseKeyCustody(context: Context) {
     private val preferences = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE)
     private val secureRandom = SecureRandom()
 
@@ -89,6 +108,20 @@ private class DatabaseKeyCustody(context: Context) {
             .commit()
         check(committed) { "Wrapped database key could not be persisted." }
         return databaseKey
+    }
+
+    @Synchronized
+    fun replace(databaseKey: ByteArray) {
+        validateDatabaseKey(databaseKey)
+        val cipher = Cipher.getInstance(TRANSFORMATION)
+        cipher.init(Cipher.ENCRYPT_MODE, wrappingKey())
+        val wrapped = cipher.doFinal(databaseKey)
+        check(
+            preferences.edit()
+                .putString(CIPHERTEXT, Base64.encodeToString(wrapped, Base64.NO_WRAP))
+                .putString(INITIALIZATION_VECTOR, Base64.encodeToString(cipher.iv, Base64.NO_WRAP))
+                .commit(),
+        ) { "Wrapped database key could not be replaced." }
     }
 
     private fun unwrap(ciphertext: ByteArray, initializationVector: ByteArray): ByteArray {

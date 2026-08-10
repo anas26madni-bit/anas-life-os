@@ -6,6 +6,10 @@ All notable project changes are recorded here.
 
 ### Added
 
+- Sprint 9 versioned encrypted full backups, SAF export/import, authenticated
+  staged restore with atomic rollback, and backup/restore history.
+- Constrained daily/weekly WorkManager automatic backups with configurable
+  1-30 retention, safe pruning and localized accessible Backup Center UI.
 - Sprint 8 offline day/week/month/year statistics, approved completion and
   delay formulas, 70/30 productivity score, historical trends and accessible
   English/Urdu reports.
@@ -20,6 +24,9 @@ All notable project changes are recorded here.
 
 ### Validation
 
+- Sprint 9 generation, formatting, analyzer, full tests, 90.28% business-line
+  coverage, 100% branch coverage, debug APK and Android 11 integration passed
+  in GitHub Actions run `31387605233`.
 - Sprint 8 generation, formatting, analyzer, full tests, 90.10% business-line
   coverage, 100% branch coverage, debug APK and Android 11 integration passed
   in GitHub Actions run `31378801983`.
