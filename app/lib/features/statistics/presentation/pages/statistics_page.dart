@@ -1,3 +1,5 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -117,7 +119,7 @@ class _PeriodNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context);
-    final rtl = Directionality.of(context) == TextDirection.rtl;
+    final rtl = Directionality.of(context) == ui.TextDirection.rtl;
     final text = range.end.difference(range.start).inDays == 1
         ? DateFormat.yMMMMd().format(range.start)
         : '${DateFormat.yMMMd().format(range.start)} - '

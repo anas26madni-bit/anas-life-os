@@ -40,8 +40,10 @@ void main() {
             contains('/features/knowledge/'),
             contains('/features/dashboard/'),
             contains('/features/calendar/'),
-            contains('/features/search/'),
-            contains('/features/statistics/'),
+            anyOf(
+              contains('/features/search/'),
+              contains('/features/statistics/'),
+            ),
           ),
           contains('/features/more/'),
         ),

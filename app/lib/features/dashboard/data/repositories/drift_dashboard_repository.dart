@@ -3,9 +3,9 @@ import 'package:drift/drift.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/result.dart';
 import '../../../database_foundation/data/database/app_database.dart';
-import '../../../tasks/domain/entities/task_enums.dart';
 import '../../../statistics/data/repositories/drift_statistics_repository.dart';
 import '../../../statistics/domain/entities/statistics_models.dart';
+import '../../../tasks/domain/entities/task_enums.dart';
 import '../../domain/entities/dashboard_models.dart';
 import '../../domain/repositories/dashboard_repository.dart';
 
