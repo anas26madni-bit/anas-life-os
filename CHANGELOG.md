@@ -20,6 +20,9 @@ All notable project changes are recorded here.
 
 ### Validation
 
+- Sprint 8 generation, formatting, analyzer, full tests, 90.10% business-line
+  coverage, 100% branch coverage, debug APK and Android 11 integration passed
+  in GitHub Actions run `31378801983`.
 - Generated-source freshness, formatting, analyzer, full unit/widget suite,
   coverage, debug APK and Android 11 integration tests passed in GitHub Actions
   run `31369588920`.
