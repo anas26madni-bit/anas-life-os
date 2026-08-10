@@ -30,7 +30,7 @@ class ReminderListController extends AsyncNotifier<List<ReminderEntity>> {
     await _mutate((useCases) => useCases.create(draft));
   }
 
-  Future<void> update(int id, ReminderDraft draft) async {
+  Future<void> updateReminder(int id, ReminderDraft draft) async {
     await _mutate((useCases) => useCases.update(id, draft));
   }
 

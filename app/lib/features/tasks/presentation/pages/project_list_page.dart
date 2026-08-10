@@ -156,7 +156,7 @@ Future<void> showProjectEditor(
     if (initial == null) {
       await controller.create(title: title, description: description);
     } else {
-      await controller.update(
+      await controller.updateProject(
         initial.id,
         title: title,
         description: description,

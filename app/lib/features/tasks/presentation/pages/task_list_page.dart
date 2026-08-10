@@ -12,9 +12,16 @@ import '../controllers/task_list_controller.dart';
 
 enum TaskViewMode { list, board, timeline, calendar }
 
-final taskViewModeProvider = StateProvider<TaskViewMode>(
-  (ref) => TaskViewMode.list,
+final taskViewModeProvider = NotifierProvider<_TaskViewModeController, TaskViewMode>(
+  _TaskViewModeController.new,
 );
+
+final class _TaskViewModeController extends Notifier<TaskViewMode> {
+  @override
+  TaskViewMode build() => TaskViewMode.list;
+
+  void select(TaskViewMode value) => state = value;
+}
 
 class TaskListPage extends ConsumerWidget {
   const TaskListPage({super.key});
@@ -66,8 +73,9 @@ class TaskListPage extends ConsumerWidget {
                   ),
                 ],
                 selected: {view},
-                onSelectionChanged: (value) =>
-                    ref.read(taskViewModeProvider.notifier).state = value.first,
+                onSelectionChanged: (value) => ref
+                    .read(taskViewModeProvider.notifier)
+                    .select(value.first),
               ),
             ),
             Expanded(

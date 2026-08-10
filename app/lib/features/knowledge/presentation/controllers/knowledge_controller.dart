@@ -71,7 +71,7 @@ class KnowledgeListController extends AsyncNotifier<List<KnowledgeNote>> {
     });
   }
 
-  Future<void> update(KnowledgeNote note, KnowledgeNoteDraft draft) async {
+  Future<void> updateNote(KnowledgeNote note, KnowledgeNoteDraft draft) async {
     await _mutate((repository) => repository.update(note.id, draft));
     ref.invalidate(knowledgeDetailProvider(note.id));
     ref.invalidate(knowledgeVersionsProvider(note.id));

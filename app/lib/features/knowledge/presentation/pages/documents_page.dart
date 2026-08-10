@@ -73,9 +73,9 @@ class DocumentsPage extends ConsumerWidget {
                                 ),
                                 trailing: PopupMenuButton<String>(
                                   tooltip: localization.documentActions,
-                                  onSelected: (action) {
+                                  onSelected: (action) async {
                                     if (action == 'delete') {
-                                      ref
+                                      await ref
                                           .read(
                                             documentListControllerProvider
                                                 .notifier,

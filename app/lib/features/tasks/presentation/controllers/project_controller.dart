@@ -34,7 +34,7 @@ class ProjectListController extends AsyncNotifier<List<ProjectEntity>> {
         repository.create(title: title, description: description, dueAt: dueAt),
   );
 
-  Future<void> update(
+  Future<void> updateProject(
     int id, {
     required String title,
     String? description,

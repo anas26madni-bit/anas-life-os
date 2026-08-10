@@ -17,7 +17,7 @@ class AppShell extends StatelessWidget {
       bottomNavigationBar: NavigationBar(
         selectedIndex: navigationShell.currentIndex,
         onDestinationSelected: (index) => navigationShell.goBranch(
-          index: index,
+          index,
           initialLocation: index == navigationShell.currentIndex,
         ),
         destinations: [

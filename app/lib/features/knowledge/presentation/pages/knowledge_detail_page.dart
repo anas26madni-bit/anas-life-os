@@ -327,7 +327,7 @@ Future<void> _editNote(
   if (saved == true) {
     await ref
         .read(knowledgeListControllerProvider.notifier)
-        .update(
+        .updateNote(
           note,
           KnowledgeNoteDraft(
             spaceId: note.spaceId,

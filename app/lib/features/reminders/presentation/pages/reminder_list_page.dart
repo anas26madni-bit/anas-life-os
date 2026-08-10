@@ -350,7 +350,7 @@ class ReminderListPage extends ConsumerWidget {
       } else {
         await ref
             .read(reminderListControllerProvider.notifier)
-            .update(initial.id, draft);
+            .updateReminder(initial.id, draft);
       }
     }
   }

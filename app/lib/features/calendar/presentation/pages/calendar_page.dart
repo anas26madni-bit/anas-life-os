@@ -1,3 +1,5 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -61,7 +63,7 @@ class CalendarPage extends ConsumerWidget {
                           .read(calendarControllerProvider.notifier)
                           .move(-1),
                       icon: Icon(
-                        Directionality.of(context) == TextDirection.rtl
+                        Directionality.of(context) == ui.TextDirection.rtl
                             ? Icons.chevron_right
                             : Icons.chevron_left,
                       ),
@@ -78,7 +80,7 @@ class CalendarPage extends ConsumerWidget {
                       onPressed: () =>
                           ref.read(calendarControllerProvider.notifier).move(1),
                       icon: Icon(
-                        Directionality.of(context) == TextDirection.rtl
+                        Directionality.of(context) == ui.TextDirection.rtl
                             ? Icons.chevron_left
                             : Icons.chevron_right,
                       ),
