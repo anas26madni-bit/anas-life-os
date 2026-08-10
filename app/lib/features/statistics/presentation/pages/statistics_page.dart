@@ -124,8 +124,8 @@ class _PeriodNavigation extends StatelessWidget {
     final rtl = Directionality.of(context) == TextDirection.rtl;
     final text = range.end.difference(range.start).inDays == 1
         ? DateFormat.yMMMMd().format(range.start)
-        : '${DateFormat.yMMMd().format(range.start)} – '
-              '${DateFormat.yMMMd().format(range.end.subtract(const Duration(days: 1))))}';
+        : '${DateFormat.yMMMd().format(range.start)} - '
+              '${DateFormat.yMMMd().format(range.end.subtract(const Duration(days: 1)))}';
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
       child: Row(
