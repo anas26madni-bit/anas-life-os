@@ -749,8 +749,12 @@ class AppLocalizationsUr extends AppLocalizations {
   String get notAvailable => 'دستیاب نہیں';
 
   @override
-  String percentageValue(int value) => '$value%';
+  String percentageValue(int value) {
+    return '$value%';
+  }
 
   @override
-  String minutesValue(int minutes) => '$minutes منٹ';
+  String minutesValue(int minutes) {
+    return '$minutes منٹ';
+  }
 }

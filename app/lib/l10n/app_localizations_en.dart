@@ -752,8 +752,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notAvailable => 'Not available';
 
   @override
-  String percentageValue(int value) => '$value%';
+  String percentageValue(int value) {
+    return '$value%';
+  }
 
   @override
-  String minutesValue(int minutes) => '$minutes min';
+  String minutesValue(int minutes) {
+    return '$minutes min';
+  }
 }
