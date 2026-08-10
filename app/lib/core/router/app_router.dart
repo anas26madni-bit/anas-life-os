@@ -10,6 +10,7 @@ import '../../features/knowledge/presentation/pages/knowledge_home_page.dart';
 import '../../features/more/presentation/pages/more_page.dart';
 import '../../features/reminders/presentation/pages/reminder_list_page.dart';
 import '../../features/search/presentation/pages/universal_search_page.dart';
+import '../../features/statistics/presentation/pages/statistics_page.dart';
 import '../../features/tasks/presentation/pages/project_detail_page.dart';
 import '../../features/tasks/presentation/pages/project_list_page.dart';
 import '../../features/tasks/presentation/pages/task_create_page.dart';
@@ -76,9 +77,17 @@ class SearchRoute extends GoRouteData with $SearchRoute {
           routes: [
             TypedGoRoute<ProjectsRoute>(
               path: 'projects',
-              routes: [TypedGoRoute<ProjectDetailRoute>(path: ':projectId')],
+              routes: [
+                TypedGoRoute<ProjectDetailRoute>(
+                  path: ':projectId',
+                  routes: [
+                    TypedGoRoute<ProjectStatisticsRoute>(path: 'statistics'),
+                  ],
+                ),
+              ],
             ),
             TypedGoRoute<RemindersRoute>(path: 'reminders'),
+            TypedGoRoute<StatisticsRoute>(path: 'statistics'),
             TypedGoRoute<DocumentsRoute>(
               path: 'documents',
               routes: [TypedGoRoute<DocumentDetailRoute>(path: ':documentId')],
@@ -204,12 +213,29 @@ class ProjectDetailRoute extends GoRouteData with $ProjectDetailRoute {
       ProjectDetailPage(projectId: projectId);
 }
 
+class ProjectStatisticsRoute extends GoRouteData with $ProjectStatisticsRoute {
+  const ProjectStatisticsRoute(this.projectId);
+  final int projectId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      StatisticsPage(projectId: projectId);
+}
+
 class RemindersRoute extends GoRouteData with $RemindersRoute {
   const RemindersRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const ReminderListPage();
+}
+
+class StatisticsRoute extends GoRouteData with $StatisticsRoute {
+  const StatisticsRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const StatisticsPage();
 }
 
 class DocumentsRoute extends GoRouteData with $DocumentsRoute {

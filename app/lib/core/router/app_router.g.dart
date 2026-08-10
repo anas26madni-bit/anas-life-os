@@ -141,6 +141,13 @@ RouteBase get $appShellRoute => StatefulShellRouteData.$route(
                   path: ':projectId',
                   hasOverriddenOnExit: false,
                   factory: $ProjectDetailRoute._fromState,
+                  routes: [
+                    GoRouteData.$route(
+                      path: 'statistics',
+                      hasOverriddenOnExit: false,
+                      factory: $ProjectStatisticsRoute._fromState,
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -148,6 +155,11 @@ RouteBase get $appShellRoute => StatefulShellRouteData.$route(
               path: 'reminders',
               hasOverriddenOnExit: false,
               factory: $RemindersRoute._fromState,
+            ),
+            GoRouteData.$route(
+              path: 'statistics',
+              hasOverriddenOnExit: false,
+              factory: $StatisticsRoute._fromState,
             ),
             GoRouteData.$route(
               path: 'documents',
@@ -390,12 +402,58 @@ mixin $ProjectDetailRoute on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
+mixin $ProjectStatisticsRoute on GoRouteData {
+  static ProjectStatisticsRoute _fromState(GoRouterState state) =>
+      ProjectStatisticsRoute(int.parse(state.pathParameters['projectId']!));
+
+  ProjectStatisticsRoute get _self => this as ProjectStatisticsRoute;
+
+  @override
+  String get location => GoRouteData.$location(
+    '/more/projects/${Uri.encodeComponent(_self.projectId.toString())}/statistics',
+  );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
 mixin $RemindersRoute on GoRouteData {
   static RemindersRoute _fromState(GoRouterState state) =>
       const RemindersRoute();
 
   @override
   String get location => GoRouteData.$location('/more/reminders');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $StatisticsRoute on GoRouteData {
+  static StatisticsRoute _fromState(GoRouterState state) =>
+      const StatisticsRoute();
+
+  @override
+  String get location => GoRouteData.$location('/more/statistics');
 
   @override
   void go(BuildContext context) => context.go(location);

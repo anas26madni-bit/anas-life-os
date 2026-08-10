@@ -722,4 +722,42 @@ class AppLocalizationsEn extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get statisticsTitle => 'Statistics';
+
+  @override
+  String get completionRate => 'Completion rate';
+
+  @override
+  String get onTimeRate => 'On-time rate';
+
+  @override
+  String get productivityScore => 'Productivity score';
+
+  @override
+  String get averageDelay => 'Average delay';
+
+  @override
+  String get historicalTrend => 'Historical trend';
+
+  @override
+  String get noStatisticsTitle => 'No statistics yet';
+
+  @override
+  String get noStatisticsMessage =>
+      'Complete scheduled tasks to build private offline reports.';
+
+  @override
+  String get notAvailable => 'Not available';
+
+  @override
+  String percentageValue(int value) {
+    return '$value%';
+  }
+
+  @override
+  String minutesValue(int minutes) {
+    return '$minutes min';
+  }
 }

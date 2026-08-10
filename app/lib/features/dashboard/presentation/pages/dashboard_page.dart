@@ -167,7 +167,11 @@ class DashboardPage extends ConsumerWidget {
     DashboardWidgetKind.upcoming => '${snapshot.upcoming}',
     DashboardWidgetKind.favorites => '${snapshot.favorites}',
     DashboardWidgetKind.progress =>
-      '${(snapshot.completionRate * 100).round()}%',
+      snapshot.completionRate == null
+          ? AppLocalizations.of(context).notAvailable
+          : AppLocalizations.of(
+              context,
+            ).percentageValue(snapshot.completionRate!.round()),
     DashboardWidgetKind.recentKnowledge => '${snapshot.recentKnowledge}',
     DashboardWidgetKind.dateTime => DateFormat.yMMMMEEEEd().add_jm().format(
       DateTime.now(),
@@ -180,7 +184,10 @@ class DashboardPage extends ConsumerWidget {
     ),
     DashboardWidgetKind.recentProjects => '${snapshot.recentProjects}',
     DashboardWidgetKind.recentActivity => '${snapshot.recentActivity}',
-    DashboardWidgetKind.productivity => '${snapshot.productivityScore}%',
+    DashboardWidgetKind.productivity =>
+      snapshot.productivityScore == null
+          ? AppLocalizations.of(context).notAvailable
+          : '${snapshot.productivityScore}',
   };
 
   static String _label(BuildContext context, DashboardWidgetKind kind) =>

@@ -215,4 +215,17 @@
 , "disable": "غیر فعال کریں"
 , "itemCount": "{count, plural, =0{کوئی آئٹم نہیں} =1{1 آئٹم} other{{count} آئٹمز}}"
 , "@itemCount": {"placeholders": {"count": {"type": "int"}}}
+, "statisticsTitle": "اعداد و شمار"
+, "completionRate": "تکمیل کی شرح"
+, "onTimeRate": "بروقت تکمیل کی شرح"
+, "productivityScore": "پیداواری اسکور"
+, "averageDelay": "اوسط تاخیر"
+, "historicalTrend": "تاریخی رجحان"
+, "noStatisticsTitle": "ابھی اعداد و شمار نہیں"
+, "noStatisticsMessage": "نجی آف لائن رپورٹس بنانے کے لیے طے شدہ کام مکمل کریں۔"
+, "notAvailable": "دستیاب نہیں"
+, "percentageValue": "{value}%"
+, "@percentageValue": {"placeholders": {"value": {"type": "int"}}}
+, "minutesValue": "{minutes} منٹ"
+, "@minutesValue": {"placeholders": {"minutes": {"type": "int"}}}
 }

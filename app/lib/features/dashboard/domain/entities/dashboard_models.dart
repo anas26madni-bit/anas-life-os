@@ -55,6 +55,8 @@ final class DashboardSnapshot {
     required this.recentKnowledge,
     this.recentProjects = 0,
     this.recentActivity = 0,
+    this.approvedCompletionRate,
+    this.approvedProductivityScore,
   });
 
   final int today;
@@ -67,9 +69,27 @@ final class DashboardSnapshot {
   final int recentKnowledge;
   final int recentProjects;
   final int recentActivity;
+  final double? approvedCompletionRate;
+  final int? approvedProductivityScore;
 
-  int get activeTotal => pending + completedToday;
-  double get completionRate =>
-      activeTotal == 0 ? 0 : completedToday / activeTotal;
-  int get productivityScore => (completionRate * 100).round();
+  double? get completionRate => approvedCompletionRate;
+  int? get productivityScore => approvedProductivityScore;
+
+  DashboardSnapshot withStatistics({
+    required double? completionRate,
+    required int? productivityScore,
+  }) => DashboardSnapshot(
+    today: today,
+    tomorrow: tomorrow,
+    pending: pending,
+    overdue: overdue,
+    completedToday: completedToday,
+    upcoming: upcoming,
+    favorites: favorites,
+    recentKnowledge: recentKnowledge,
+    recentProjects: recentProjects,
+    recentActivity: recentActivity,
+    approvedCompletionRate: completionRate,
+    approvedProductivityScore: productivityScore,
+  );
 }

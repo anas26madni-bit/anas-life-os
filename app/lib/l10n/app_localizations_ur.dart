@@ -719,4 +719,42 @@ class AppLocalizationsUr extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get statisticsTitle => 'اعداد و شمار';
+
+  @override
+  String get completionRate => 'تکمیل کی شرح';
+
+  @override
+  String get onTimeRate => 'بروقت تکمیل کی شرح';
+
+  @override
+  String get productivityScore => 'پیداواری اسکور';
+
+  @override
+  String get averageDelay => 'اوسط تاخیر';
+
+  @override
+  String get historicalTrend => 'تاریخی رجحان';
+
+  @override
+  String get noStatisticsTitle => 'ابھی اعداد و شمار نہیں';
+
+  @override
+  String get noStatisticsMessage =>
+      'نجی آف لائن رپورٹس بنانے کے لیے طے شدہ کام مکمل کریں۔';
+
+  @override
+  String get notAvailable => 'دستیاب نہیں';
+
+  @override
+  String percentageValue(int value) {
+    return '$value%';
+  }
+
+  @override
+  String minutesValue(int minutes) {
+    return '$minutes منٹ';
+  }
 }

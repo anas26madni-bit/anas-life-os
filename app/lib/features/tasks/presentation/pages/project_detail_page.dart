@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/router/app_router.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/presentation/app_top_bar.dart';
@@ -104,6 +105,12 @@ class ProjectDetailPage extends ConsumerWidget {
                   spacing: AppSpacing.sm,
                   runSpacing: AppSpacing.sm,
                   children: [
+                    OutlinedButton.icon(
+                      onPressed: () =>
+                          ProjectStatisticsRoute(projectId).push<void>(context),
+                      icon: const Icon(Icons.insights_outlined),
+                      label: Text(localization.statisticsTitle),
+                    ),
                     OutlinedButton.icon(
                       onPressed: () =>
                           showProjectEditor(context, ref, initial: item),
