@@ -1357,6 +1357,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{minutes} min'**
   String minutesValue(int minutes);
+
+  /// No description provided for @backupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup center'**
+  String get backupTitle;
+
+  /// No description provided for @manualBackup.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual backup'**
+  String get manualBackup;
+
+  /// No description provided for @importAndRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'Import and restore'**
+  String get importAndRestore;
+
+  /// No description provided for @automaticBackup.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic backup'**
+  String get automaticBackup;
+
+  /// No description provided for @enableAutomaticBackup.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable automatic backups'**
+  String get enableAutomaticBackup;
+
+  /// No description provided for @backupFrequency.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup frequency'**
+  String get backupFrequency;
+
+  /// No description provided for @daily.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily'**
+  String get daily;
+
+  /// No description provided for @weekly.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get weekly;
+
+  /// No description provided for @backupRetention.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic backups to keep (1–30)'**
+  String get backupRetention;
+
+  /// No description provided for @backupDestination.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup destination'**
+  String get backupDestination;
+
+  /// No description provided for @destinationNotSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'No destination selected'**
+  String get destinationNotSelected;
+
+  /// No description provided for @destinationSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Destination selected'**
+  String get destinationSelected;
+
+  /// No description provided for @backupHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup history'**
+  String get backupHistory;
+
+  /// No description provided for @noBackupsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No backups yet. Create an encrypted backup to protect your data.'**
+  String get noBackupsMessage;
+
+  /// No description provided for @backupPassphrase.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup passphrase'**
+  String get backupPassphrase;
+
+  /// No description provided for @confirmPassphrase.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm backup passphrase'**
+  String get confirmPassphrase;
+
+  /// No description provided for @backupPassphraseRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the backup passphrase.'**
+  String get backupPassphraseRequired;
+
+  /// No description provided for @passphrasesDoNotMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passphrases do not match.'**
+  String get passphrasesDoNotMatch;
+
+  /// No description provided for @continueLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueLabel;
+
+  /// No description provided for @restoreBackup.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore backup'**
+  String get restoreBackup;
+
+  /// No description provided for @restoreWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'The backup will be verified before replacement. If validation fails, your current data will remain unchanged.'**
+  String get restoreWarning;
+
+  /// No description provided for @backupSucceeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Successful'**
+  String get backupSucceeded;
+
+  /// No description provided for @backupFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get backupFailed;
 }
 
 class _AppLocalizationsDelegate

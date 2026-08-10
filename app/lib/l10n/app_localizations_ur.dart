@@ -757,4 +757,75 @@ class AppLocalizationsUr extends AppLocalizations {
   String minutesValue(int minutes) {
     return '$minutes منٹ';
   }
+
+  @override
+  String get backupTitle => 'بیک اپ مرکز';
+
+  @override
+  String get manualBackup => 'دستی بیک اپ';
+
+  @override
+  String get importAndRestore => 'درآمد اور بحالی';
+
+  @override
+  String get automaticBackup => 'خودکار بیک اپ';
+
+  @override
+  String get enableAutomaticBackup => 'خودکار بیک اپ فعال کریں';
+
+  @override
+  String get backupFrequency => 'بیک اپ کی تکرار';
+
+  @override
+  String get daily => 'روزانہ';
+
+  @override
+  String get weekly => 'ہفتہ وار';
+
+  @override
+  String get backupRetention => 'محفوظ خودکار بیک اپ (1–30)';
+
+  @override
+  String get backupDestination => 'بیک اپ کی جگہ';
+
+  @override
+  String get destinationNotSelected => 'کوئی جگہ منتخب نہیں';
+
+  @override
+  String get destinationSelected => 'جگہ منتخب ہے';
+
+  @override
+  String get backupHistory => 'بیک اپ تاریخ';
+
+  @override
+  String get noBackupsMessage =>
+      'ابھی کوئی بیک اپ نہیں۔ اپنے ڈیٹا کے تحفظ کے لیے encrypted بیک اپ بنائیں۔';
+
+  @override
+  String get backupPassphrase => 'بیک اپ پاس فریز';
+
+  @override
+  String get confirmPassphrase => 'پاس فریز کی تصدیق';
+
+  @override
+  String get backupPassphraseRequired => 'بیک اپ پاس فریز درج کریں۔';
+
+  @override
+  String get passphrasesDoNotMatch => 'پاس فریز یکساں نہیں ہیں۔';
+
+  @override
+  String get continueLabel => 'جاری رکھیں';
+
+  @override
+  String get restoreBackup => 'بیک اپ بحال کریں';
+
+  @override
+  String get restoreWarning =>
+      'تبدیلی سے پہلے بیک اپ کی تصدیق ہوگی۔ ناکامی کی صورت میں موجودہ ڈیٹا محفوظ رہے گا۔';
+
+  @override
+  String get backupSucceeded => 'کامیاب';
+
+  @override
+  String get backupFailed => 'ناکام';
 }

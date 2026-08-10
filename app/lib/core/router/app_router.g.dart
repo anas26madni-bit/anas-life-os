@@ -162,6 +162,11 @@ RouteBase get $appShellRoute => StatefulShellRouteData.$route(
               factory: $StatisticsRoute._fromState,
             ),
             GoRouteData.$route(
+              path: 'backup',
+              hasOverriddenOnExit: false,
+              factory: $BackupRoute._fromState,
+            ),
+            GoRouteData.$route(
               path: 'documents',
               hasOverriddenOnExit: false,
               factory: $DocumentsRoute._fromState,
@@ -454,6 +459,26 @@ mixin $StatisticsRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/more/statistics');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $BackupRoute on GoRouteData {
+  static BackupRoute _fromState(GoRouterState state) => const BackupRoute();
+
+  @override
+  String get location => GoRouteData.$location('/more/backup');
 
   @override
   void go(BuildContext context) => context.go(location);
