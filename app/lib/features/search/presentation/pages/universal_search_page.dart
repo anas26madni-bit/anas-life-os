@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/errors/result.dart';
+import '../../../../core/providers/infrastructure_providers.dart';
+import '../../../../core/router/app_router.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../../shared/presentation/app_top_bar.dart';
+import '../../../../shared/presentation/async_state_view.dart';
 import '../../domain/entities/search_models.dart';
 import '../../domain/services/voice_search_service.dart';
 import '../controllers/search_controller.dart';
@@ -45,8 +50,9 @@ class _UniversalSearchPageState extends ConsumerState<UniversalSearchPage> {
       }
     });
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppTopBar(
         title: Text(localization.searchTitle),
+        showSearch: false,
         actions: [
           IconButton(
             tooltip: localization.searchFilters,
@@ -112,12 +118,12 @@ class _UniversalSearchPageState extends ConsumerState<UniversalSearchPage> {
             ],
             Expanded(
               child: search.when(
-                loading: () =>
-                    const Center(child: CircularProgressIndicator.adaptive()),
-                error: (error, stackTrace) => _SearchMessage(
-                  icon: Icons.error_outline,
-                  title: localization.searchErrorTitle,
+                loading: LoadingStateView.new,
+                error: (error, stackTrace) => ErrorStateView(
                   message: error.toString(),
+                  onRetry: () => ref.invalidate(
+                    universalSearchControllerProvider,
+                  ),
                 ),
                 data: (state) => state.results.isEmpty
                     ? _SearchMessage(
@@ -379,19 +385,56 @@ class _SearchControls extends ConsumerWidget {
   }
 }
 
-class _ResultCard extends StatelessWidget {
+class _ResultCard extends ConsumerWidget {
   const _ResultCard({required this.item});
   final SearchResultItem item;
 
   @override
-  Widget build(BuildContext context) => Card(
+  Widget build(BuildContext context, WidgetRef ref) => Card(
     child: ListTile(
       leading: Icon(_entityIcon(item.entityType)),
       title: Text(item.title),
       subtitle: item.summary == null ? null : Text(item.summary!, maxLines: 2),
       trailing: Text(DateFormat.yMMMd().format(item.updatedAt.toLocal())),
+      onTap: () => _openResult(context, ref),
     ),
   );
+
+  Future<void> _openResult(BuildContext context, WidgetRef ref) async {
+    switch (item.entityType) {
+      case SearchEntityType.task:
+        return TaskDetailRoute(item.entityId).go(context);
+      case SearchEntityType.project:
+        return ProjectDetailRoute(item.entityId).go(context);
+      case SearchEntityType.note:
+        return KnowledgeDetailRoute(item.entityId).go(context);
+      case SearchEntityType.document:
+        return DocumentDetailRoute(item.entityId).go(context);
+      case SearchEntityType.attachment:
+        final repository = await ref.read(taskSupportRepositoryProvider.future);
+        final result = await repository.attachmentTarget(item.entityId);
+        if (!context.mounted) return;
+        final target = switch (result) {
+          Success(:final value) => value,
+          FailureResult(:final failure) => throw StateError(failure.safeMessage),
+        };
+        if (target?.taskId != null) {
+          return TaskDetailRoute(target!.taskId!).go(context);
+        }
+        if (target?.projectId != null) {
+          return ProjectDetailRoute(target!.projectId!).go(context);
+        }
+        if (target?.knowledgeNoteId != null) {
+          return KnowledgeDetailRoute(target!.knowledgeNoteId!).go(context);
+        }
+        if (target?.documentId != null) {
+          return DocumentDetailRoute(target!.documentId!).go(context);
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context).sourceUnavailable)),
+        );
+    }
+  }
 }
 
 class _DateFilterTile extends StatelessWidget {

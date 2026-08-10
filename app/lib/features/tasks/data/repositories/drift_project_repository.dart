@@ -100,6 +100,89 @@ final class DriftProjectRepository implements ProjectRepository {
   }
 
   @override
+  Future<Result<ProjectEntity?>> findById(int id) async {
+    try {
+      final row = await (_database.select(_database.projects)..where(
+            (item) => item.id.equals(id) & item.isDeleted.equals(false),
+          ))
+          .getSingleOrNull();
+      return Success(row == null ? null : _map(row));
+    } on Object {
+      return const FailureResult(
+        DatabaseFailure(
+          code: 'project_read_failed',
+          safeMessage: 'The project could not be loaded.',
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Result<ProjectEntity>> update(
+    int id, {
+    required String title,
+    String? description,
+    int? budgetMinor,
+    String? currencyCode,
+    DateTime? dueAt,
+  }) async {
+    final normalizedTitle = title.trim();
+    final normalizedCurrency = currencyCode?.trim().toUpperCase();
+    if (normalizedTitle.isEmpty ||
+        normalizedTitle.runes.length > 300 ||
+        (budgetMinor ?? 0) < 0 ||
+        (normalizedCurrency != null && normalizedCurrency.length != 3)) {
+      return const FailureResult(
+        ValidationFailure(
+          code: 'invalid_project',
+          safeMessage: 'The project details are invalid.',
+        ),
+      );
+    }
+    try {
+      final current = await (_database.select(_database.projects)..where(
+            (item) => item.id.equals(id) & item.isDeleted.equals(false),
+          ))
+          .getSingleOrNull();
+      if (current == null) throw StateError('Project not found.');
+      await (_database.update(
+        _database.projects,
+      )..where((item) => item.id.equals(id))).write(
+        ProjectsCompanion(
+          title: Value(normalizedTitle),
+          description: Value(description?.trim()),
+          budgetMinor: Value(budgetMinor),
+          currencyCode: Value(normalizedCurrency),
+          dueAt: Value(dueAt?.toUtc().microsecondsSinceEpoch),
+          updatedAt: Value(_clock().toUtc().microsecondsSinceEpoch),
+          version: Value(current.version + 1),
+        ),
+      );
+      return Success(
+        _map(
+          await (_database.select(
+            _database.projects,
+          )..where((item) => item.id.equals(id))).getSingle(),
+        ),
+      );
+    } on StateError catch (error) {
+      return FailureResult(
+        ValidationFailure(
+          code: 'project_update_rejected',
+          safeMessage: error.message.toString(),
+        ),
+      );
+    } on Object {
+      return const FailureResult(
+        DatabaseFailure(
+          code: 'project_update_failed',
+          safeMessage: 'The project could not be updated safely.',
+        ),
+      );
+    }
+  }
+
+  @override
   Future<Result<void>> archive(int id) async {
     try {
       final updated =

@@ -9,6 +9,7 @@ abstract interface class DocumentRepository {
     int offset = 0,
     bool includeHidden = false,
   });
+  Future<Result<KnowledgeDocument?>> findById(int id);
   Future<Result<KnowledgeDocument>> softDelete(int id);
   Future<Result<KnowledgeDocument>> restore(int id);
 }

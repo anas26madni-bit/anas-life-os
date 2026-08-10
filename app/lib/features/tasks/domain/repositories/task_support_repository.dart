@@ -23,5 +23,7 @@ abstract interface class TaskSupportRepository {
 
   Future<Result<int>> addAttachment(AttachmentDraft draft);
 
+  Future<Result<AttachmentTarget?>> attachmentTarget(int attachmentId);
+
   Future<Result<int>> createRepeatRule(RepeatRuleDraft draft);
 }

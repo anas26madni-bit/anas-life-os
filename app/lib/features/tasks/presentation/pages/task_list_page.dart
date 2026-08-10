@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/router/app_router.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../../shared/presentation/app_top_bar.dart';
 import '../../domain/entities/task_draft.dart';
 import '../../domain/entities/task_entity.dart';
 import '../../domain/entities/task_enums.dart';
 import '../controllers/task_list_controller.dart';
+
+enum TaskViewMode { list, board, timeline, calendar }
+
+final taskViewModeProvider = StateProvider<TaskViewMode>(
+  (ref) => TaskViewMode.list,
+);
 
 class TaskListPage extends ConsumerWidget {
   const TaskListPage({super.key});
@@ -15,6 +23,7 @@ class TaskListPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final localization = AppLocalizations.of(context);
     final tasks = ref.watch(taskListControllerProvider);
+    final view = ref.watch(taskViewModeProvider);
     ref.listen(taskListControllerProvider, (previous, next) {
       if (next case AsyncError(:final error)) {
         ScaffoldMessenger.of(
@@ -24,16 +33,35 @@ class TaskListPage extends ConsumerWidget {
     });
 
     return Scaffold(
-      appBar: AppBar(title: Text(localization.tasksTitle)),
+      appBar: AppTopBar(title: Text(localization.tasksTitle)),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _showCreateDialog(context, ref),
+        onPressed: () => const TaskCreateRoute().push<void>(context),
         icon: const Icon(Icons.add),
         label: Text(localization.createTask),
       ),
       body: SafeArea(
-        child: RefreshIndicator(
-          onRefresh: ref.read(taskListControllerProvider.notifier).refresh,
-          child: tasks.when(
+        child: Column(
+          children: [
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
+              child: SegmentedButton<TaskViewMode>(
+                showSelectedIcon: false,
+                segments: [
+                  ButtonSegment(value: TaskViewMode.list, label: Text(localization.listView)),
+                  ButtonSegment(value: TaskViewMode.board, label: Text(localization.boardView)),
+                  ButtonSegment(value: TaskViewMode.timeline, label: Text(localization.timelineView)),
+                  ButtonSegment(value: TaskViewMode.calendar, label: Text(localization.calendarTitle)),
+                ],
+                selected: {view},
+                onSelectionChanged: (value) =>
+                    ref.read(taskViewModeProvider.notifier).state = value.first,
+              ),
+            ),
+            Expanded(
+              child: RefreshIndicator(
+                onRefresh: ref.read(taskListControllerProvider.notifier).refresh,
+                child: tasks.when(
             loading: () =>
                 const Center(child: CircularProgressIndicator.adaptive()),
             error: (error, stackTrace) => _ErrorState(
@@ -42,30 +70,11 @@ class TaskListPage extends ConsumerWidget {
             ),
             data: (items) => items.isEmpty
                 ? _EmptyState(onCreate: () => _showCreateDialog(context, ref))
-                : ListView.separated(
-                    padding: const EdgeInsets.fromLTRB(
-                      AppSpacing.md,
-                      AppSpacing.md,
-                      AppSpacing.md,
-                      96,
-                    ),
-                    itemCount: items.length,
-                    separatorBuilder: (_, _) =>
-                        const SizedBox(height: AppSpacing.sm),
-                    itemBuilder: (context, index) => _TaskCard(
-                      task: items[index],
-                      onComplete: () => ref
-                          .read(taskListControllerProvider.notifier)
-                          .complete(items[index].id),
-                      onArchive: () => ref
-                          .read(taskListControllerProvider.notifier)
-                          .archive(items[index].id),
-                      onDelete: () => ref
-                          .read(taskListControllerProvider.notifier)
-                          .delete(items[index].id),
-                    ),
-                  ),
-          ),
+                : _TaskCollection(items: items, view: view),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -121,6 +130,65 @@ class TaskListPage extends ConsumerWidget {
   }
 }
 
+class _TaskCollection extends ConsumerWidget {
+  const _TaskCollection({required this.items, required this.view});
+  final List<TaskEntity> items;
+  final TaskViewMode view;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final ordered = [...items];
+    if (view == TaskViewMode.timeline || view == TaskViewMode.calendar) {
+      ordered.sort((left, right) => switch ((left.dueAt, right.dueAt)) {
+        (null, null) => left.id.compareTo(right.id),
+        (null, _) => 1,
+        (_, null) => -1,
+        (final leftDate?, final rightDate?) => leftDate.compareTo(rightDate),
+      });
+    } else if (view == TaskViewMode.board) {
+      ordered.sort((left, right) => left.status.index.compareTo(right.status.index));
+    }
+    return ListView.separated(
+      key: PageStorageKey(view),
+      padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.md, AppSpacing.md, 96),
+      itemCount: ordered.length,
+      separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.sm),
+      itemBuilder: (context, index) {
+        final task = ordered[index];
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (view == TaskViewMode.board &&
+                (index == 0 || ordered[index - 1].status != task.status))
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+                child: Text(
+                  AppLocalizations.of(context).taskStatusLabel(task.status.name),
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ),
+            if ((view == TaskViewMode.timeline || view == TaskViewMode.calendar) &&
+                task.dueAt != null)
+              Padding(
+                padding: const EdgeInsets.only(bottom: AppSpacing.xs),
+                child: Text(
+                  MaterialLocalizations.of(context).formatFullDate(task.dueAt!.toLocal()),
+                  style: Theme.of(context).textTheme.labelLarge,
+                ),
+              ),
+            _TaskCard(
+              task: task,
+              onComplete: () => ref.read(taskListControllerProvider.notifier).complete(task.id),
+              onArchive: () => ref.read(taskListControllerProvider.notifier).archive(task.id),
+              onDelete: () => ref.read(taskListControllerProvider.notifier).delete(task.id),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
 class _TaskCard extends StatelessWidget {
   const _TaskCard({
     required this.task,
@@ -157,7 +225,8 @@ class _TaskCard extends StatelessWidget {
               ? const TextStyle(decoration: TextDecoration.lineThrough)
               : null,
         ),
-        subtitle: Text(task.status.name),
+        subtitle: Text(localization.taskStatusLabel(task.status.name)),
+        onTap: () => TaskDetailRoute(task.id).push<void>(context),
         trailing: PopupMenuButton<_TaskAction>(
           tooltip: localization.taskActions,
           onSelected: (action) => switch (action) {

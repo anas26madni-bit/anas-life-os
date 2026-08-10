@@ -1,5 +1,24 @@
 import 'knowledge_enums.dart';
 
+final class KnowledgeSpace {
+  const KnowledgeSpace({required this.id, required this.name});
+  final int id;
+  final String name;
+}
+
+final class KnowledgeFolder {
+  const KnowledgeFolder({
+    required this.id,
+    required this.spaceId,
+    required this.name,
+    this.parentFolderId,
+  });
+  final int id;
+  final int spaceId;
+  final int? parentFolderId;
+  final String name;
+}
+
 final class KnowledgeNote {
   const KnowledgeNote({
     required this.id,

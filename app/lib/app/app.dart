@@ -25,6 +25,7 @@ class AnasLifeOsApp extends ConsumerWidget {
             : null;
 
         return MaterialApp.router(
+          restorationScopeId: 'anas_life_os',
           debugShowCheckedModeBanner: false,
           onGenerateTitle: (context) => AppLocalizations.of(context).appName,
           routerConfig: appRouter,
