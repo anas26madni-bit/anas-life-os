@@ -4,7 +4,20 @@ All notable project changes are recorded here.
 
 ## [Unreleased]
 
-No unreleased implementation changes.
+### Added
+
+- Shared five-tab app shell, Dashboard startup handoff, global authorized
+  search entry, nested typed navigation and source-result routing.
+- Complete approved Sprint 1-7 presentation workflows for Dashboard, Tasks,
+  Projects, Reminders, Knowledge, Documents and Calendar.
+- Focused English/Urdu, RTL/LTR, responsive, accessibility, navigation-state
+  and back-routing regressions.
+
+### Validation
+
+- Generated-source freshness, formatting, analyzer, full unit/widget suite,
+  coverage, debug APK and Android 11 integration tests passed in GitHub Actions
+  run `31369588920`.
 
 ## [0.4.0-sprint4] - 2026-08-07
 

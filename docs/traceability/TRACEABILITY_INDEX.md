@@ -60,6 +60,11 @@ Part 3 preserves 60 IDs: `NFR-PERF-*`, `BAT-*`, `MEM-*`, `DB-*`, `SEC-*`, `OFF-*
 
 Part 11 is the only sprint authority: Sprint 1 foundation; 2 database; 3 tasks/projects; 4 reminders; 5 Knowledge Vault/documents; 6 dashboard/calendar; 7 search; 8 statistics; 9 backup; 10 security; 11 optimization; 12 release candidate.
 
+Sprint 1-7 UI/navigation closure is verified by GitHub Actions run
+`31369588920`, including the shared shell, typed routes, authorized search
+navigation, delivered feature states, English/Urdu directionality and Android
+11 integration coverage. Sprint 8+ and Future Release ownership is unchanged.
+
 ## Explicit Part 1A / Part 1B ID inventory
 
 `PRD-001` `PRD-002` `PRD-003` `UXF-001` `UXF-002` `AND-001` `AND-002` `NAT-001` `NAT-002` `EXT-001` `EXT-002` `DBR-001` `DBR-002` `DBR-003` `DBR-004` `DBR-005` `DBR-006` `SEC-001` `SEC-002` `SEC-003` `LCK-001` `LCK-002` `DAT-001` `DAT-002` `DAT-003` `UIA-001` `UIA-002` `UIA-003` `PER-001` `PER-002` `QAT-001` `QAT-002` `QAT-003` `MNT-001` `MNT-002` `MNT-003` `GAT-001` `GAT-002`
