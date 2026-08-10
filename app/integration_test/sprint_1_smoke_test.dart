@@ -11,7 +11,9 @@ import '../test/helpers/fakes.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('foundation enters the dashboard shell when ready', (tester) async {
+  testWidgets('foundation enters the dashboard shell when ready', (
+    tester,
+  ) async {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
