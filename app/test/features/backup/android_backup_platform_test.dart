@@ -53,12 +53,15 @@ void main() {
       passphrase: 'secret',
     );
     expect(restore.recordsRestored, 12);
-    expect(calls.map((call) => call.method), containsAll(<String>[
-      'selectDestination',
-      'selectImport',
-      'createArchive',
-      'restoreArchive',
-    ]));
+    expect(
+      calls.map((call) => call.method),
+      containsAll(<String>[
+        'selectDestination',
+        'selectImport',
+        'createArchive',
+        'restoreArchive',
+      ]),
+    );
   });
 
   test('maps automatic configuration and disable operations', () async {
