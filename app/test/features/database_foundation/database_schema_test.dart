@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../helpers/database_test_harness.dart';
 
 void main() {
-  test('creates the approved schema through Sprint 8 with indexes', () async {
+  test('creates the approved schema through Sprint 9 with indexes', () async {
     final database = createTestDatabase();
     addTearDown(database.close);
 
@@ -21,6 +21,8 @@ void main() {
       tables.map((row) => row.read<String>('name')),
       containsAll(<String>[
         'attachments',
+        'backup_history',
+        'backup_profiles',
         'attachment_folders',
         'attachment_label_map',
         'attachment_labels',
@@ -51,6 +53,7 @@ void main() {
         'repeat_rules',
         'reminder_history',
         'reminders',
+        'restore_history',
         'saved_searches',
         'search_documents',
         'search_fts',
@@ -76,6 +79,7 @@ void main() {
       indexes.map((row) => row.read<String>('name')),
       containsAll(<String>[
         'idx_migration_history_status_started_at',
+        'idx_backup_history_started',
         'idx_plugin_registry_name',
         'idx_tasks_status_due',
         'idx_tasks_project_status',

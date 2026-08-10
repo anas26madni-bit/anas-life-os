@@ -46,3 +46,8 @@ android {
 flutter {
     source = "../.."
 }
+
+dependencies {
+    implementation("androidx.work:work-runtime-ktx:2.10.5")
+    implementation("org.bouncycastle:bcprov-jdk18on:1.83")
+}

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/backup/presentation/pages/backup_page.dart';
 import '../../features/calendar/presentation/pages/calendar_page.dart';
 import '../../features/dashboard/presentation/pages/dashboard_page.dart';
 import '../../features/knowledge/presentation/pages/document_detail_page.dart';
@@ -88,6 +89,7 @@ class SearchRoute extends GoRouteData with $SearchRoute {
             ),
             TypedGoRoute<RemindersRoute>(path: 'reminders'),
             TypedGoRoute<StatisticsRoute>(path: 'statistics'),
+            TypedGoRoute<BackupRoute>(path: 'backup'),
             TypedGoRoute<DocumentsRoute>(
               path: 'documents',
               routes: [TypedGoRoute<DocumentDetailRoute>(path: ':documentId')],
@@ -236,6 +238,13 @@ class StatisticsRoute extends GoRouteData with $StatisticsRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const StatisticsPage();
+}
+
+class BackupRoute extends GoRouteData with $BackupRoute {
+  const BackupRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => const BackupPage();
 }
 
 class DocumentsRoute extends GoRouteData with $DocumentsRoute {
