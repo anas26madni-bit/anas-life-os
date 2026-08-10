@@ -66,10 +66,7 @@ final class DriftDashboardRepository implements DashboardRepository {
       );
       final statistics = await DriftStatisticsRepository(
         _database,
-      ).loadReport(
-        selection: now,
-        granularity: StatisticsGranularity.day,
-      );
+      ).loadReport(selection: now, granularity: StatisticsGranularity.day);
       final approved = switch (statistics) {
         Success(:final value) => value,
         FailureResult() => null,

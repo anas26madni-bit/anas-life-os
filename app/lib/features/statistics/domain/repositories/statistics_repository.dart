@@ -8,8 +8,5 @@ abstract interface class StatisticsRepository {
     int? projectId,
   });
 
-  Future<Result<void>> rebuildRange(
-    StatisticsRange range, {
-    int? projectId,
-  });
+  Future<Result<void>> rebuildRange(StatisticsRange range, {int? projectId});
 }

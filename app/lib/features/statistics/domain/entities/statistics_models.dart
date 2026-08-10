@@ -57,9 +57,8 @@ final class DailyStatistics {
   final int delayTotalMicroseconds;
   final int delaySampleCount;
 
-  double? get completionRate => eligibleCount == 0
-      ? null
-      : completedByEndCount / eligibleCount * 100;
+  double? get completionRate =>
+      eligibleCount == 0 ? null : completedByEndCount / eligibleCount * 100;
   double? get onTimeRate =>
       eligibleCount == 0 ? null : onTimeCount / eligibleCount * 100;
   Duration? get averageDelay => delaySampleCount == 0
@@ -88,9 +87,8 @@ final class StatisticsReport {
   final int delayTotalMicroseconds;
   final int delaySampleCount;
 
-  double? get completionRate => eligibleCount == 0
-      ? null
-      : completedByEndCount / eligibleCount * 100;
+  double? get completionRate =>
+      eligibleCount == 0 ? null : completedByEndCount / eligibleCount * 100;
   double? get onTimeRate =>
       eligibleCount == 0 ? null : onTimeCount / eligibleCount * 100;
   int? get productivityScore {

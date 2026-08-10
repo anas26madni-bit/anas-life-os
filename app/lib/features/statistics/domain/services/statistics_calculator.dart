@@ -19,9 +19,6 @@ abstract final class StatisticsCalculator {
       0,
       (sum, item) => sum + item.delayTotalMicroseconds,
     ),
-    delaySampleCount: daily.fold(
-      0,
-      (sum, item) => sum + item.delaySampleCount,
-    ),
+    delaySampleCount: daily.fold(0, (sum, item) => sum + item.delaySampleCount),
   );
 }

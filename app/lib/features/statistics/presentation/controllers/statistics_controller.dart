@@ -36,7 +36,8 @@ final statisticsReportProvider = FutureProvider.autoDispose
       );
       return switch (result) {
         Success<StatisticsReport>(:final value) => value,
-        FailureResult<StatisticsReport>(:final failure) =>
-          throw StateError(failure.safeMessage),
+        FailureResult<StatisticsReport>(:final failure) => throw StateError(
+          failure.safeMessage,
+        ),
       };
     });
