@@ -38,6 +38,13 @@ No plaintext snippets are persisted. Voice search is explicit tap-to-use,
 on-device Urdu/English only, with runtime microphone permission and typed
 fallback; online voice, wake words, OCR, and command execution remain future.
 
+Sprint 8 statistics use configured-local-time half-open periods and
+Monday-start ISO weeks. Completion Rate uses the eligible due-task cohort;
+Average Delay is the non-negative mean delay for tasks completed in-period; and
+Productivity Score is 70% Completion Rate plus 30% On-Time Rate. Task records
+and histories are authoritative, with rebuildable daily projections and
+deterministic higher-period, correction, restore, and migration reconciliation.
+
 ## Things Never To Change
 Never modify an approved Project Bible master without owner approval. Never weaken offline privacy, local data ownership, Clean Architecture, database-first sequencing, soft-delete policy, cryptographic modularity, accessibility, localization/RTL, traceability, or quality gates. Never require cloud, login, analytics, advertising, or tracking for core functionality.
 

@@ -6,6 +6,11 @@ All notable project changes are recorded here.
 
 ### Added
 
+- Sprint 8 offline day/week/month/year statistics, approved completion and
+  delay formulas, 70/30 productivity score, historical trends and accessible
+  English/Urdu reports.
+- Rebuildable encrypted daily projections with project-scoped reports and
+  deterministic correction, migration and restore reconciliation boundaries.
 - Shared five-tab app shell, Dashboard startup handoff, global authorized
   search entry, nested typed navigation and source-result routing.
 - Complete approved Sprint 1-7 presentation workflows for Dashboard, Tasks,

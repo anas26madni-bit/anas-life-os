@@ -1291,6 +1291,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, =0{No items} =1{1 item} other{{count} items}}'**
   String itemCount(int count);
+
+  /// No description provided for @statisticsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics'**
+  String get statisticsTitle;
+
+  /// No description provided for @completionRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Completion rate'**
+  String get completionRate;
+
+  /// No description provided for @onTimeRate.
+  ///
+  /// In en, this message translates to:
+  /// **'On-time rate'**
+  String get onTimeRate;
+
+  /// No description provided for @productivityScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Productivity score'**
+  String get productivityScore;
+
+  /// No description provided for @averageDelay.
+  ///
+  /// In en, this message translates to:
+  /// **'Average delay'**
+  String get averageDelay;
+
+  /// No description provided for @historicalTrend.
+  ///
+  /// In en, this message translates to:
+  /// **'Historical trend'**
+  String get historicalTrend;
+
+  /// No description provided for @noStatisticsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No statistics yet'**
+  String get noStatisticsTitle;
+
+  /// No description provided for @noStatisticsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete scheduled tasks to build private offline reports.'**
+  String get noStatisticsMessage;
+
+  /// No description provided for @notAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Not available'**
+  String get notAvailable;
+
+  /// No description provided for @percentageValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{value}%'**
+  String percentageValue(int value);
+
+  /// No description provided for @minutesValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String minutesValue(int minutes);
 }
 
 class _AppLocalizationsDelegate

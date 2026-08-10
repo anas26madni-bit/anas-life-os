@@ -17,6 +17,8 @@ import '../../features/search/data/repositories/drift_search_repository.dart';
 import '../../features/search/data/services/android_voice_search_service.dart';
 import '../../features/search/domain/repositories/search_repository.dart';
 import '../../features/search/domain/services/voice_search_service.dart';
+import '../../features/statistics/data/repositories/drift_statistics_repository.dart';
+import '../../features/statistics/domain/repositories/statistics_repository.dart';
 import '../../features/tasks/data/repositories/drift_project_repository.dart';
 import '../../features/tasks/data/repositories/drift_task_composition_repository.dart';
 import '../../features/tasks/data/repositories/drift_task_repository.dart';
@@ -120,6 +122,13 @@ final searchRepositoryProvider = FutureProvider<SearchRepository>((ref) async {
   final database = await ref.watch(appDatabaseProvider.future);
   final session = await database.verifySearchSession();
   return DriftSearchRepository(session);
+});
+
+final statisticsRepositoryProvider = FutureProvider<StatisticsRepository>((
+  ref,
+) async {
+  final database = await ref.watch(appDatabaseProvider.future);
+  return DriftStatisticsRepository(database);
 });
 
 final voiceSearchServiceProvider = Provider<VoiceSearchService>(

@@ -4,6 +4,8 @@ import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/result.dart';
 import '../../../database_foundation/data/database/app_database.dart';
 import '../../../tasks/domain/entities/task_enums.dart';
+import '../../../statistics/data/repositories/drift_statistics_repository.dart';
+import '../../../statistics/domain/entities/statistics_models.dart';
 import '../../domain/entities/dashboard_models.dart';
 import '../../domain/repositories/dashboard_repository.dart';
 
@@ -62,6 +64,16 @@ final class DriftDashboardRepository implements DashboardRepository {
         _database.tasks.status.equalsValue(TaskStatus.completed) &
             between(_database.tasks.completedAt, start, tomorrow),
       );
+      final statistics = await DriftStatisticsRepository(
+        _database,
+      ).loadReport(
+        selection: now,
+        granularity: StatisticsGranularity.day,
+      );
+      final approved = switch (statistics) {
+        Success(:final value) => value,
+        FailureResult() => null,
+      };
       return Success(
         DashboardSnapshot(
           today: await count(between(_database.tasks.dueAt, start, tomorrow)),
@@ -82,6 +94,8 @@ final class DriftDashboardRepository implements DashboardRepository {
           recentKnowledge: await _knowledgeCount(),
           recentProjects: await _recentProjectCount(start),
           recentActivity: await _recentActivityCount(start),
+          approvedCompletionRate: approved?.completionRate,
+          approvedProductivityScore: approved?.productivityScore,
         ),
       );
     } on Object {

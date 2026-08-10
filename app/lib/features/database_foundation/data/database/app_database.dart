@@ -14,6 +14,7 @@ import '../../../reminders/data/tables/reminder_tables.dart';
 import '../../../reminders/domain/entities/reminder_enums.dart';
 import '../../../search/data/tables/search_tables.dart';
 import '../../../search/domain/entities/search_models.dart';
+import '../../../statistics/data/tables/statistics_tables.dart';
 import '../../../tasks/data/tables/attachment_table.dart';
 import '../../../tasks/data/tables/checklist_tables.dart';
 import '../../../tasks/data/tables/custom_field_tables.dart';
@@ -72,6 +73,7 @@ part 'app_database.g.dart';
     SearchIndexQueue,
     SearchHistory,
     SavedSearches,
+    DailyStatisticsProjections,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -214,7 +216,7 @@ class AppDatabase extends _$AppDatabase {
           return;
         }
       }
-      if (from <= 5 && to == 6) {
+      if (from <= 5 && to >= 6) {
         await transaction(() async {
           await migrator.createTable(searchDocuments);
           await migrator.createTable(searchIndexQueue);
@@ -228,6 +230,27 @@ class AppDatabase extends _$AppDatabase {
               fromVersion: 5,
               toVersion: 6,
               migrationName: 'sprint_7_search_engine',
+              startedAt: now,
+              completedAt: Value(now),
+              status: MigrationStatus.succeeded,
+            ),
+          );
+          await verifyIntegrity();
+        });
+        if (to == 6) {
+          return;
+        }
+      }
+      if (from <= 6 && to == 7) {
+        await transaction(() async {
+          await migrator.createTable(dailyStatisticsProjections);
+          final now = DateTime.now().toUtc().microsecondsSinceEpoch;
+          await into(migrationHistory).insert(
+            MigrationHistoryCompanion.insert(
+              uuid: UuidGenerator().generate(),
+              fromVersion: 6,
+              toVersion: 7,
+              migrationName: 'sprint_8_statistics',
               startedAt: now,
               completedAt: Value(now),
               status: MigrationStatus.succeeded,
