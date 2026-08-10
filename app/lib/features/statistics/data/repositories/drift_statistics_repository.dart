@@ -168,35 +168,35 @@ final class DriftStatisticsRepository implements StatisticsRepository {
       final delay = row.read<int>('completed_at') - row.read<int>('due_at');
       if (delay > 0) delayTotal += delay;
     }
-      await _database.customStatement(
-        'INSERT INTO daily_statistics_projections('
-        'scope_key,project_id,period_start_utc,period_end_utc,'
-        'timezone_offset_minutes,eligible_count,completed_by_end_count,'
-        'on_time_count,delay_total_microseconds,delay_sample_count,rebuilt_at) '
-        'VALUES (?,?,?,?,?,?,?,?,?,?,?) '
-        'ON CONFLICT(scope_key,period_start_utc) DO UPDATE SET '
-        'project_id=excluded.project_id,period_end_utc=excluded.period_end_utc,'
-        'timezone_offset_minutes=excluded.timezone_offset_minutes,'
-        'eligible_count=excluded.eligible_count,'
-        'completed_by_end_count=excluded.completed_by_end_count,'
-        'on_time_count=excluded.on_time_count,'
-        'delay_total_microseconds=excluded.delay_total_microseconds,'
-        'delay_sample_count=excluded.delay_sample_count,'
-        'rebuilt_at=excluded.rebuilt_at',
-        [
-          _scope(projectId),
-          projectId,
-          startMicros,
-          endMicros,
-          start.timeZoneOffset.inMinutes,
-          eligible,
-          completed,
-          onTime,
-          delayTotal,
-          delayRows.length,
-          _clock().toUtc().microsecondsSinceEpoch,
-        ],
-      );
+    await _database.customStatement(
+      'INSERT INTO daily_statistics_projections('
+      'scope_key,project_id,period_start_utc,period_end_utc,'
+      'timezone_offset_minutes,eligible_count,completed_by_end_count,'
+      'on_time_count,delay_total_microseconds,delay_sample_count,rebuilt_at) '
+      'VALUES (?,?,?,?,?,?,?,?,?,?,?) '
+      'ON CONFLICT(scope_key,period_start_utc) DO UPDATE SET '
+      'project_id=excluded.project_id,period_end_utc=excluded.period_end_utc,'
+      'timezone_offset_minutes=excluded.timezone_offset_minutes,'
+      'eligible_count=excluded.eligible_count,'
+      'completed_by_end_count=excluded.completed_by_end_count,'
+      'on_time_count=excluded.on_time_count,'
+      'delay_total_microseconds=excluded.delay_total_microseconds,'
+      'delay_sample_count=excluded.delay_sample_count,'
+      'rebuilt_at=excluded.rebuilt_at',
+      [
+        _scope(projectId),
+        projectId,
+        startMicros,
+        endMicros,
+        start.timeZoneOffset.inMinutes,
+        eligible,
+        completed,
+        onTime,
+        delayTotal,
+        delayRows.length,
+        _clock().toUtc().microsecondsSinceEpoch,
+      ],
+    );
   }
 
   String _scope(int? projectId) =>
