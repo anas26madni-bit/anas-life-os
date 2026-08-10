@@ -1,44 +1,45 @@
 # Anas Life OS implementation checkpoint
 
-Updated: 2026-08-07 (Asia/Karachi)
+Updated: 2026-08-10 (Asia/Karachi)
 
 ## Current state
 
-- Sprint 7: complete and verified.
-- Sprint 1 through Sprint 7 are complete and frozen.
-- Current branch: `codex/sprint-7-search-engine`.
-- Verified Sprint 7 implementation commit:
-  `4798572c2d4a6f6dd9e2a197d1bc76d55e5d1dcf`.
-- Verified GitHub Actions run: `31176431012`.
-- Working tree status: clean before this checkpoint update.
-- Pending Git operation: merge verified pull request 6 into `main`.
+- Sprint 1 through Sprint 7: complete and frozen.
+- Sprint 1-7 UI/navigation gap closure: complete and verified.
+- Current branch: `codex/ui-gap-closure-sprints-1-7`.
+- Verified implementation commit:
+  `ac5c6bce8bc40fbc6186c7ddbf29e0f075f7427e`.
+- Verified GitHub Actions run: `31369588920`.
+- Pull request: `#7`, pending merge into `main`.
 
 ## Last completed task
 
-- Added schema v6 encrypted FTS5 search for tasks, projects, notes, documents,
-  and authorized attachment metadata.
-- Bound repository creation to a verified, successfully opened SQLCipher
-  database session with memory-only temporary storage.
-- Added mixed Urdu/English search, structured filters and saved searches,
-  deterministic title-weighted ranking, and protected incremental indexing.
-- Added explicit on-device Urdu/English voice search with Android 11 typed
-  fallback and no network, wake word, plugin, or command execution.
-- Verified the 100,000-record 300 ms p95 target, generation, formatting,
-  analyzer, tests, coverage, APK build, and Android 11 integration.
+- Added the shared Dashboard, Tasks, Calendar, Knowledge, More navigation shell
+  with preserved branch state and typed nested routes.
+- Made successful startup enter Dashboard and made authorized universal search
+  globally accessible with source-entity navigation.
+- Completed the approved Sprint 1-7 Dashboard, Tasks, Projects, Reminders,
+  Knowledge, Documents and Calendar presentation workflows and states.
+- Completed English/Urdu localization, RTL/LTR handling, responsive actions,
+  semantics, generated-route verification and focused navigation regressions.
+- Verified generation, formatting, analyzer, unit/widget tests, coverage, debug
+  APK build and all Android 11 Sprint 1-7 integration tests.
 
 ## Next pending task
 
 Sprint 8 — Statistics. Resume at the authoritative formula decision gate for
 `P11-OI-005` / `OI-013` before implementing `STAT-001-008`.
 
-## Blocker
+## Blockers
 
-- Sprint 7 blockers: none.
+- UI/navigation gap closure: none.
 - Sprint 8 must not start until the authoritative statistics formula and
   historical recomputation decision `P11-OI-005` / `OI-013` is resolved.
 - Local mobile tooling remains unavailable; GitHub Actions remains the verified
   build and Android integration authority.
 
-## Resume command
+## Exact resume point
 
-`Resume at the Sprint 8 Statistics decision gate for P11-OI-005 / OI-013 from the merged Sprint 7 main commit; do not modify statistics schema or code until the approved formulas and historical recomputation rules are recorded.`
+After pull request 7 is merged, resume from its verified `main` merge commit at
+the Sprint 8 Statistics decision gate. Do not modify statistics schema or code
+until the approved formulas and historical recomputation rules are recorded.

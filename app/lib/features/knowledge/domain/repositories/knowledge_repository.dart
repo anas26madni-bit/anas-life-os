@@ -4,11 +4,19 @@ import '../entities/knowledge_note.dart';
 
 abstract interface class KnowledgeRepository {
   Future<Result<int>> ensureDefaultSpace();
+  Future<Result<List<KnowledgeSpace>>> spaces();
+  Future<Result<List<KnowledgeFolder>>> folders(int spaceId);
+  Future<Result<KnowledgeFolder>> createFolder({
+    required int spaceId,
+    required String name,
+    int? parentFolderId,
+  });
   Future<Result<KnowledgeNote>> create(KnowledgeNoteDraft draft);
   Future<Result<KnowledgeNote>> update(int id, KnowledgeNoteDraft draft);
   Future<Result<List<KnowledgeNote>>> list({
     KnowledgeNoteType? type,
     String? query,
+    int? folderId,
     int limit = 50,
     int offset = 0,
   });

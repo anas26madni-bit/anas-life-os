@@ -366,6 +366,37 @@ final class DriftTaskSupportRepository implements TaskSupportRepository {
     }
   }
 
+  @override
+  Future<Result<AttachmentTarget?>> attachmentTarget(int attachmentId) async {
+    try {
+      final row =
+          await (_database.select(_database.attachments)..where(
+                (item) =>
+                    item.id.equals(attachmentId) &
+                    item.isDeleted.equals(false) &
+                    item.isHidden.equals(false),
+              ))
+              .getSingleOrNull();
+      return Success(
+        row == null
+            ? null
+            : AttachmentTarget(
+                taskId: row.taskId,
+                projectId: row.projectId,
+                knowledgeNoteId: row.knowledgeNoteId,
+                documentId: row.documentId,
+              ),
+      );
+    } on Object {
+      return const FailureResult(
+        DatabaseFailure(
+          code: 'attachment_target_failed',
+          safeMessage: 'The attachment destination could not be opened.',
+        ),
+      );
+    }
+  }
+
   int get _now => _clock().toUtc().microsecondsSinceEpoch;
 
   Future<CategoryRow> _requireCategory(int id) async {

@@ -151,6 +151,25 @@ final class DriftDocumentRepository implements DocumentRepository {
   }
 
   @override
+  Future<Result<KnowledgeDocument?>> findById(int id) async {
+    try {
+      final document =
+          await (_database.select(_database.documents)..where(
+                (row) => row.id.equals(id) & row.isDeleted.equals(false),
+              ))
+              .getSingleOrNull();
+      return Success(document == null ? null : await _require(id));
+    } on Object {
+      return const FailureResult(
+        DatabaseFailure(
+          code: 'document_read_failed',
+          safeMessage: 'The document could not be loaded.',
+        ),
+      );
+    }
+  }
+
+  @override
   Future<Result<KnowledgeDocument>> softDelete(int id) => _setDeleted(id, true);
 
   @override

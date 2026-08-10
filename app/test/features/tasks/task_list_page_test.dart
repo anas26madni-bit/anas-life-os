@@ -37,7 +37,7 @@ void main() {
     expect(find.text('Offline task'), findsOneWidget);
     await tester.tap(find.byTooltip('Complete task'));
     await tester.pumpAndSettle();
-    expect(find.text('completed'), findsOneWidget);
+    expect(find.text('Completed'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 

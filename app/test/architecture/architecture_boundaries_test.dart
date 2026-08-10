@@ -33,13 +33,16 @@ void main() {
       featureFiles,
       everyElement(
         anyOf(
-          contains('/features/database_foundation/'),
-          contains('/features/tasks/'),
-          contains('/features/reminders/'),
-          contains('/features/knowledge/'),
-          contains('/features/dashboard/'),
-          contains('/features/calendar/'),
-          contains('/features/search/'),
+          anyOf(
+            contains('/features/database_foundation/'),
+            contains('/features/tasks/'),
+            contains('/features/reminders/'),
+            contains('/features/knowledge/'),
+            contains('/features/dashboard/'),
+            contains('/features/calendar/'),
+            contains('/features/search/'),
+          ),
+          contains('/features/more/'),
         ),
       ),
     );

@@ -1,4 +1,4 @@
-name: Sprint 2 quality gates
+name: Quality gates
 
 on:
   workflow_dispatch:
@@ -45,7 +45,26 @@ jobs:
       - name: Verify dependency lock
         run: git diff --exit-code -- pubspec.lock
       - name: Generate source
-        run: dart run build_runner build
+        run: |
+          flutter gen-l10n
+          dart run build_runner build
+      - name: Preserve generated-source diagnostics
+        uses: actions/upload-artifact@v7
+        with:
+          name: generated-source-${{ github.sha }}
+          path: |
+            app/lib/core/router/app_router.g.dart
+            app/lib/l10n/app_localizations.dart
+            app/lib/l10n/app_localizations_en.dart
+            app/lib/l10n/app_localizations_ur.dart
+      - name: Verify generated source is current
+        working-directory: .
+        run: >-
+          git diff --exit-code --
+          app/lib/core/router/app_router.g.dart
+          app/lib/l10n/app_localizations.dart
+          app/lib/l10n/app_localizations_en.dart
+          app/lib/l10n/app_localizations_ur.dart
       - name: Verify formatting
         run: dart format --output=none --set-exit-if-changed .
       - name: Analyze
@@ -93,7 +112,17 @@ jobs:
       - name: Resolve dependencies
         run: flutter pub get
       - name: Generate source
-        run: dart run build_runner build
+        run: |
+          flutter gen-l10n
+          dart run build_runner build
+      - name: Verify generated source is current
+        working-directory: .
+        run: >-
+          git diff --exit-code --
+          app/lib/core/router/app_router.g.dart
+          app/lib/l10n/app_localizations.dart
+          app/lib/l10n/app_localizations_en.dart
+          app/lib/l10n/app_localizations_ur.dart
       - name: Enable hardware acceleration
         working-directory: .
         run: |

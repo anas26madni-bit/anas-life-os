@@ -9,6 +9,15 @@ abstract interface class ProjectRepository {
     String? currencyCode,
     DateTime? dueAt,
   });
+  Future<Result<ProjectEntity>> update(
+    int id, {
+    required String title,
+    String? description,
+    int? budgetMinor,
+    String? currencyCode,
+    DateTime? dueAt,
+  });
+  Future<Result<ProjectEntity?>> findById(int id);
   Future<Result<List<ProjectEntity>>> list({int limit = 50, int offset = 0});
   Future<Result<void>> archive(int id);
   Future<Result<void>> softDelete(int id);

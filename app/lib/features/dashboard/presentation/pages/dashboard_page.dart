@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../core/router/app_router.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../../shared/presentation/app_top_bar.dart';
+import '../../../../shared/presentation/async_state_view.dart';
 import '../../domain/entities/dashboard_models.dart';
 import '../controllers/dashboard_controller.dart';
 
@@ -15,7 +18,7 @@ class DashboardPage extends ConsumerWidget {
     final localization = AppLocalizations.of(context);
     final dashboard = ref.watch(dashboardControllerProvider);
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppTopBar(
         title: Text(localization.dashboardTitle),
         actions: [
           IconButton(
@@ -25,23 +28,20 @@ class DashboardPage extends ConsumerWidget {
                 : null,
             icon: const Icon(Icons.tune),
           ),
-          IconButton(
-            tooltip: localization.calendarTitle,
-            onPressed: () => const CalendarRoute().go(context),
-            icon: const Icon(Icons.calendar_month_outlined),
-          ),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => const TasksRoute().go(context),
+        onPressed: () => const TaskCreateRoute().push<void>(context),
         icon: const Icon(Icons.add_task),
         label: Text(localization.quickAdd),
       ),
       body: SafeArea(
         child: dashboard.when(
-          loading: () =>
-              const Center(child: CircularProgressIndicator.adaptive()),
-          error: (error, stackTrace) => Center(child: Text(error.toString())),
+          loading: LoadingStateView.new,
+          error: (error, stackTrace) => ErrorStateView(
+            message: error.toString(),
+            onRetry: ref.read(dashboardControllerProvider.notifier).refresh,
+          ),
           data: (state) {
             final visible = [
               ...state.preferences,
@@ -59,7 +59,7 @@ class DashboardPage extends ConsumerWidget {
                         )) ...[
                           _DashboardCard(
                             preference: preference,
-                            value: _value(state.snapshot, preference.kind),
+                            snapshot: state.snapshot,
                           ),
                           const SizedBox(height: AppSpacing.sm),
                         ],
@@ -109,14 +109,14 @@ class DashboardPage extends ConsumerWidget {
                           .read(dashboardControllerProvider.notifier)
                           .toggle(item.kind),
                     ),
-                    title: Text(_label(item.kind)),
+                    title: Text(_label(context, item.kind)),
                     subtitle: DropdownButton<DashboardWidgetSize>(
                       value: item.size,
                       items: DashboardWidgetSize.values
                           .map(
                             (size) => DropdownMenuItem(
                               value: size,
-                              child: Text(size.name),
+                              child: Text(_sizeLabel(context, size)),
                             ),
                           )
                           .toList(growable: false),
@@ -126,26 +126,21 @@ class DashboardPage extends ConsumerWidget {
                                 .read(dashboardControllerProvider.notifier)
                                 .resize(item.kind, size),
                     ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          tooltip: AppLocalizations.of(context).moveUp,
-                          onPressed: index == 0
-                              ? null
-                              : () => ref
-                                    .read(dashboardControllerProvider.notifier)
-                                    .move(item.kind, -1),
-                          icon: const Icon(Icons.arrow_upward),
+                    trailing: PopupMenuButton<int>(
+                      tooltip: AppLocalizations.of(context).availableActions,
+                      onSelected: (delta) => ref
+                          .read(dashboardControllerProvider.notifier)
+                          .move(item.kind, delta),
+                      itemBuilder: (context) => [
+                        PopupMenuItem(
+                          value: -1,
+                          enabled: index > 0,
+                          child: Text(AppLocalizations.of(context).moveUp),
                         ),
-                        IconButton(
-                          tooltip: AppLocalizations.of(context).moveDown,
-                          onPressed: index == state.preferences.length - 1
-                              ? null
-                              : () => ref
-                                    .read(dashboardControllerProvider.notifier)
-                                    .move(item.kind, 1),
-                          icon: const Icon(Icons.arrow_downward),
+                        PopupMenuItem(
+                          value: 1,
+                          enabled: index < state.preferences.length - 1,
+                          child: Text(AppLocalizations.of(context).moveDown),
                         ),
                       ],
                     ),
@@ -159,41 +154,51 @@ class DashboardPage extends ConsumerWidget {
     ),
   );
 
-  static String _value(DashboardSnapshot snapshot, DashboardWidgetKind kind) =>
-      switch (kind) {
-        DashboardWidgetKind.today => '${snapshot.today}',
-        DashboardWidgetKind.tomorrow => '${snapshot.tomorrow}',
-        DashboardWidgetKind.pending => '${snapshot.pending}',
-        DashboardWidgetKind.overdue => '${snapshot.overdue}',
-        DashboardWidgetKind.completedToday => '${snapshot.completedToday}',
-        DashboardWidgetKind.upcoming => '${snapshot.upcoming}',
-        DashboardWidgetKind.favorites => '${snapshot.favorites}',
-        DashboardWidgetKind.progress =>
-          '${(snapshot.completionRate * 100).round()}%',
-        DashboardWidgetKind.recentKnowledge => '${snapshot.recentKnowledge}',
-      };
-
-  static String _label(DashboardWidgetKind kind) => switch (kind) {
-    DashboardWidgetKind.today => 'Today',
-    DashboardWidgetKind.tomorrow => 'Tomorrow',
-    DashboardWidgetKind.pending => 'Pending',
-    DashboardWidgetKind.overdue => 'Overdue',
-    DashboardWidgetKind.completedToday => 'Completed today',
-    DashboardWidgetKind.upcoming => 'Next seven days',
-    DashboardWidgetKind.favorites => 'Pinned and favorites',
-    DashboardWidgetKind.progress => 'Completion progress',
-    DashboardWidgetKind.recentKnowledge => 'Knowledge notes',
+  static String _value(
+    BuildContext context,
+    DashboardSnapshot snapshot,
+    DashboardWidgetKind kind,
+  ) => switch (kind) {
+    DashboardWidgetKind.today => '${snapshot.today}',
+    DashboardWidgetKind.tomorrow => '${snapshot.tomorrow}',
+    DashboardWidgetKind.pending => '${snapshot.pending}',
+    DashboardWidgetKind.overdue => '${snapshot.overdue}',
+    DashboardWidgetKind.completedToday => '${snapshot.completedToday}',
+    DashboardWidgetKind.upcoming => '${snapshot.upcoming}',
+    DashboardWidgetKind.favorites => '${snapshot.favorites}',
+    DashboardWidgetKind.progress =>
+      '${(snapshot.completionRate * 100).round()}%',
+    DashboardWidgetKind.recentKnowledge => '${snapshot.recentKnowledge}',
+    DashboardWidgetKind.dateTime => DateFormat.yMMMMEEEEd().add_jm().format(
+      DateTime.now(),
+    ),
+    DashboardWidgetKind.quickActions => AppLocalizations.of(
+      context,
+    ).availableActions,
+    DashboardWidgetKind.miniCalendar => DateFormat.yMMMM().format(
+      DateTime.now(),
+    ),
+    DashboardWidgetKind.recentProjects => '${snapshot.recentProjects}',
+    DashboardWidgetKind.recentActivity => '${snapshot.recentActivity}',
+    DashboardWidgetKind.productivity => '${snapshot.productivityScore}%',
   };
+
+  static String _label(BuildContext context, DashboardWidgetKind kind) =>
+      AppLocalizations.of(context).dashboardWidgetLabel(kind.name);
+
+  static String _sizeLabel(BuildContext context, DashboardWidgetSize size) =>
+      AppLocalizations.of(context).dashboardSizeLabel(size.name);
 }
 
 class _DashboardCard extends StatelessWidget {
-  const _DashboardCard({required this.preference, required this.value});
+  const _DashboardCard({required this.preference, required this.snapshot});
   final DashboardWidgetPreference preference;
-  final String value;
+  final DashboardSnapshot snapshot;
 
   @override
   Widget build(BuildContext context) => Semantics(
-    label: '${DashboardPage._label(preference.kind)}: $value',
+    label:
+        '${DashboardPage._label(context, preference.kind)}: ${DashboardPage._value(context, snapshot, preference.kind)}',
     child: Card(
       child: ConstrainedBox(
         constraints: BoxConstraints(
@@ -209,13 +214,81 @@ class _DashboardCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(DashboardPage._label(preference.kind)),
+              Text(DashboardPage._label(context, preference.kind)),
               const SizedBox(height: AppSpacing.xs),
-              Text(value, style: Theme.of(context).textTheme.headlineMedium),
+              if (preference.kind == DashboardWidgetKind.quickActions)
+                _QuickActions()
+              else if (preference.kind == DashboardWidgetKind.miniCalendar)
+                _MiniCalendar()
+              else
+                Text(
+                  DashboardPage._value(context, snapshot, preference.kind),
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
             ],
           ),
         ),
       ),
     ),
   );
+}
+
+class _QuickActions extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
+    return Wrap(
+      spacing: AppSpacing.sm,
+      runSpacing: AppSpacing.sm,
+      children: [
+        ActionChip(
+          avatar: const Icon(Icons.add_task, size: 18),
+          label: Text(localization.tasksTitle),
+          onPressed: () => const TasksRoute().go(context),
+        ),
+        ActionChip(
+          avatar: const Icon(Icons.calendar_month_outlined, size: 18),
+          label: Text(localization.calendarTitle),
+          onPressed: () => const CalendarRoute().go(context),
+        ),
+        ActionChip(
+          avatar: const Icon(Icons.search, size: 18),
+          label: Text(localization.searchTitle),
+          onPressed: () => const SearchRoute().push<void>(context),
+        ),
+      ],
+    );
+  }
+}
+
+class _MiniCalendar extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final now = DateTime.now();
+    final days = DateUtils.getDaysInMonth(now.year, now.month);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(DateFormat.yMMMM().format(now)),
+        const SizedBox(height: AppSpacing.xs),
+        GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 7,
+            mainAxisExtent: 32,
+          ),
+          itemCount: days,
+          itemBuilder: (context, index) => Center(
+            child: Text(
+              '${index + 1}',
+              style: index + 1 == now.day
+                  ? TextStyle(color: Theme.of(context).colorScheme.primary)
+                  : null,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }

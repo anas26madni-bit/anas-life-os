@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../router/app_router.dart';
@@ -33,7 +34,7 @@ class FoundationPage extends ConsumerWidget {
                         ref.read(startupControllerProvider.notifier).retry(),
                   ),
                   data: (report) => report.isReady
-                      ? const _ReadyContent()
+                      ? const _StartupSuccess()
                       : _FailureContent(
                           onRetry: () => ref
                               .read(startupControllerProvider.notifier)
@@ -46,6 +47,20 @@ class FoundationPage extends ConsumerWidget {
         ),
       ),
     );
+  }
+}
+
+class _StartupSuccess extends StatelessWidget {
+  const _StartupSuccess();
+
+  @override
+  Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (context.mounted && GoRouter.maybeOf(context) != null) {
+        const DashboardRoute().go(context);
+      }
+    });
+    return const _ReadyContent();
   }
 }
 
@@ -64,46 +79,6 @@ class _ReadyContent extends StatelessWidget {
       ),
       title: localization.foundationReadyTitle,
       message: localization.foundationReadyMessage,
-      action: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          FilledButton.icon(
-            onPressed: () => const DashboardRoute().go(context),
-            icon: const Icon(Icons.dashboard_outlined),
-            label: Text(localization.openDashboard),
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          FilledButton.icon(
-            onPressed: () => const TasksRoute().go(context),
-            icon: const Icon(Icons.task_alt),
-            label: Text(localization.openTasks),
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          OutlinedButton.icon(
-            onPressed: () => const RemindersRoute().go(context),
-            icon: const Icon(Icons.notifications_active_outlined),
-            label: Text(localization.openReminders),
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          OutlinedButton.icon(
-            onPressed: () => const KnowledgeRoute().go(context),
-            icon: const Icon(Icons.auto_stories_outlined),
-            label: Text(localization.openKnowledge),
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          OutlinedButton.icon(
-            onPressed: () => const CalendarRoute().go(context),
-            icon: const Icon(Icons.calendar_month_outlined),
-            label: Text(localization.openCalendar),
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          OutlinedButton.icon(
-            onPressed: () => const SearchRoute().go(context),
-            icon: const Icon(Icons.manage_search),
-            label: Text(localization.openSearch),
-          ),
-        ],
-      ),
     );
   }
 }

@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../../shared/presentation/app_top_bar.dart';
+import '../../../../shared/presentation/async_state_view.dart';
 import '../../domain/entities/knowledge_enums.dart';
 import '../../domain/entities/knowledge_note.dart';
 import '../controllers/knowledge_controller.dart';
@@ -23,13 +25,13 @@ class KnowledgeHomePage extends ConsumerWidget {
       }
     });
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppTopBar(
         title: Text(localization.knowledgeTitle),
         actions: [
           IconButton(
-            tooltip: localization.documentsTitle,
-            onPressed: () => const DocumentsRoute().go(context),
-            icon: const Icon(Icons.folder_copy_outlined),
+            tooltip: localization.createFolder,
+            onPressed: () => _createFolder(context, ref),
+            icon: const Icon(Icons.create_new_folder_outlined),
           ),
         ],
       ),
@@ -41,6 +43,53 @@ class KnowledgeHomePage extends ConsumerWidget {
       body: SafeArea(
         child: Column(
           children: [
+            Consumer(
+              builder: (context, ref, _) => ref
+                  .watch(knowledgeHierarchyProvider)
+                  .when(
+                    loading: () => const SizedBox.shrink(),
+                    error: (_, _) => const SizedBox.shrink(),
+                    data: (hierarchy) => SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.sm,
+                      ),
+                      child: Row(
+                        children: [
+                          for (final space in hierarchy.$1)
+                            Chip(
+                              avatar: const Icon(
+                                Icons.space_dashboard_outlined,
+                                size: 18,
+                              ),
+                              label: Text(space.name),
+                            ),
+                          for (final folder in hierarchy.$2)
+                            FilterChip(
+                              avatar: const Icon(
+                                Icons.folder_outlined,
+                                size: 18,
+                              ),
+                              label: Text(folder.name),
+                              selected:
+                                  ref
+                                      .read(
+                                        knowledgeListControllerProvider
+                                            .notifier,
+                                      )
+                                      .folderId ==
+                                  folder.id,
+                              onSelected: (selected) => ref
+                                  .read(
+                                    knowledgeListControllerProvider.notifier,
+                                  )
+                                  .selectFolder(selected ? folder.id : null),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+            ),
             Padding(
               padding: const EdgeInsets.fromLTRB(
                 AppSpacing.md,
@@ -88,10 +137,11 @@ class KnowledgeHomePage extends ConsumerWidget {
               child: notes.when(
                 loading: () =>
                     const Center(child: CircularProgressIndicator.adaptive()),
-                error: (error, stackTrace) => _KnowledgeMessage(
-                  icon: Icons.error_outline,
-                  title: localization.knowledgeErrorTitle,
+                error: (error, stackTrace) => ErrorStateView(
                   message: error.toString(),
+                  onRetry: ref
+                      .read(knowledgeListControllerProvider.notifier)
+                      .refresh,
                 ),
                 data: (items) => items.isEmpty
                     ? _KnowledgeMessage(
@@ -124,6 +174,9 @@ class KnowledgeHomePage extends ConsumerWidget {
                             onDelete: () => ref
                                 .read(knowledgeListControllerProvider.notifier)
                                 .delete(items[index].id),
+                            onOpen: () => KnowledgeDetailRoute(
+                              items[index].id,
+                            ).push<void>(context),
                           ),
                         ),
                       ),
@@ -133,6 +186,40 @@ class KnowledgeHomePage extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _createFolder(BuildContext context, WidgetRef ref) async {
+    var name = '';
+    final value = await showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(AppLocalizations.of(context).createFolder),
+        content: TextField(
+          autofocus: true,
+          maxLength: 200,
+          decoration: InputDecoration(
+            labelText: AppLocalizations.of(context).folderName,
+          ),
+          onChanged: (text) => name = text,
+          onSubmitted: (text) => Navigator.pop(context, text.trim()),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(AppLocalizations.of(context).cancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, name.trim()),
+            child: Text(AppLocalizations.of(context).save),
+          ),
+        ],
+      ),
+    );
+    if (value != null && value.isNotEmpty) {
+      await ref
+          .read(knowledgeListControllerProvider.notifier)
+          .createFolder(value);
+    }
   }
 
   Future<void> _showEditor(BuildContext context, WidgetRef ref) async {
@@ -242,14 +329,17 @@ class _KnowledgeCard extends StatelessWidget {
     required this.note,
     required this.onFavorite,
     required this.onDelete,
+    required this.onOpen,
   });
   final KnowledgeNote note;
   final VoidCallback onFavorite;
   final VoidCallback onDelete;
+  final VoidCallback onOpen;
 
   @override
   Widget build(BuildContext context) => Card(
     child: ListTile(
+      onTap: onOpen,
       leading: Icon(switch (note.type) {
         KnowledgeNoteType.note => Icons.notes_outlined,
         KnowledgeNoteType.journal => Icons.book_outlined,

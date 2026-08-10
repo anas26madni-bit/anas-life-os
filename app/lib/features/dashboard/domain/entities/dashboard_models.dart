@@ -8,6 +8,12 @@ enum DashboardWidgetKind {
   favorites,
   progress,
   recentKnowledge,
+  dateTime,
+  quickActions,
+  miniCalendar,
+  recentProjects,
+  recentActivity,
+  productivity,
 }
 
 enum DashboardWidgetSize { compact, regular, expanded }
@@ -47,6 +53,8 @@ final class DashboardSnapshot {
     required this.upcoming,
     required this.favorites,
     required this.recentKnowledge,
+    this.recentProjects = 0,
+    this.recentActivity = 0,
   });
 
   final int today;
@@ -57,8 +65,11 @@ final class DashboardSnapshot {
   final int upcoming;
   final int favorites;
   final int recentKnowledge;
+  final int recentProjects;
+  final int recentActivity;
 
   int get activeTotal => pending + completedToday;
   double get completionRate =>
       activeTotal == 0 ? 0 : completedToday / activeTotal;
+  int get productivityScore => (completionRate * 100).round();
 }

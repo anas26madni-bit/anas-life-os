@@ -1,5 +1,18 @@
 import 'task_enums.dart';
 
+final class AttachmentTarget {
+  const AttachmentTarget({
+    this.taskId,
+    this.projectId,
+    this.knowledgeNoteId,
+    this.documentId,
+  });
+  final int? taskId;
+  final int? projectId;
+  final int? knowledgeNoteId;
+  final int? documentId;
+}
+
 final class AttachmentDraft {
   const AttachmentDraft({
     required this.taskId,

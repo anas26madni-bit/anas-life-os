@@ -53,6 +53,114 @@ final class DriftKnowledgeRepository implements KnowledgeRepository {
   }
 
   @override
+  Future<Result<List<KnowledgeSpace>>> spaces() async {
+    try {
+      final rows =
+          await (_database.select(_database.knowledgeSpaces)
+                ..where((row) => row.isDeleted.equals(false))
+                ..orderBy([(row) => OrderingTerm.asc(row.sortOrder)]))
+              .get();
+      return Success(
+        rows
+            .map((row) => KnowledgeSpace(id: row.id, name: row.name))
+            .toList(growable: false),
+      );
+    } on Object {
+      return const FailureResult(
+        DatabaseFailure(
+          code: 'knowledge_spaces_failed',
+          safeMessage: 'Knowledge spaces could not be loaded.',
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Result<List<KnowledgeFolder>>> folders(int spaceId) async {
+    try {
+      await _requireSpace(spaceId);
+      final rows =
+          await (_database.select(_database.knowledgeFolders)
+                ..where(
+                  (row) =>
+                      row.spaceId.equals(spaceId) & row.isDeleted.equals(false),
+                )
+                ..orderBy([(row) => OrderingTerm.asc(row.sortOrder)]))
+              .get();
+      return Success(
+        rows
+            .map(
+              (row) => KnowledgeFolder(
+                id: row.id,
+                spaceId: row.spaceId,
+                parentFolderId: row.parentFolderId,
+                name: row.name,
+              ),
+            )
+            .toList(growable: false),
+      );
+    } on Object {
+      return const FailureResult(
+        DatabaseFailure(
+          code: 'knowledge_folders_failed',
+          safeMessage: 'Knowledge folders could not be loaded.',
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Result<KnowledgeFolder>> createFolder({
+    required int spaceId,
+    required String name,
+    int? parentFolderId,
+  }) async {
+    final normalized = name.trim();
+    if (normalized.isEmpty || normalized.length > 200) {
+      return const FailureResult(
+        ValidationFailure(
+          code: 'invalid_knowledge_folder',
+          safeMessage: 'Enter a folder name of 200 characters or fewer.',
+        ),
+      );
+    }
+    try {
+      await _requireSpace(spaceId);
+      if (parentFolderId != null) {
+        await _validateFolder(spaceId, parentFolderId);
+      }
+      final now = _now;
+      final id = await _database
+          .into(_database.knowledgeFolders)
+          .insert(
+            KnowledgeFoldersCompanion.insert(
+              uuid: _uuidFactory(),
+              spaceId: spaceId,
+              name: normalized,
+              parentFolderId: Value(parentFolderId),
+              createdAt: now,
+              updatedAt: now,
+            ),
+          );
+      return Success(
+        KnowledgeFolder(
+          id: id,
+          spaceId: spaceId,
+          parentFolderId: parentFolderId,
+          name: normalized,
+        ),
+      );
+    } on Object {
+      return const FailureResult(
+        DatabaseFailure(
+          code: 'knowledge_folder_create_failed',
+          safeMessage: 'The knowledge folder could not be created.',
+        ),
+      );
+    }
+  }
+
+  @override
   Future<Result<KnowledgeNote>> create(KnowledgeNoteDraft draft) async {
     final validation = _validate(draft);
     if (validation != null) return FailureResult(validation);
@@ -157,6 +265,7 @@ final class DriftKnowledgeRepository implements KnowledgeRepository {
   Future<Result<List<KnowledgeNote>>> list({
     KnowledgeNoteType? type,
     String? query,
+    int? folderId,
     int limit = 50,
     int offset = 0,
   }) async {
@@ -172,6 +281,9 @@ final class DriftKnowledgeRepository implements KnowledgeRepository {
       final select = _database.select(_database.knowledgeNotes)
         ..where((row) => row.isDeleted.equals(false));
       if (type != null) select.where((row) => row.noteType.equalsValue(type));
+      if (folderId != null) {
+        select.where((row) => row.folderId.equals(folderId));
+      }
       final term = query?.trim();
       if (term != null && term.isNotEmpty) {
         select.where(

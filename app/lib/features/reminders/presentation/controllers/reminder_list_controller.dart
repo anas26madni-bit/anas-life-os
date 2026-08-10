@@ -4,6 +4,7 @@ import '../../../../core/errors/result.dart';
 import '../../../../core/providers/infrastructure_providers.dart';
 import '../../domain/entities/reminder_draft.dart';
 import '../../domain/entities/reminder_entity.dart';
+import '../../domain/entities/reminder_enums.dart';
 import '../../domain/usecases/reminder_use_cases.dart';
 
 final reminderUseCasesProvider = FutureProvider<ReminderUseCases>((ref) async {
@@ -27,6 +28,28 @@ class ReminderListController extends AsyncNotifier<List<ReminderEntity>> {
 
   Future<void> create(ReminderDraft draft) async {
     await _mutate((useCases) => useCases.create(draft));
+  }
+
+  Future<void> updateReminder(int id, ReminderDraft draft) async {
+    await _mutate((useCases) => useCases.update(id, draft));
+  }
+
+  Future<List<ReminderHistoryEntity>> missedReport() async {
+    final useCases = await ref.read(reminderUseCasesProvider.future);
+    return _unwrap(await useCases.missedReport());
+  }
+
+  Future<void> recordSnooze(ReminderEntity reminder) async {
+    final repository = await ref.read(reminderRepositoryProvider.future);
+    _unwrap(
+      await repository.recordAction(
+        reminderId: reminder.id,
+        occurrenceUuid: reminder.uuid,
+        action: ReminderAction.snoozed,
+        occurredAt: DateTime.now().toUtc(),
+        snoozeCount: 1,
+      ),
+    );
   }
 
   Future<void> setEnabled(int id, bool enabled) async {

@@ -80,6 +80,8 @@ final class DriftDashboardRepository implements DashboardRepository {
                 _database.tasks.pinned.equals(true),
           ),
           recentKnowledge: await _knowledgeCount(),
+          recentProjects: await _recentProjectCount(start),
+          recentActivity: await _recentActivityCount(start),
         ),
       );
     } on Object {
@@ -99,6 +101,23 @@ final class DriftDashboardRepository implements DashboardRepository {
       if (rows.isEmpty) {
         await _write(defaults);
         rows = await _preferenceRows();
+      } else {
+        final existing = rows.map((row) => row.kind).toSet();
+        final merged = [
+          ...rows.map(
+            (row) => DashboardWidgetPreference(
+              kind: row.kind,
+              visible: row.visible,
+              sortOrder: row.sortOrder,
+              size: row.size,
+            ),
+          ),
+          ...defaults.where((item) => !existing.contains(item.kind)),
+        ];
+        if (merged.length != rows.length) {
+          await _write(merged);
+          rows = await _preferenceRows();
+        }
       }
       return Success(
         rows
@@ -185,6 +204,35 @@ final class DriftDashboardRepository implements DashboardRepository {
     return (_database.selectOnly(_database.knowledgeNotes)
           ..addColumns([total])
           ..where(_database.knowledgeNotes.isDeleted.equals(false)))
+        .map((row) => row.read(total) ?? 0)
+        .getSingle();
+  }
+
+  Future<int> _recentProjectCount(DateTime start) async {
+    final total = _database.projects.id.count();
+    final since = start.subtract(const Duration(days: 30));
+    return (_database.selectOnly(_database.projects)
+          ..addColumns([total])
+          ..where(
+            _database.projects.isDeleted.equals(false) &
+                _database.projects.updatedAt.isBiggerOrEqualValue(
+                  _micros(since),
+                ),
+          ))
+        .map((row) => row.read(total) ?? 0)
+        .getSingle();
+  }
+
+  Future<int> _recentActivityCount(DateTime start) async {
+    final total = _database.taskHistory.id.count();
+    final since = start.subtract(const Duration(days: 7));
+    return (_database.selectOnly(_database.taskHistory)
+          ..addColumns([total])
+          ..where(
+            _database.taskHistory.changedAt.isBiggerOrEqualValue(
+              _micros(since),
+            ),
+          ))
         .map((row) => row.read(total) ?? 0)
         .getSingle();
   }

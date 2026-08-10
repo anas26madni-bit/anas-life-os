@@ -8,9 +8,9 @@ This roadmap is derived from the approved Part 11 Master. Part 11 remains the so
 | 2 | Database Foundation | SQLite, entities, repositories, indexes, migrations, soft delete, audit fields, encryption preparation, backup metadata, database tests | Complete |
 | 3 | Task Engine | Tasks, CRUD, categories, priorities, status, subtasks, attachments, recurrence, validation, repository, tests | Complete |
 | 4 | Reminder Engine | Scheduling, notifications, exact-alarm handling, recurrence, snooze, missed detection, history, tests | Complete |
-| 5 | Knowledge Vault | Notes, Journal, Wiki, Documents, tags, cross-references, knowledge search, attachments | Not started |
-| 6 | Dashboard | Dashboard, customizable widgets, calendar, quick actions, statistics cards, today's and pending tasks | Not started |
-| 7 | Search Engine | Global search, filters, sorting, tag/knowledge/attachment search, Urdu/English search, optimization | Not started |
+| 5 | Knowledge Vault | Notes, Journal, Wiki, Documents, tags, cross-references, knowledge search, attachments | Complete |
+| 6 | Dashboard | Dashboard, customizable widgets, calendar, quick actions, statistics cards, today's and pending tasks | Complete |
+| 7 | Search Engine | Global search, filters, sorting, tag/knowledge/attachment search, Urdu/English search, optimization | Complete |
 | 8 | Statistics | Reports, charts, productivity score, completion rate, delay analysis, historical trends | Not started |
 | 9 | Backup | Backup, restore, integrity validation, encrypted export, import, recovery tests | Not started |
 | 10 | Security | PIN, biometric authentication, encryption, hidden items, secure storage, permission validation | Not started |
