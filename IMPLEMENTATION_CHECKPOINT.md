@@ -6,11 +6,12 @@ Updated: 2026-08-10 (Asia/Karachi)
 
 - Sprint 1 through Sprint 8: complete and frozen.
 - Sprint 1-7 UI/navigation gap closure: complete and verified.
-- Current branch: `codex/sprint-8-statistics`.
+- Current branch: `main`.
 - Verified implementation commit:
   `b2809c1cc64b35e472e90c46819dfc3080aaef8a`.
 - Verified GitHub Actions run: `31378801983`.
-- Pull request: `#8`, ready to merge into `main`.
+- Verified merge commit: `1a88d4ea229864772b39202484ca349e6751d18a`.
+- Pull request: `#8`, merged into `main`.
 
 ## Last completed task
 
@@ -25,8 +26,8 @@ Updated: 2026-08-10 (Asia/Karachi)
 
 ## Next pending task
 
-Sprint 9 - Backup. Resume from the authoritative Sprint 9 scope and pending
-backup decisions after Pull Request #8 is merged into `main`.
+Sprint 9 - Backup. Resume from its authoritative scope and pending backup
+decisions on verified `main`.
 
 ## Blockers
 
@@ -36,6 +37,7 @@ backup decisions after Pull Request #8 is merged into `main`.
 
 ## Exact resume point
 
-Merge verified Pull Request #8, switch to updated `main`, then begin Sprint 9
-Backup at its authoritative decision gate. Do not reopen the approved Sprint 8
-statistics formulas or alter the rebuild policy without Product Owner approval.
+Resume from verified `main` merge commit
+`1a88d4ea229864772b39202484ca349e6751d18a` at the Sprint 9 Backup decision
+gate. Do not reopen the approved Sprint 8 statistics formulas or alter the
+rebuild policy without Product Owner approval.
