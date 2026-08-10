@@ -191,16 +191,15 @@ class CalendarPage extends ConsumerWidget {
     AppLocalizations localization,
     DateTime date,
     CalendarViewMode view,
-  ) =>
-      switch (view) {
-        CalendarViewMode.day ||
-        CalendarViewMode.timeline => DateFormat.yMMMMd().format(date),
-        CalendarViewMode.week || CalendarViewMode.agenda =>
-          localization.weekStarting(DateFormat.yMMMd().format(date)),
-        CalendarViewMode.month ||
-        CalendarViewMode.heatMap => DateFormat.yMMMM().format(date),
-        CalendarViewMode.year => DateFormat.y().format(date),
-      };
+  ) => switch (view) {
+    CalendarViewMode.day ||
+    CalendarViewMode.timeline => DateFormat.yMMMMd().format(date),
+    CalendarViewMode.week || CalendarViewMode.agenda =>
+      localization.weekStarting(DateFormat.yMMMd().format(date)),
+    CalendarViewMode.month ||
+    CalendarViewMode.heatMap => DateFormat.yMMMM().format(date),
+    CalendarViewMode.year => DateFormat.y().format(date),
+  };
 }
 
 class _CalendarContent extends StatelessWidget {
@@ -255,11 +254,23 @@ class _CalendarContent extends StatelessWidget {
     }
     return switch (state.view) {
       CalendarViewMode.day => _DayTimeline(items: state.items),
-      CalendarViewMode.week => _WeekGrid(anchor: state.anchor, items: state.items),
-      CalendarViewMode.month => _MonthGrid(anchor: state.anchor, items: state.items),
-      CalendarViewMode.year => _YearGrid(anchor: state.anchor, items: state.items),
+      CalendarViewMode.week => _WeekGrid(
+        anchor: state.anchor,
+        items: state.items,
+      ),
+      CalendarViewMode.month => _MonthGrid(
+        anchor: state.anchor,
+        items: state.items,
+      ),
+      CalendarViewMode.year => _YearGrid(
+        anchor: state.anchor,
+        items: state.items,
+      ),
       CalendarViewMode.agenda => _Agenda(items: state.items),
-      CalendarViewMode.timeline => _DayTimeline(items: state.items, detailed: true),
+      CalendarViewMode.timeline => _DayTimeline(
+        items: state.items,
+        detailed: true,
+      ),
       CalendarViewMode.heatMap => const SizedBox.shrink(),
     };
   }
@@ -271,24 +282,24 @@ class _Agenda extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListView.separated(
-      padding: const EdgeInsets.fromLTRB(AppSpacing.md, 0, AppSpacing.md, 96),
-      itemCount: items.length,
-      separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.xs),
-      itemBuilder: (context, index) {
-        final item = items[index];
-        return Card(
-          child: ListTile(
-            leading: Icon(
-              item.kind == CalendarItemKind.task
-                  ? Icons.task_alt
-                  : Icons.event_outlined,
-            ),
-            title: Text(item.title),
-            subtitle: Text(DateFormat.yMMMd().add_jm().format(item.startAt)),
+    padding: const EdgeInsets.fromLTRB(AppSpacing.md, 0, AppSpacing.md, 96),
+    itemCount: items.length,
+    separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.xs),
+    itemBuilder: (context, index) {
+      final item = items[index];
+      return Card(
+        child: ListTile(
+          leading: Icon(
+            item.kind == CalendarItemKind.task
+                ? Icons.task_alt
+                : Icons.event_outlined,
           ),
-        );
-      },
-    );
+          title: Text(item.title),
+          subtitle: Text(DateFormat.yMMMd().add_jm().format(item.startAt)),
+        ),
+      );
+    },
+  );
 }
 
 class _DayTimeline extends StatelessWidget {
@@ -345,11 +356,22 @@ class _WeekGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ListView.builder(
     scrollDirection: Axis.horizontal,
-    padding: const EdgeInsets.fromLTRB(AppSpacing.md, 0, AppSpacing.md, AppSpacing.md),
+    padding: const EdgeInsets.fromLTRB(
+      AppSpacing.md,
+      0,
+      AppSpacing.md,
+      AppSpacing.md,
+    ),
     itemCount: 7,
     itemBuilder: (context, index) {
-      final day = DateTime(anchor.year, anchor.month, anchor.day).add(Duration(days: index));
-      final dayItems = items.where((item) => DateUtils.isSameDay(item.startAt.toLocal(), day));
+      final day = DateTime(
+        anchor.year,
+        anchor.month,
+        anchor.day,
+      ).add(Duration(days: index));
+      final dayItems = items.where(
+        (item) => DateUtils.isSameDay(item.startAt.toLocal(), day),
+      );
       return SizedBox(
         width: 152,
         child: Card(
@@ -358,12 +380,19 @@ class _WeekGrid extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(DateFormat.E().add_d().format(day), style: Theme.of(context).textTheme.titleSmall),
+                Text(
+                  DateFormat.E().add_d().format(day),
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
                 const Divider(),
                 for (final item in dayItems)
                   Padding(
                     padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-                    child: Text(item.title, maxLines: 3, overflow: TextOverflow.ellipsis),
+                    child: Text(
+                      item.title,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
               ],
             ),
@@ -391,9 +420,13 @@ class _MonthGrid extends StatelessWidget {
       itemCount: count,
       itemBuilder: (context, index) {
         final day = index + 1;
-        final dayItems = items.where((item) => item.startAt.toLocal().day == day).toList();
+        final dayItems = items
+            .where((item) => item.startAt.toLocal().day == day)
+            .toList();
         return Semantics(
-          label: AppLocalizations.of(context).calendarDayItems(day, dayItems.length),
+          label: AppLocalizations.of(
+            context,
+          ).calendarDayItems(day, dayItems.length),
           child: Card(
             child: Padding(
               padding: const EdgeInsets.all(4),
@@ -401,7 +434,12 @@ class _MonthGrid extends StatelessWidget {
                 children: [
                   Text('$day'),
                   for (final item in dayItems.take(2))
-                    Text(item.title, maxLines: 1, overflow: TextOverflow.ellipsis, style: Theme.of(context).textTheme.labelSmall),
+                    Text(
+                      item.title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.labelSmall,
+                    ),
                 ],
               ),
             ),
@@ -427,7 +465,9 @@ class _YearGrid extends StatelessWidget {
     itemCount: 12,
     itemBuilder: (context, index) {
       final month = index + 1;
-      final count = items.where((item) => item.startAt.toLocal().month == month).length;
+      final count = items
+          .where((item) => item.startAt.toLocal().month == month)
+          .length;
       return Card(
         child: Center(
           child: Column(

@@ -116,7 +116,7 @@ class DashboardPage extends ConsumerWidget {
                           .map(
                             (size) => DropdownMenuItem(
                               value: size,
-                            child: Text(_sizeLabel(context, size)),
+                              child: Text(_sizeLabel(context, size)),
                             ),
                           )
                           .toList(growable: false),
@@ -158,25 +158,30 @@ class DashboardPage extends ConsumerWidget {
     BuildContext context,
     DashboardSnapshot snapshot,
     DashboardWidgetKind kind,
-  ) =>
-      switch (kind) {
-        DashboardWidgetKind.today => '${snapshot.today}',
-        DashboardWidgetKind.tomorrow => '${snapshot.tomorrow}',
-        DashboardWidgetKind.pending => '${snapshot.pending}',
-        DashboardWidgetKind.overdue => '${snapshot.overdue}',
-        DashboardWidgetKind.completedToday => '${snapshot.completedToday}',
-        DashboardWidgetKind.upcoming => '${snapshot.upcoming}',
-        DashboardWidgetKind.favorites => '${snapshot.favorites}',
-        DashboardWidgetKind.progress =>
-          '${(snapshot.completionRate * 100).round()}%',
-        DashboardWidgetKind.recentKnowledge => '${snapshot.recentKnowledge}',
-        DashboardWidgetKind.dateTime => DateFormat.yMMMMEEEEd().add_jm().format(DateTime.now()),
-        DashboardWidgetKind.quickActions => AppLocalizations.of(context).availableActions,
-        DashboardWidgetKind.miniCalendar => DateFormat.yMMMM().format(DateTime.now()),
-        DashboardWidgetKind.recentProjects => '${snapshot.recentProjects}',
-        DashboardWidgetKind.recentActivity => '${snapshot.recentActivity}',
-        DashboardWidgetKind.productivity => '${snapshot.productivityScore}%',
-      };
+  ) => switch (kind) {
+    DashboardWidgetKind.today => '${snapshot.today}',
+    DashboardWidgetKind.tomorrow => '${snapshot.tomorrow}',
+    DashboardWidgetKind.pending => '${snapshot.pending}',
+    DashboardWidgetKind.overdue => '${snapshot.overdue}',
+    DashboardWidgetKind.completedToday => '${snapshot.completedToday}',
+    DashboardWidgetKind.upcoming => '${snapshot.upcoming}',
+    DashboardWidgetKind.favorites => '${snapshot.favorites}',
+    DashboardWidgetKind.progress =>
+      '${(snapshot.completionRate * 100).round()}%',
+    DashboardWidgetKind.recentKnowledge => '${snapshot.recentKnowledge}',
+    DashboardWidgetKind.dateTime => DateFormat.yMMMMEEEEd().add_jm().format(
+      DateTime.now(),
+    ),
+    DashboardWidgetKind.quickActions => AppLocalizations.of(
+      context,
+    ).availableActions,
+    DashboardWidgetKind.miniCalendar => DateFormat.yMMMM().format(
+      DateTime.now(),
+    ),
+    DashboardWidgetKind.recentProjects => '${snapshot.recentProjects}',
+    DashboardWidgetKind.recentActivity => '${snapshot.recentActivity}',
+    DashboardWidgetKind.productivity => '${snapshot.productivityScore}%',
+  };
 
   static String _label(BuildContext context, DashboardWidgetKind kind) =>
       AppLocalizations.of(context).dashboardWidgetLabel(kind.name);

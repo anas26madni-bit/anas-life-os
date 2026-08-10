@@ -65,9 +65,7 @@ class SearchRoute extends GoRouteData with $SearchRoute {
       routes: [
         TypedGoRoute<KnowledgeRoute>(
           path: '/knowledge',
-          routes: [
-            TypedGoRoute<KnowledgeDetailRoute>(path: 'notes/:noteId'),
-          ],
+          routes: [TypedGoRoute<KnowledgeDetailRoute>(path: 'notes/:noteId')],
         ),
       ],
     ),
@@ -78,16 +76,12 @@ class SearchRoute extends GoRouteData with $SearchRoute {
           routes: [
             TypedGoRoute<ProjectsRoute>(
               path: 'projects',
-              routes: [
-                TypedGoRoute<ProjectDetailRoute>(path: ':projectId'),
-              ],
+              routes: [TypedGoRoute<ProjectDetailRoute>(path: ':projectId')],
             ),
             TypedGoRoute<RemindersRoute>(path: 'reminders'),
             TypedGoRoute<DocumentsRoute>(
               path: 'documents',
-              routes: [
-                TypedGoRoute<DocumentDetailRoute>(path: ':documentId'),
-              ],
+              routes: [TypedGoRoute<DocumentDetailRoute>(path: ':documentId')],
             ),
           ],
         ),

@@ -51,24 +51,38 @@ class KnowledgeHomePage extends ConsumerWidget {
                     error: (_, _) => const SizedBox.shrink(),
                     data: (hierarchy) => SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.sm,
+                      ),
                       child: Row(
                         children: [
                           for (final space in hierarchy.$1)
                             Chip(
-                              avatar: const Icon(Icons.space_dashboard_outlined, size: 18),
+                              avatar: const Icon(
+                                Icons.space_dashboard_outlined,
+                                size: 18,
+                              ),
                               label: Text(space.name),
                             ),
                           for (final folder in hierarchy.$2)
                             FilterChip(
-                              avatar: const Icon(Icons.folder_outlined, size: 18),
+                              avatar: const Icon(
+                                Icons.folder_outlined,
+                                size: 18,
+                              ),
                               label: Text(folder.name),
-                              selected: ref
-                                      .read(knowledgeListControllerProvider.notifier)
+                              selected:
+                                  ref
+                                      .read(
+                                        knowledgeListControllerProvider
+                                            .notifier,
+                                      )
                                       .folderId ==
                                   folder.id,
                               onSelected: (selected) => ref
-                                  .read(knowledgeListControllerProvider.notifier)
+                                  .read(
+                                    knowledgeListControllerProvider.notifier,
+                                  )
                                   .selectFolder(selected ? folder.id : null),
                             ),
                         ],

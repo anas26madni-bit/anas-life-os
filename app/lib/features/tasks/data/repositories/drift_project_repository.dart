@@ -102,10 +102,11 @@ final class DriftProjectRepository implements ProjectRepository {
   @override
   Future<Result<ProjectEntity?>> findById(int id) async {
     try {
-      final row = await (_database.select(_database.projects)..where(
-            (item) => item.id.equals(id) & item.isDeleted.equals(false),
-          ))
-          .getSingleOrNull();
+      final row =
+          await (_database.select(_database.projects)..where(
+                (item) => item.id.equals(id) & item.isDeleted.equals(false),
+              ))
+              .getSingleOrNull();
       return Success(row == null ? null : _map(row));
     } on Object {
       return const FailureResult(
@@ -140,10 +141,11 @@ final class DriftProjectRepository implements ProjectRepository {
       );
     }
     try {
-      final current = await (_database.select(_database.projects)..where(
-            (item) => item.id.equals(id) & item.isDeleted.equals(false),
-          ))
-          .getSingleOrNull();
+      final current =
+          await (_database.select(_database.projects)..where(
+                (item) => item.id.equals(id) & item.isDeleted.equals(false),
+              ))
+              .getSingleOrNull();
       if (current == null) throw StateError('Project not found.');
       await (_database.update(
         _database.projects,

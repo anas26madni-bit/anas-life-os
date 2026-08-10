@@ -28,9 +28,8 @@ class ProjectListPage extends ConsumerWidget {
           loading: LoadingStateView.new,
           error: (error, _) => ErrorStateView(
             message: error.toString(),
-            onRetry: () => ref
-                .read(projectListControllerProvider.notifier)
-                .refresh(),
+            onRetry: () =>
+                ref.read(projectListControllerProvider.notifier).refresh(),
           ),
           data: (items) => items.isEmpty
               ? ActionStateView(
@@ -69,8 +68,9 @@ class ProjectListPage extends ConsumerWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                           trailing: const Icon(Icons.chevron_right),
-                          onTap: () =>
-                              ProjectDetailRoute(project.id).push<void>(context),
+                          onTap: () => ProjectDetailRoute(
+                            project.id,
+                          ).push<void>(context),
                         ),
                       );
                     },

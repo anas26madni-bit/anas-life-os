@@ -46,32 +46,46 @@ class ProjectDetailPage extends ConsumerWidget {
             return ListView(
               padding: const EdgeInsets.all(AppSpacing.md),
               children: [
-                Text(item.title, style: Theme.of(context).textTheme.headlineSmall),
+                Text(
+                  item.title,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
                 if (item.description != null) ...[
                   const SizedBox(height: AppSpacing.sm),
                   Text(item.description!),
                 ],
                 const SizedBox(height: AppSpacing.md),
                 LinearProgressIndicator(
-                  value: projectTasks.isEmpty ? 0 : completed / projectTasks.length,
+                  value: projectTasks.isEmpty
+                      ? 0
+                      : completed / projectTasks.length,
                   semanticsLabel: localization.completionProgress,
                 ),
                 const SizedBox(height: AppSpacing.xs),
-                Text(localization.completedCount(completed, projectTasks.length)),
+                Text(
+                  localization.completedCount(completed, projectTasks.length),
+                ),
                 if (item.dueAt != null) ...[
                   const SizedBox(height: AppSpacing.md),
                   ListTile(
                     contentPadding: EdgeInsets.zero,
                     leading: const Icon(Icons.event_outlined),
                     title: Text(localization.dueDate),
-                    subtitle: Text(DateFormat.yMMMd().format(item.dueAt!.toLocal())),
+                    subtitle: Text(
+                      DateFormat.yMMMd().format(item.dueAt!.toLocal()),
+                    ),
                   ),
                 ],
                 const SizedBox(height: AppSpacing.md),
-                Text(localization.projectTasks, style: Theme.of(context).textTheme.titleLarge),
+                Text(
+                  localization.projectTasks,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
                 if (projectTasks.isEmpty)
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: AppSpacing.md,
+                    ),
                     child: Text(localization.noProjectTasks),
                   )
                 else
@@ -80,7 +94,9 @@ class ProjectDetailPage extends ConsumerWidget {
                       child: ListTile(
                         leading: const Icon(Icons.task_alt_outlined),
                         title: Text(task.title),
-                        subtitle: Text(localization.taskStatusLabel(task.status.name)),
+                        subtitle: Text(
+                          localization.taskStatusLabel(task.status.name),
+                        ),
                       ),
                     ),
                 const SizedBox(height: AppSpacing.md),
@@ -89,11 +105,8 @@ class ProjectDetailPage extends ConsumerWidget {
                   runSpacing: AppSpacing.sm,
                   children: [
                     OutlinedButton.icon(
-                      onPressed: () => showProjectEditor(
-                        context,
-                        ref,
-                        initial: item,
-                      ),
+                      onPressed: () =>
+                          showProjectEditor(context, ref, initial: item),
                       icon: const Icon(Icons.edit_outlined),
                       label: Text(localization.edit),
                     ),

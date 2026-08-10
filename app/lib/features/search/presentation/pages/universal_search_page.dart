@@ -121,9 +121,8 @@ class _UniversalSearchPageState extends ConsumerState<UniversalSearchPage> {
                 loading: LoadingStateView.new,
                 error: (error, stackTrace) => ErrorStateView(
                   message: error.toString(),
-                  onRetry: () => ref.invalidate(
-                    universalSearchControllerProvider,
-                  ),
+                  onRetry: () =>
+                      ref.invalidate(universalSearchControllerProvider),
                 ),
                 data: (state) => state.results.isEmpty
                     ? _SearchMessage(
@@ -416,7 +415,9 @@ class _ResultCard extends ConsumerWidget {
         if (!context.mounted) return;
         final target = switch (result) {
           Success(:final value) => value,
-          FailureResult(:final failure) => throw StateError(failure.safeMessage),
+          FailureResult(:final failure) => throw StateError(
+            failure.safeMessage,
+          ),
         };
         if (target?.taskId != null) {
           return TaskDetailRoute(target!.taskId!).go(context);
@@ -431,7 +432,9 @@ class _ResultCard extends ConsumerWidget {
           return DocumentDetailRoute(target!.documentId!).go(context);
         }
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context).sourceUnavailable)),
+          SnackBar(
+            content: Text(AppLocalizations.of(context).sourceUnavailable),
+          ),
         );
     }
   }

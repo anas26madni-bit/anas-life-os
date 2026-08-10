@@ -6,7 +6,10 @@ import '../../domain/entities/task_draft.dart';
 import '../../domain/entities/task_entity.dart';
 import 'task_list_controller.dart';
 
-final taskDetailProvider = FutureProvider.family<TaskEntity?, int>((ref, id) async {
+final taskDetailProvider = FutureProvider.family<TaskEntity?, int>((
+  ref,
+  id,
+) async {
   final repository = await ref.watch(taskRepositoryProvider.future);
   return _unwrap(await repository.findById(id));
 });

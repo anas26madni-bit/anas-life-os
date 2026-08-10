@@ -39,7 +39,13 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(NavigationBar), findsOneWidget);
-    for (final label in ['Dashboard', 'Tasks', 'Calendar', 'Knowledge', 'More']) {
+    for (final label in [
+      'Dashboard',
+      'Tasks',
+      'Calendar',
+      'Knowledge',
+      'More',
+    ]) {
       expect(find.text(label), findsWidgets);
     }
     expect(find.byTooltip('Search'), findsOneWidget);

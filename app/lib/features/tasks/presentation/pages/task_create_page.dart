@@ -49,7 +49,9 @@ class _TaskCreatePageState extends ConsumerState<TaskCreatePage> {
               TextFormField(
                 minLines: 3,
                 maxLines: 6,
-                decoration: InputDecoration(labelText: localization.description),
+                decoration: InputDecoration(
+                  labelText: localization.description,
+                ),
                 onChanged: (value) => _description = value,
               ),
               TextFormField(
@@ -61,10 +63,12 @@ class _TaskCreatePageState extends ConsumerState<TaskCreatePage> {
                 initialValue: _priority,
                 decoration: InputDecoration(labelText: localization.priority),
                 items: TaskPriority.values
-                    .map((value) => DropdownMenuItem(
-                          value: value,
-                          child: Text(localization.taskPriorityLabel(value.name)),
-                        ))
+                    .map(
+                      (value) => DropdownMenuItem(
+                        value: value,
+                        child: Text(localization.taskPriorityLabel(value.name)),
+                      ),
+                    )
                     .toList(growable: false),
                 onChanged: (value) => setState(() => _priority = value!),
               ),
@@ -99,23 +103,31 @@ class _TaskCreatePageState extends ConsumerState<TaskCreatePage> {
 
   Future<void> _save() async {
     if (!_formKey.currentState!.validate()) return;
-    await ref.read(taskListControllerProvider.notifier).create(
-      TaskDraft(
-        title: _title,
-        description: _description.trim().isEmpty ? null : _description.trim(),
-        projectId: int.tryParse(_projectId),
-        priority: _priority,
-        isMandatory: _mandatory,
-        startAt: _start,
-        dueAt: _due,
-      ),
-    );
+    await ref
+        .read(taskListControllerProvider.notifier)
+        .create(
+          TaskDraft(
+            title: _title,
+            description: _description.trim().isEmpty
+                ? null
+                : _description.trim(),
+            projectId: int.tryParse(_projectId),
+            priority: _priority,
+            isMandatory: _mandatory,
+            startAt: _start,
+            dueAt: _due,
+          ),
+        );
     if (mounted) Navigator.of(context).pop();
   }
 }
 
 class _DateTile extends StatelessWidget {
-  const _DateTile({required this.label, required this.value, required this.onChanged});
+  const _DateTile({
+    required this.label,
+    required this.value,
+    required this.onChanged,
+  });
   final String label;
   final DateTime? value;
   final ValueChanged<DateTime?> onChanged;

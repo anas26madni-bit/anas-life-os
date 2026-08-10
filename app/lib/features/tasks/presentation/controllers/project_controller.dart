@@ -29,11 +29,10 @@ class ProjectListController extends AsyncNotifier<List<ProjectEntity>> {
     required String title,
     String? description,
     DateTime? dueAt,
-  }) => _mutate((repository) => repository.create(
-    title: title,
-    description: description,
-    dueAt: dueAt,
-  ));
+  }) => _mutate(
+    (repository) =>
+        repository.create(title: title, description: description, dueAt: dueAt),
+  );
 
   Future<void> update(
     int id, {
@@ -42,14 +41,17 @@ class ProjectListController extends AsyncNotifier<List<ProjectEntity>> {
     int? budgetMinor,
     String? currencyCode,
     DateTime? dueAt,
-  }) => _mutate((repository) => repository.update(
-    id,
-    title: title,
-    description: description,
-    budgetMinor: budgetMinor,
-    currencyCode: currencyCode,
-    dueAt: dueAt,
-  ), detailId: id);
+  }) => _mutate(
+    (repository) => repository.update(
+      id,
+      title: title,
+      description: description,
+      budgetMinor: budgetMinor,
+      currencyCode: currencyCode,
+      dueAt: dueAt,
+    ),
+    detailId: id,
+  );
 
   Future<void> archive(int id) =>
       _mutate((repository) => repository.archive(id), detailId: id);

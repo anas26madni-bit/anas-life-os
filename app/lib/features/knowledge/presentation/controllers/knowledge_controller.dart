@@ -25,15 +25,15 @@ final knowledgeVersionsProvider =
       return _unwrapResult(await repository.versions(id));
     });
 
-final knowledgeHierarchyProvider = FutureProvider<
-    (List<KnowledgeSpace>, List<KnowledgeFolder>)>((ref) async {
-  final repository = await ref.watch(knowledgeRepositoryProvider.future);
-  final spaceId = _unwrapResult(await repository.ensureDefaultSpace());
-  return (
-    _unwrapResult(await repository.spaces()),
-    _unwrapResult(await repository.folders(spaceId)),
-  );
-});
+final knowledgeHierarchyProvider =
+    FutureProvider<(List<KnowledgeSpace>, List<KnowledgeFolder>)>((ref) async {
+      final repository = await ref.watch(knowledgeRepositoryProvider.future);
+      final spaceId = _unwrapResult(await repository.ensureDefaultSpace());
+      return (
+        _unwrapResult(await repository.spaces()),
+        _unwrapResult(await repository.folders(spaceId)),
+      );
+    });
 
 class KnowledgeListController extends AsyncNotifier<List<KnowledgeNote>> {
   KnowledgeNoteType? _type;

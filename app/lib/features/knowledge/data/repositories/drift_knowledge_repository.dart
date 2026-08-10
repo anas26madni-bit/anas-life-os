@@ -55,10 +55,11 @@ final class DriftKnowledgeRepository implements KnowledgeRepository {
   @override
   Future<Result<List<KnowledgeSpace>>> spaces() async {
     try {
-      final rows = await (_database.select(_database.knowledgeSpaces)
-            ..where((row) => row.isDeleted.equals(false))
-            ..orderBy([(row) => OrderingTerm.asc(row.sortOrder)]))
-          .get();
+      final rows =
+          await (_database.select(_database.knowledgeSpaces)
+                ..where((row) => row.isDeleted.equals(false))
+                ..orderBy([(row) => OrderingTerm.asc(row.sortOrder)]))
+              .get();
       return Success(
         rows
             .map((row) => KnowledgeSpace(id: row.id, name: row.name))
@@ -78,13 +79,14 @@ final class DriftKnowledgeRepository implements KnowledgeRepository {
   Future<Result<List<KnowledgeFolder>>> folders(int spaceId) async {
     try {
       await _requireSpace(spaceId);
-      final rows = await (_database.select(_database.knowledgeFolders)
-            ..where(
-              (row) =>
-                  row.spaceId.equals(spaceId) & row.isDeleted.equals(false),
-            )
-            ..orderBy([(row) => OrderingTerm.asc(row.sortOrder)]))
-          .get();
+      final rows =
+          await (_database.select(_database.knowledgeFolders)
+                ..where(
+                  (row) =>
+                      row.spaceId.equals(spaceId) & row.isDeleted.equals(false),
+                )
+                ..orderBy([(row) => OrderingTerm.asc(row.sortOrder)]))
+              .get();
       return Success(
         rows
             .map(
@@ -128,16 +130,18 @@ final class DriftKnowledgeRepository implements KnowledgeRepository {
         await _validateFolder(spaceId, parentFolderId);
       }
       final now = _now;
-      final id = await _database.into(_database.knowledgeFolders).insert(
-        KnowledgeFoldersCompanion.insert(
-          uuid: _uuidFactory(),
-          spaceId: spaceId,
-          name: normalized,
-          parentFolderId: Value(parentFolderId),
-          createdAt: now,
-          updatedAt: now,
-        ),
-      );
+      final id = await _database
+          .into(_database.knowledgeFolders)
+          .insert(
+            KnowledgeFoldersCompanion.insert(
+              uuid: _uuidFactory(),
+              spaceId: spaceId,
+              name: normalized,
+              parentFolderId: Value(parentFolderId),
+              createdAt: now,
+              updatedAt: now,
+            ),
+          );
       return Success(
         KnowledgeFolder(
           id: id,

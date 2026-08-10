@@ -26,9 +26,8 @@ class TaskDetailPage extends ConsumerWidget {
         actions: [
           IconButton(
             tooltip: localization.duplicate,
-            onPressed: () => ref
-                .read(taskDetailActionsProvider)
-                .duplicate(taskId),
+            onPressed: () =>
+                ref.read(taskDetailActionsProvider).duplicate(taskId),
             icon: const Icon(Icons.copy_outlined),
           ),
         ],
@@ -87,7 +86,9 @@ class _TaskDetails extends ConsumerWidget {
           runSpacing: AppSpacing.sm,
           children: [
             Chip(label: Text(localization.taskStatusLabel(task.status.name))),
-            Chip(label: Text(localization.taskPriorityLabel(task.priority.name))),
+            Chip(
+              label: Text(localization.taskPriorityLabel(task.priority.name)),
+            ),
             if (task.isMandatory)
               Chip(
                 avatar: const Icon(Icons.priority_high, size: 18),
@@ -109,7 +110,9 @@ class _TaskDetails extends ConsumerWidget {
             _InfoTile(
               icon: Icons.play_circle_outline,
               label: localization.startDate,
-              value: DateFormat.yMMMd().add_jm().format(task.startAt!.toLocal()),
+              value: DateFormat.yMMMd().add_jm().format(
+                task.startAt!.toLocal(),
+              ),
             ),
           if (task.dueAt != null)
             _InfoTile(
@@ -127,9 +130,8 @@ class _TaskDetails extends ConsumerWidget {
               onPressed: () => _addTextValue(
                 context,
                 localization.addTag,
-                (value) => ref
-                    .read(taskDetailActionsProvider)
-                    .addTag(task.id, value),
+                (value) =>
+                    ref.read(taskDetailActionsProvider).addTag(task.id, value),
               ),
               icon: const Icon(Icons.label_outline),
               label: Text(localization.addTag),
@@ -153,7 +155,11 @@ class _TaskDetails extends ConsumerWidget {
 }
 
 class _InfoTile extends StatelessWidget {
-  const _InfoTile({required this.icon, required this.label, required this.value});
+  const _InfoTile({
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
   final IconData icon;
   final String label;
   final String value;
@@ -232,12 +238,17 @@ Future<void> _editTask(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(localization.editTask, style: Theme.of(context).textTheme.titleLarge),
+                  Text(
+                    localization.editTask,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
                   const SizedBox(height: AppSpacing.md),
                   TextFormField(
                     initialValue: title,
                     maxLength: 300,
-                    decoration: InputDecoration(labelText: localization.taskTitle),
+                    decoration: InputDecoration(
+                      labelText: localization.taskTitle,
+                    ),
                     validator: (value) => value == null || value.trim().isEmpty
                         ? localization.taskTitleRequired
                         : null,
@@ -247,23 +258,33 @@ Future<void> _editTask(
                     initialValue: description,
                     minLines: 3,
                     maxLines: 6,
-                    decoration: InputDecoration(labelText: localization.description),
+                    decoration: InputDecoration(
+                      labelText: localization.description,
+                    ),
                     onChanged: (value) => description = value,
                   ),
                   TextFormField(
                     initialValue: projectId,
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(labelText: localization.projectId),
+                    decoration: InputDecoration(
+                      labelText: localization.projectId,
+                    ),
                     onChanged: (value) => projectId = value,
                   ),
                   DropdownButtonFormField<TaskPriority>(
                     initialValue: priority,
-                    decoration: InputDecoration(labelText: localization.priority),
+                    decoration: InputDecoration(
+                      labelText: localization.priority,
+                    ),
                     items: TaskPriority.values
-                        .map((item) => DropdownMenuItem(
-                              value: item,
-                              child: Text(localization.taskPriorityLabel(item.name)),
-                            ))
+                        .map(
+                          (item) => DropdownMenuItem(
+                            value: item,
+                            child: Text(
+                              localization.taskPriorityLabel(item.name),
+                            ),
+                          ),
+                        )
                         .toList(growable: false),
                     onChanged: (value) => priority = value!,
                   ),
@@ -272,10 +293,14 @@ Future<void> _editTask(
                     decoration: InputDecoration(labelText: localization.status),
                     items: TaskStatus.values
                         .where((item) => item != TaskStatus.deleted)
-                        .map((item) => DropdownMenuItem(
-                              value: item,
-                              child: Text(localization.taskStatusLabel(item.name)),
-                            ))
+                        .map(
+                          (item) => DropdownMenuItem(
+                            value: item,
+                            child: Text(
+                              localization.taskStatusLabel(item.name),
+                            ),
+                          ),
+                        )
                         .toList(growable: false),
                     onChanged: (value) => status = value!,
                   ),
@@ -319,29 +344,35 @@ Future<void> _editTask(
     ),
   );
   if (saved == true) {
-    await ref.read(taskDetailActionsProvider).update(
-      task.id,
-      TaskDraft(
-        title: title,
-        description: description.trim().isEmpty ? null : description.trim(),
-        projectId: int.tryParse(projectId),
-        categoryId: task.categoryId,
-        subcategoryId: task.subcategoryId,
-        parentTaskId: task.parentTaskId,
-        sortOrder: task.sortOrder,
-        isMandatory: mandatory,
-        status: status,
-        priority: priority,
-        progress: progress.round(),
-        startAt: start,
-        dueAt: due,
-      ),
-    );
+    await ref
+        .read(taskDetailActionsProvider)
+        .update(
+          task.id,
+          TaskDraft(
+            title: title,
+            description: description.trim().isEmpty ? null : description.trim(),
+            projectId: int.tryParse(projectId),
+            categoryId: task.categoryId,
+            subcategoryId: task.subcategoryId,
+            parentTaskId: task.parentTaskId,
+            sortOrder: task.sortOrder,
+            isMandatory: mandatory,
+            status: status,
+            priority: priority,
+            progress: progress.round(),
+            startAt: start,
+            dueAt: due,
+          ),
+        );
   }
 }
 
 class _DateButton extends StatelessWidget {
-  const _DateButton({required this.label, required this.value, required this.onChanged});
+  const _DateButton({
+    required this.label,
+    required this.value,
+    required this.onChanged,
+  });
   final String label;
   final DateTime? value;
   final ValueChanged<DateTime?> onChanged;
@@ -350,7 +381,9 @@ class _DateButton extends StatelessWidget {
   Widget build(BuildContext context) => ListTile(
     contentPadding: EdgeInsets.zero,
     title: Text(label),
-    subtitle: value == null ? null : Text(DateFormat.yMMMd().format(value!.toLocal())),
+    subtitle: value == null
+        ? null
+        : Text(DateFormat.yMMMd().format(value!.toLocal())),
     trailing: const Icon(Icons.event_outlined),
     onTap: () async {
       final selected = await showDatePicker(

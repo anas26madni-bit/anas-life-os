@@ -76,7 +76,10 @@ class DocumentsPage extends ConsumerWidget {
                                   onSelected: (action) {
                                     if (action == 'delete') {
                                       ref
-                                          .read(documentListControllerProvider.notifier)
+                                          .read(
+                                            documentListControllerProvider
+                                                .notifier,
+                                          )
                                           .delete(document.id);
                                     }
                                   },

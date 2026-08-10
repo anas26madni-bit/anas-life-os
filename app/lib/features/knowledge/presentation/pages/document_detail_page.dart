@@ -36,7 +36,8 @@ class DocumentDetailPage extends ConsumerWidget {
                 message: localization.documentNotFoundMessage,
               );
             }
-            final image = item.mimeType.startsWith('image/') &&
+            final image =
+                item.mimeType.startsWith('image/') &&
                 File(item.storagePath).existsSync();
             return ListView(
               padding: const EdgeInsets.all(AppSpacing.md),
@@ -49,10 +50,8 @@ class DocumentDetailPage extends ConsumerWidget {
                       child: Image.file(
                         File(item.storagePath),
                         fit: BoxFit.contain,
-                        errorBuilder: (_, _, _) => const Icon(
-                          Icons.broken_image_outlined,
-                          size: 64,
-                        ),
+                        errorBuilder: (_, _, _) =>
+                            const Icon(Icons.broken_image_outlined, size: 64),
                       ),
                     ),
                   )
@@ -83,9 +82,9 @@ class DocumentDetailPage extends ConsumerWidget {
                 ),
                 _Metadata(
                   label: localization.createdDate,
-                  value: DateFormat.yMMMd()
-                      .add_jm()
-                      .format(item.createdAt.toLocal()),
+                  value: DateFormat.yMMMd().add_jm().format(
+                    item.createdAt.toLocal(),
+                  ),
                 ),
                 _Metadata(
                   label: localization.encryption,

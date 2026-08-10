@@ -48,10 +48,22 @@ class TaskListPage extends ConsumerWidget {
               child: SegmentedButton<TaskViewMode>(
                 showSelectedIcon: false,
                 segments: [
-                  ButtonSegment(value: TaskViewMode.list, label: Text(localization.listView)),
-                  ButtonSegment(value: TaskViewMode.board, label: Text(localization.boardView)),
-                  ButtonSegment(value: TaskViewMode.timeline, label: Text(localization.timelineView)),
-                  ButtonSegment(value: TaskViewMode.calendar, label: Text(localization.calendarTitle)),
+                  ButtonSegment(
+                    value: TaskViewMode.list,
+                    label: Text(localization.listView),
+                  ),
+                  ButtonSegment(
+                    value: TaskViewMode.board,
+                    label: Text(localization.boardView),
+                  ),
+                  ButtonSegment(
+                    value: TaskViewMode.timeline,
+                    label: Text(localization.timelineView),
+                  ),
+                  ButtonSegment(
+                    value: TaskViewMode.calendar,
+                    label: Text(localization.calendarTitle),
+                  ),
                 ],
                 selected: {view},
                 onSelectionChanged: (value) =>
@@ -60,17 +72,23 @@ class TaskListPage extends ConsumerWidget {
             ),
             Expanded(
               child: RefreshIndicator(
-                onRefresh: ref.read(taskListControllerProvider.notifier).refresh,
+                onRefresh: ref
+                    .read(taskListControllerProvider.notifier)
+                    .refresh,
                 child: tasks.when(
-            loading: () =>
-                const Center(child: CircularProgressIndicator.adaptive()),
-            error: (error, stackTrace) => _ErrorState(
-              message: error.toString(),
-              onRetry: ref.read(taskListControllerProvider.notifier).refresh,
-            ),
-            data: (items) => items.isEmpty
-                ? _EmptyState(onCreate: () => _showCreateDialog(context, ref))
-                : _TaskCollection(items: items, view: view),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator.adaptive()),
+                  error: (error, stackTrace) => _ErrorState(
+                    message: error.toString(),
+                    onRetry: ref
+                        .read(taskListControllerProvider.notifier)
+                        .refresh,
+                  ),
+                  data: (items) => items.isEmpty
+                      ? _EmptyState(
+                          onCreate: () => _showCreateDialog(context, ref),
+                        )
+                      : _TaskCollection(items: items, view: view),
                 ),
               ),
             ),
@@ -139,18 +157,27 @@ class _TaskCollection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final ordered = [...items];
     if (view == TaskViewMode.timeline || view == TaskViewMode.calendar) {
-      ordered.sort((left, right) => switch ((left.dueAt, right.dueAt)) {
-        (null, null) => left.id.compareTo(right.id),
-        (null, _) => 1,
-        (_, null) => -1,
-        (final leftDate?, final rightDate?) => leftDate.compareTo(rightDate),
-      });
+      ordered.sort(
+        (left, right) => switch ((left.dueAt, right.dueAt)) {
+          (null, null) => left.id.compareTo(right.id),
+          (null, _) => 1,
+          (_, null) => -1,
+          (final leftDate?, final rightDate?) => leftDate.compareTo(rightDate),
+        },
+      );
     } else if (view == TaskViewMode.board) {
-      ordered.sort((left, right) => left.status.index.compareTo(right.status.index));
+      ordered.sort(
+        (left, right) => left.status.index.compareTo(right.status.index),
+      );
     }
     return ListView.separated(
       key: PageStorageKey(view),
-      padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.md, AppSpacing.md, 96),
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.md,
+        AppSpacing.md,
+        AppSpacing.md,
+        96,
+      ),
       itemCount: ordered.length,
       separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.sm),
       itemBuilder: (context, index) {
@@ -163,24 +190,34 @@ class _TaskCollection extends ConsumerWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
                 child: Text(
-                  AppLocalizations.of(context).taskStatusLabel(task.status.name),
+                  AppLocalizations.of(
+                    context,
+                  ).taskStatusLabel(task.status.name),
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
-            if ((view == TaskViewMode.timeline || view == TaskViewMode.calendar) &&
+            if ((view == TaskViewMode.timeline ||
+                    view == TaskViewMode.calendar) &&
                 task.dueAt != null)
               Padding(
                 padding: const EdgeInsets.only(bottom: AppSpacing.xs),
                 child: Text(
-                  MaterialLocalizations.of(context).formatFullDate(task.dueAt!.toLocal()),
+                  MaterialLocalizations.of(
+                    context,
+                  ).formatFullDate(task.dueAt!.toLocal()),
                   style: Theme.of(context).textTheme.labelLarge,
                 ),
               ),
             _TaskCard(
               task: task,
-              onComplete: () => ref.read(taskListControllerProvider.notifier).complete(task.id),
-              onArchive: () => ref.read(taskListControllerProvider.notifier).archive(task.id),
-              onDelete: () => ref.read(taskListControllerProvider.notifier).delete(task.id),
+              onComplete: () => ref
+                  .read(taskListControllerProvider.notifier)
+                  .complete(task.id),
+              onArchive: () => ref
+                  .read(taskListControllerProvider.notifier)
+                  .archive(task.id),
+              onDelete: () =>
+                  ref.read(taskListControllerProvider.notifier).delete(task.id),
             ),
           ],
         );

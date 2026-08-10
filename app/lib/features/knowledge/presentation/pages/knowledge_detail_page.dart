@@ -57,13 +57,21 @@ class _NoteContent extends ConsumerWidget {
     final localization = AppLocalizations.of(context);
     final versions = ref.watch(knowledgeVersionsProvider(note.id));
     return ListView(
-      padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.md, AppSpacing.md, 96),
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.md,
+        AppSpacing.md,
+        AppSpacing.md,
+        96,
+      ),
       children: [
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: Text(note.title, style: Theme.of(context).textTheme.headlineSmall),
+              child: Text(
+                note.title,
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
             ),
             if (note.pinned) const Icon(Icons.push_pin_outlined),
             if (note.favorite) const Icon(Icons.star),
@@ -74,11 +82,15 @@ class _NoteContent extends ConsumerWidget {
           spacing: AppSpacing.sm,
           children: [
             Chip(label: Text(localization.noteTypeLabel(note.type.name))),
-            Chip(label: Text(localization.contentFormatLabel(note.format.name))),
+            Chip(
+              label: Text(localization.contentFormatLabel(note.format.name)),
+            ),
           ],
         ),
         const SizedBox(height: AppSpacing.md),
-        SelectableText(note.content.isEmpty ? localization.emptyNote : note.content),
+        SelectableText(
+          note.content.isEmpty ? localization.emptyNote : note.content,
+        ),
         const SizedBox(height: AppSpacing.lg),
         Wrap(
           spacing: AppSpacing.sm,
@@ -97,7 +109,10 @@ class _NoteContent extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: AppSpacing.lg),
-        Text(localization.versionHistory, style: Theme.of(context).textTheme.titleLarge),
+        Text(
+          localization.versionHistory,
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
         versions.when(
           loading: () => const LinearProgressIndicator(),
           error: (error, _) => Text(error.toString()),
@@ -107,8 +122,14 @@ class _NoteContent extends ConsumerWidget {
                 ListTile(
                   contentPadding: EdgeInsets.zero,
                   leading: const Icon(Icons.history),
-                  title: Text(localization.versionNumber(version.versionNumber)),
-                  subtitle: Text(DateFormat.yMMMd().add_jm().format(version.createdAt.toLocal())),
+                  title: Text(
+                    localization.versionNumber(version.versionNumber),
+                  ),
+                  subtitle: Text(
+                    DateFormat.yMMMd().add_jm().format(
+                      version.createdAt.toLocal(),
+                    ),
+                  ),
                 ),
             ],
           ),
@@ -126,24 +147,42 @@ Future<void> _editTags(BuildContext context, WidgetRef ref, int noteId) async {
       title: Text(AppLocalizations.of(context).editTags),
       content: TextField(
         autofocus: true,
-        decoration: InputDecoration(labelText: AppLocalizations.of(context).tagsCommaSeparated),
+        decoration: InputDecoration(
+          labelText: AppLocalizations.of(context).tagsCommaSeparated,
+        ),
         onChanged: (text) => value = text,
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: Text(AppLocalizations.of(context).cancel)),
-        FilledButton(onPressed: () => Navigator.pop(context, value), child: Text(AppLocalizations.of(context).save)),
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(AppLocalizations.of(context).cancel),
+        ),
+        FilledButton(
+          onPressed: () => Navigator.pop(context, value),
+          child: Text(AppLocalizations.of(context).save),
+        ),
       ],
     ),
   );
   if (result != null) {
-    await ref.read(knowledgeListControllerProvider.notifier).replaceTags(
-      noteId,
-      result.split(',').map((tag) => tag.trim()).where((tag) => tag.isNotEmpty).toList(),
-    );
+    await ref
+        .read(knowledgeListControllerProvider.notifier)
+        .replaceTags(
+          noteId,
+          result
+              .split(',')
+              .map((tag) => tag.trim())
+              .where((tag) => tag.isNotEmpty)
+              .toList(),
+        );
   }
 }
 
-Future<void> _linkNote(BuildContext context, WidgetRef ref, int sourceId) async {
+Future<void> _linkNote(
+  BuildContext context,
+  WidgetRef ref,
+  int sourceId,
+) async {
   var target = '';
   final result = await showDialog<int>(
     context: context,
@@ -152,12 +191,20 @@ Future<void> _linkNote(BuildContext context, WidgetRef ref, int sourceId) async 
       content: TextField(
         autofocus: true,
         keyboardType: TextInputType.number,
-        decoration: InputDecoration(labelText: AppLocalizations.of(context).targetNoteId),
+        decoration: InputDecoration(
+          labelText: AppLocalizations.of(context).targetNoteId,
+        ),
         onChanged: (value) => target = value,
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: Text(AppLocalizations.of(context).cancel)),
-        FilledButton(onPressed: () => Navigator.pop(context, int.tryParse(target)), child: Text(AppLocalizations.of(context).save)),
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(AppLocalizations.of(context).cancel),
+        ),
+        FilledButton(
+          onPressed: () => Navigator.pop(context, int.tryParse(target)),
+          child: Text(AppLocalizations.of(context).save),
+        ),
       ],
     ),
   );
@@ -200,12 +247,17 @@ Future<void> _editNote(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(localization.editNote, style: Theme.of(context).textTheme.titleLarge),
+                  Text(
+                    localization.editNote,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
                   const SizedBox(height: AppSpacing.md),
                   TextFormField(
                     initialValue: title,
                     maxLength: 300,
-                    decoration: InputDecoration(labelText: localization.noteTitle),
+                    decoration: InputDecoration(
+                      labelText: localization.noteTitle,
+                    ),
                     validator: (value) => value == null || value.trim().isEmpty
                         ? localization.noteTitleRequired
                         : null,
@@ -213,12 +265,16 @@ Future<void> _editNote(
                   ),
                   DropdownButtonFormField<KnowledgeNoteType>(
                     initialValue: type,
-                    decoration: InputDecoration(labelText: localization.noteType),
+                    decoration: InputDecoration(
+                      labelText: localization.noteType,
+                    ),
                     items: KnowledgeNoteType.values
-                        .map((value) => DropdownMenuItem(
-                              value: value,
-                              child: Text(localization.noteTypeLabel(value.name)),
-                            ))
+                        .map(
+                          (value) => DropdownMenuItem(
+                            value: value,
+                            child: Text(localization.noteTypeLabel(value.name)),
+                          ),
+                        )
                         .toList(growable: false),
                     onChanged: (value) => type = value!,
                   ),
@@ -226,9 +282,11 @@ Future<void> _editNote(
                     contentPadding: EdgeInsets.zero,
                     title: Text(localization.markdownMode),
                     value: format == KnowledgeContentFormat.markdown,
-                    onChanged: (value) => setState(() => format = value
-                        ? KnowledgeContentFormat.markdown
-                        : KnowledgeContentFormat.richText),
+                    onChanged: (value) => setState(
+                      () => format = value
+                          ? KnowledgeContentFormat.markdown
+                          : KnowledgeContentFormat.richText,
+                    ),
                   ),
                   SwitchListTile(
                     contentPadding: EdgeInsets.zero,
@@ -246,12 +304,16 @@ Future<void> _editNote(
                     initialValue: content,
                     minLines: 10,
                     maxLines: 20,
-                    decoration: InputDecoration(labelText: localization.noteContent),
+                    decoration: InputDecoration(
+                      labelText: localization.noteContent,
+                    ),
                     onChanged: (value) => content = value,
                   ),
                   const SizedBox(height: AppSpacing.md),
                   FilledButton(
-                    onPressed: () => key.currentState!.validate() ? Navigator.pop(context, true) : null,
+                    onPressed: () => key.currentState!.validate()
+                        ? Navigator.pop(context, true)
+                        : null,
                     child: Text(localization.save),
                   ),
                 ],
@@ -263,20 +325,22 @@ Future<void> _editNote(
     ),
   );
   if (saved == true) {
-    await ref.read(knowledgeListControllerProvider.notifier).update(
-      note,
-      KnowledgeNoteDraft(
-        spaceId: note.spaceId,
-        folderId: note.folderId,
-        title: title,
-        content: content,
-        summary: note.summary,
-        type: type,
-        format: format,
-        status: note.status,
-        favorite: favorite,
-        pinned: pinned,
-      ),
-    );
+    await ref
+        .read(knowledgeListControllerProvider.notifier)
+        .update(
+          note,
+          KnowledgeNoteDraft(
+            spaceId: note.spaceId,
+            folderId: note.folderId,
+            title: title,
+            content: content,
+            summary: note.summary,
+            type: type,
+            format: format,
+            status: note.status,
+            favorite: favorite,
+            pinned: pinned,
+          ),
+        );
   }
 }

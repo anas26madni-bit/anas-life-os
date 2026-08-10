@@ -100,7 +100,8 @@ class ReminderListPage extends ConsumerWidget {
     var taskId = initial?.taskId ?? 0;
     var title = initial?.title ?? '';
     var message = initial?.message ?? '';
-    var scheduledAt = initial?.scheduledAt.toLocal() ??
+    var scheduledAt =
+        initial?.scheduledAt.toLocal() ??
         DateTime.now().add(const Duration(hours: 1));
     var vibration = initial?.vibration ?? true;
     var voice = initial?.voiceEnabled ?? false;
@@ -197,7 +198,9 @@ class ReminderListPage extends ConsumerWidget {
                           child: TextFormField(
                             initialValue: '$snoozeMinutes',
                             keyboardType: TextInputType.number,
-                            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
                             decoration: InputDecoration(
                               labelText: localization.snoozeMinutes,
                             ),
@@ -210,7 +213,9 @@ class ReminderListPage extends ConsumerWidget {
                           child: TextFormField(
                             initialValue: '$maxSnoozes',
                             keyboardType: TextInputType.number,
-                            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
                             decoration: InputDecoration(
                               labelText: localization.maximumSnoozes,
                             ),
@@ -369,8 +374,12 @@ class ReminderListPage extends ConsumerWidget {
                 itemCount: missed.length,
                 itemBuilder: (context, index) => ListTile(
                   leading: const Icon(Icons.notification_important_outlined),
-                  title: Text(localization.reminderNumber(missed[index].reminderId)),
-                  subtitle: Text(localization.reminderActionLabel(missed[index].action.name)),
+                  title: Text(
+                    localization.reminderNumber(missed[index].reminderId),
+                  ),
+                  subtitle: Text(
+                    localization.reminderActionLabel(missed[index].action.name),
+                  ),
                 ),
               ),
       ),
