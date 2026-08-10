@@ -143,8 +143,9 @@ class BackupPage extends ConsumerWidget {
           ),
           FilledButton(
             onPressed: () {
-              if (formKey.currentState!.validate())
+              if (formKey.currentState!.validate()) {
                 Navigator.pop(dialogContext, first);
+              }
             },
             child: Text(l10n.continueLabel),
           ),
