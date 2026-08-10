@@ -6,11 +6,12 @@ Updated: 2026-08-10 (Asia/Karachi)
 
 - Sprint 1 through Sprint 7: complete and frozen.
 - Sprint 1-7 UI/navigation gap closure: complete and verified.
-- Current branch: `codex/ui-gap-closure-sprints-1-7`.
+- Current branch: `main`.
 - Verified implementation commit:
   `ac5c6bce8bc40fbc6186c7ddbf29e0f075f7427e`.
 - Verified GitHub Actions run: `31369588920`.
-- Pull request: `#7`, pending merge into `main`.
+- Verified merge commit: `c1c4fbad64a5286dedbd6d0f9f6fac470f36f987`.
+- Pull request: `#7`, merged into `main`.
 
 ## Last completed task
 
@@ -40,6 +41,7 @@ Sprint 8 — Statistics. Resume at the authoritative formula decision gate for
 
 ## Exact resume point
 
-After pull request 7 is merged, resume from its verified `main` merge commit at
-the Sprint 8 Statistics decision gate. Do not modify statistics schema or code
-until the approved formulas and historical recomputation rules are recorded.
+Resume from verified `main` merge commit
+`c1c4fbad64a5286dedbd6d0f9f6fac470f36f987` at the Sprint 8 Statistics
+decision gate. Do not modify statistics schema or code until the approved
+formulas and historical recomputation rules are recorded.
