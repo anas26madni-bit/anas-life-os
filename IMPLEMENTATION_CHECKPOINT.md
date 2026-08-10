@@ -6,11 +6,12 @@ Updated: 2026-08-10 (Asia/Karachi)
 
 - Sprint 1 through Sprint 9: complete and frozen.
 - Sprint 1-7 UI/navigation gap closure: complete and verified.
-- Current branch: `codex/sprint-9-backup`.
-- Verified Sprint 9 implementation commit:
-  `63a397f0bb47e0033ff5177409679ff99e1cb98b`.
-- Verified GitHub Actions run: `31387605233`.
-- Pull request: `#9`, awaiting verified merge into `main`.
+- Current branch: `main`.
+- Verified Sprint 9 head commit:
+  `a8da2494727980cf88fc41e1c0988be606d64ba1`.
+- Verified GitHub Actions run: `31389153812`.
+- Verified merge commit: `6ac3ccf6fe42be7bbd21804910219bb18f5659bf`.
+- Pull request: `#9`, merged into `main`.
 
 ## Last completed task
 
@@ -38,6 +39,7 @@ security/app-lock decisions on verified `main`.
 
 ## Exact resume point
 
-After PR `#9` is merged, resume from its verified `main` merge commit at the
-Sprint 10 Security decision gate. Do not reopen approved Sprint 9 backup,
-retention or scheduling policies without Product Owner approval.
+Resume from verified `main` merge commit
+`6ac3ccf6fe42be7bbd21804910219bb18f5659bf` at the Sprint 10 Security decision
+gate. Do not reopen approved Sprint 9 backup, retention or scheduling policies
+without Product Owner approval.
