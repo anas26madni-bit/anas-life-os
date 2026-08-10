@@ -19,7 +19,8 @@ class BackupPage extends ConsumerWidget {
       appBar: AppTopBar(title: Text(l10n.backupTitle)),
       body: SafeArea(
         child: state.when(
-          loading: () => const Center(child: CircularProgressIndicator.adaptive()),
+          loading: () =>
+              const Center(child: CircularProgressIndicator.adaptive()),
           error: (error, _) => _ErrorState(
             message: error.toString(),
             onRetry: ref.read(backupControllerProvider.notifier).refresh,
@@ -36,7 +37,10 @@ class BackupPage extends ConsumerWidget {
                 const SizedBox(height: AppSpacing.md),
                 _SettingsCard(settings: data.settings),
                 const SizedBox(height: AppSpacing.md),
-                Text(l10n.backupHistory, style: Theme.of(context).textTheme.titleLarge),
+                Text(
+                  l10n.backupHistory,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
                 const SizedBox(height: AppSpacing.sm),
                 if (data.history.isEmpty)
                   _EmptyHistory(message: l10n.noBackupsMessage)
@@ -84,7 +88,9 @@ class BackupPage extends ConsumerWidget {
     if (approved != true || !context.mounted) return;
     final passphrase = await _passphrase(context);
     if (passphrase != null) {
-      await ref.read(backupControllerProvider.notifier).importAndRestore(passphrase);
+      await ref
+          .read(backupControllerProvider.notifier)
+          .importAndRestore(passphrase);
     }
   }
 
@@ -119,9 +125,12 @@ class BackupPage extends ConsumerWidget {
                 const SizedBox(height: AppSpacing.sm),
                 TextFormField(
                   obscureText: true,
-                  decoration: InputDecoration(labelText: l10n.confirmPassphrase),
+                  decoration: InputDecoration(
+                    labelText: l10n.confirmPassphrase,
+                  ),
                   onChanged: (value) => second = value,
-                  validator: (_) => first == second ? null : l10n.passphrasesDoNotMatch,
+                  validator: (_) =>
+                      first == second ? null : l10n.passphrasesDoNotMatch,
                 ),
               ],
             ],
@@ -134,7 +143,8 @@ class BackupPage extends ConsumerWidget {
           ),
           FilledButton(
             onPressed: () {
-              if (formKey.currentState!.validate()) Navigator.pop(dialogContext, first);
+              if (formKey.currentState!.validate())
+                Navigator.pop(dialogContext, first);
             },
             child: Text(l10n.continueLabel),
           ),
@@ -199,7 +209,10 @@ class _SettingsCardState extends ConsumerState<_SettingsCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(l10n.automaticBackup, style: Theme.of(context).textTheme.titleLarge),
+            Text(
+              l10n.automaticBackup,
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
               title: Text(l10n.enableAutomaticBackup),
@@ -210,10 +223,16 @@ class _SettingsCardState extends ConsumerState<_SettingsCard> {
               initialValue: frequency,
               decoration: InputDecoration(labelText: l10n.backupFrequency),
               items: BackupFrequency.values
-                  .map((value) => DropdownMenuItem(
-                        value: value,
-                        child: Text(value == BackupFrequency.daily ? l10n.daily : l10n.weekly),
-                      ))
+                  .map(
+                    (value) => DropdownMenuItem(
+                      value: value,
+                      child: Text(
+                        value == BackupFrequency.daily
+                            ? l10n.daily
+                            : l10n.weekly,
+                      ),
+                    ),
+                  )
                   .toList(growable: false),
               onChanged: (value) => setState(() => frequency = value!),
             ),
@@ -230,18 +249,31 @@ class _SettingsCardState extends ConsumerState<_SettingsCard> {
               contentPadding: EdgeInsets.zero,
               leading: const Icon(Icons.folder_outlined),
               title: Text(l10n.backupDestination),
-              subtitle: Text(destination == null ? l10n.destinationNotSelected : l10n.destinationSelected),
+              subtitle: Text(
+                destination == null
+                    ? l10n.destinationNotSelected
+                    : l10n.destinationSelected,
+              ),
               onTap: () async {
-                final selected = await ref.read(backupControllerProvider.notifier).selectDestination();
+                final selected = await ref
+                    .read(backupControllerProvider.notifier)
+                    .selectDestination();
                 if (selected != null) setState(() => destination = selected);
               },
             ),
             const SizedBox(height: AppSpacing.sm),
             FilledButton(
               onPressed: () async {
-                final passphrase = enabled ? await const BackupPage()._passphrase(context, confirm: true) : '';
+                final passphrase = enabled
+                    ? await const BackupPage()._passphrase(
+                        context,
+                        confirm: true,
+                      )
+                    : '';
                 if (enabled && passphrase == null) return;
-                await ref.read(backupControllerProvider.notifier).saveSettings(
+                await ref
+                    .read(backupControllerProvider.notifier)
+                    .saveSettings(
                       BackupSettings(
                         automaticEnabled: enabled,
                         frequency: frequency,
@@ -269,14 +301,20 @@ class _HistoryTile extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     return Card(
       child: ListTile(
-        leading: Icon(record.status == BackupOperationStatus.succeeded
-            ? Icons.verified_outlined
-            : Icons.error_outline),
+        leading: Icon(
+          record.status == BackupOperationStatus.succeeded
+              ? Icons.verified_outlined
+              : Icons.error_outline,
+        ),
         title: Text(record.name, maxLines: 1, overflow: TextOverflow.ellipsis),
-        subtitle: Text(MaterialLocalizations.of(context).formatFullDate(record.startedAt)),
-        trailing: Text(record.status == BackupOperationStatus.succeeded
-            ? l10n.backupSucceeded
-            : l10n.backupFailed),
+        subtitle: Text(
+          MaterialLocalizations.of(context).formatFullDate(record.startedAt),
+        ),
+        trailing: Text(
+          record.status == BackupOperationStatus.succeeded
+              ? l10n.backupSucceeded
+              : l10n.backupFailed,
+        ),
       ),
     );
   }
@@ -288,16 +326,18 @@ class _EmptyHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Semantics(
-        label: message,
-        child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.xl),
-          child: Column(children: [
-            const Icon(Icons.history_toggle_off_outlined, size: 64),
-            const SizedBox(height: AppSpacing.md),
-            Text(message, textAlign: TextAlign.center),
-          ]),
-        ),
-      );
+    label: message,
+    child: Padding(
+      padding: const EdgeInsets.all(AppSpacing.xl),
+      child: Column(
+        children: [
+          const Icon(Icons.history_toggle_off_outlined, size: 64),
+          const SizedBox(height: AppSpacing.md),
+          Text(message, textAlign: TextAlign.center),
+        ],
+      ),
+    ),
+  );
 }
 
 class _ErrorState extends StatelessWidget {
@@ -311,13 +351,20 @@ class _ErrorState extends StatelessWidget {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.xl),
-        child: Column(mainAxisSize: MainAxisSize.min, children: [
-          const Icon(Icons.error_outline, size: 64),
-          const SizedBox(height: AppSpacing.md),
-          Text(message, textAlign: TextAlign.center),
-          const SizedBox(height: AppSpacing.md),
-          FilledButton.icon(onPressed: onRetry, icon: const Icon(Icons.refresh), label: Text(l10n.retry)),
-        ]),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.error_outline, size: 64),
+            const SizedBox(height: AppSpacing.md),
+            Text(message, textAlign: TextAlign.center),
+            const SizedBox(height: AppSpacing.md),
+            FilledButton.icon(
+              onPressed: onRetry,
+              icon: const Icon(Icons.refresh),
+              label: Text(l10n.retry),
+            ),
+          ],
+        ),
       ),
     );
   }

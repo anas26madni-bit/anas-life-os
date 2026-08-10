@@ -5,7 +5,8 @@ class BackupProfiles extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get uuid => text().withLength(min: 36, max: 36).unique()();
   TextColumn get profileName => text().withLength(min: 1, max: 100)();
-  BoolColumn get automaticEnabled => boolean().withDefault(const Constant(false))();
+  BoolColumn get automaticEnabled =>
+      boolean().withDefault(const Constant(false))();
   TextColumn get frequency => text().withDefault(const Constant('daily'))();
   IntColumn get retentionCount => integer().withDefault(const Constant(7))();
   TextColumn get destinationUri => text().nullable()();
@@ -18,7 +19,8 @@ class BackupProfiles extends Table {
 class BackupHistory extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get uuid => text().withLength(min: 36, max: 36).unique()();
-  IntColumn get profileId => integer().nullable().references(BackupProfiles, #id)();
+  IntColumn get profileId =>
+      integer().nullable().references(BackupProfiles, #id)();
   TextColumn get backupName => text().withLength(min: 1, max: 200)();
   BoolColumn get automatic => boolean()();
   TextColumn get destinationUri => text().nullable()();

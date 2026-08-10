@@ -28,9 +28,9 @@ final class DriftBackupRepository implements BackupRepository {
 
   @override
   Future<BackupSettings> loadSettings() async {
-    final row = await (_database.select(_database.backupProfiles)
-          ..where((table) => table.id.equals(1)))
-        .getSingleOrNull();
+    final row = await (_database.select(
+      _database.backupProfiles,
+    )..where((table) => table.id.equals(1))).getSingleOrNull();
     if (row == null) return _defaults;
     return BackupSettings(
       automaticEnabled: row.automaticEnabled,
@@ -42,9 +42,9 @@ final class DriftBackupRepository implements BackupRepository {
 
   @override
   Future<List<BackupRecord>> loadHistory() async {
-    final rows = await (_database.select(_database.backupHistory)
-          ..orderBy([(row) => OrderingTerm.desc(row.startedAt)]))
-        .get();
+    final rows = await (_database.select(
+      _database.backupHistory,
+    )..orderBy([(row) => OrderingTerm.desc(row.startedAt)])).get();
     return rows
         .map(
           (row) => BackupRecord(
@@ -53,7 +53,9 @@ final class DriftBackupRepository implements BackupRepository {
             automatic: row.automatic,
             status: BackupOperationStatus.values.byName(row.status),
             startedAt: _date(row.startedAt),
-            completedAt: row.completedAt == null ? null : _date(row.completedAt!),
+            completedAt: row.completedAt == null
+                ? null
+                : _date(row.completedAt!),
             sizeBytes: row.backupSize,
             safeError: row.errorCode,
           ),
@@ -84,19 +86,21 @@ final class DriftBackupRepository implements BackupRepository {
     }
     try {
       final now = _micros(_clock());
-      await _database.into(_database.backupProfiles).insertOnConflictUpdate(
-        BackupProfilesCompanion.insert(
-          id: const Value(1),
-          uuid: _uuid.generate(),
-          profileName: 'default',
-          automaticEnabled: Value(settings.automaticEnabled),
-          frequency: Value(settings.frequency.name),
-          retentionCount: Value(settings.retentionCount),
-          destinationUri: Value(settings.destinationUri),
-          createdAt: now,
-          updatedAt: now,
-        ),
-      );
+      await _database
+          .into(_database.backupProfiles)
+          .insertOnConflictUpdate(
+            BackupProfilesCompanion.insert(
+              id: const Value(1),
+              uuid: _uuid.generate(),
+              profileName: 'default',
+              automaticEnabled: Value(settings.automaticEnabled),
+              frequency: Value(settings.frequency.name),
+              retentionCount: Value(settings.retentionCount),
+              destinationUri: Value(settings.destinationUri),
+              createdAt: now,
+              updatedAt: now,
+            ),
+          );
       if (settings.canSchedule) {
         await _platform.configureAutomatic(
           settings: settings,
@@ -123,12 +127,15 @@ final class DriftBackupRepository implements BackupRepository {
   ) async {
     if (passphrase.isEmpty) return _passphraseFailure;
     final started = _clock().toUtc();
-    final name = 'anas-life-os-${started.toIso8601String().replaceAll(':', '-')}.alos';
+    final name =
+        'anas-life-os-${started.toIso8601String().replaceAll(':', '-')}.alos';
     final historyId = await _startBackup(name, started);
     File? snapshot;
     try {
       final directory = await _databaseDirectory();
-      snapshot = File('${directory.path}${Platform.pathSeparator}backup_snapshot.db');
+      snapshot = File(
+        '${directory.path}${Platform.pathSeparator}backup_snapshot.db',
+      );
       if (await snapshot.exists()) await snapshot.delete();
       await _database.customStatement('PRAGMA wal_checkpoint(FULL);');
       final escapedPath = snapshot.path.replaceAll("'", "''");
@@ -141,24 +148,25 @@ final class DriftBackupRepository implements BackupRepository {
         passphrase: passphrase,
         backupName: name,
       );
-      await (_database.update(_database.backupHistory)
-            ..where((row) => row.id.equals(historyId)))
-          .write(
-            BackupHistoryCompanion(
-              destinationUri: Value(result.uri),
-              backupSize: Value(result.sizeBytes),
-              checksumSha256: Value(result.sha256),
-              completedAt: Value(_micros(_clock())),
-              status: const Value('succeeded'),
-            ),
-          );
+      await (_database.update(
+        _database.backupHistory,
+      )..where((row) => row.id.equals(historyId))).write(
+        BackupHistoryCompanion(
+          destinationUri: Value(result.uri),
+          backupSize: Value(result.sizeBytes),
+          checksumSha256: Value(result.sha256),
+          completedAt: Value(_micros(_clock())),
+          status: const Value('succeeded'),
+        ),
+      );
       return const Success(null);
     } on Object {
       await _failBackup(historyId);
       return const FailureResult(
         DatabaseFailure(
           code: 'backup_create_failed',
-          safeMessage: 'The backup failed safely. Existing data was not changed.',
+          safeMessage:
+              'The backup failed safely. Existing data was not changed.',
         ),
       );
     } finally {
@@ -170,39 +178,41 @@ final class DriftBackupRepository implements BackupRepository {
   Future<Result<void>> restore(String sourceUri, String passphrase) async {
     if (passphrase.isEmpty) return _passphraseFailure;
     final started = _clock().toUtc();
-    final id = await _database.into(_database.restoreHistory).insert(
-      RestoreHistoryCompanion.insert(
-        uuid: _uuid.generate(),
-        sourceUri: sourceUri,
-        startedAt: _micros(started),
-        status: 'running',
-      ),
-    );
+    final id = await _database
+        .into(_database.restoreHistory)
+        .insert(
+          RestoreHistoryCompanion.insert(
+            uuid: _uuid.generate(),
+            sourceUri: sourceUri,
+            startedAt: _micros(started),
+            status: 'running',
+          ),
+        );
     try {
       final result = await _platform.restoreArchive(
         sourceUri: sourceUri,
         passphrase: passphrase,
       );
-      await (_database.update(_database.restoreHistory)
-            ..where((row) => row.id.equals(id)))
-          .write(
-            RestoreHistoryCompanion(
-              completedAt: Value(_micros(_clock())),
-              status: const Value('succeeded'),
-              recordsRestored: Value(result.recordsRestored),
-            ),
-          );
+      await (_database.update(
+        _database.restoreHistory,
+      )..where((row) => row.id.equals(id))).write(
+        RestoreHistoryCompanion(
+          completedAt: Value(_micros(_clock())),
+          status: const Value('succeeded'),
+          recordsRestored: Value(result.recordsRestored),
+        ),
+      );
       return const Success(null);
     } on Object {
-      await (_database.update(_database.restoreHistory)
-            ..where((row) => row.id.equals(id)))
-          .write(
-            RestoreHistoryCompanion(
-              completedAt: Value(_micros(_clock())),
-              status: const Value('failed'),
-              errorCode: const Value('restore_validation_failed'),
-            ),
-          );
+      await (_database.update(
+        _database.restoreHistory,
+      )..where((row) => row.id.equals(id))).write(
+        RestoreHistoryCompanion(
+          completedAt: Value(_micros(_clock())),
+          status: const Value('failed'),
+          errorCode: const Value('restore_validation_failed'),
+        ),
+      );
       return const FailureResult(
         DatabaseFailure(
           code: 'restore_failed',
@@ -212,8 +222,9 @@ final class DriftBackupRepository implements BackupRepository {
     }
   }
 
-  Future<int> _startBackup(String name, DateTime started) =>
-      _database.into(_database.backupHistory).insert(
+  Future<int> _startBackup(String name, DateTime started) => _database
+      .into(_database.backupHistory)
+      .insert(
         BackupHistoryCompanion.insert(
           uuid: _uuid.generate(),
           backupName: name,
@@ -224,7 +235,9 @@ final class DriftBackupRepository implements BackupRepository {
       );
 
   Future<void> _failBackup(int id) =>
-      (_database.update(_database.backupHistory)..where((row) => row.id.equals(id))).write(
+      (_database.update(
+        _database.backupHistory,
+      )..where((row) => row.id.equals(id))).write(
         BackupHistoryCompanion(
           completedAt: Value(_micros(_clock())),
           status: const Value('failed'),
@@ -233,16 +246,18 @@ final class DriftBackupRepository implements BackupRepository {
       );
 
   Future<List<String>> _managedFilePaths() async {
-    final rows = await _database.customSelect(
-      'SELECT storage_path FROM attachments WHERE is_deleted = 0 '
-      'UNION SELECT storage_path FROM attachment_versions '
-      'UNION SELECT storage_path FROM document_versions',
-      readsFrom: {
-        _database.attachments,
-        _database.attachmentVersions,
-        _database.documentVersions,
-      },
-    ).get();
+    final rows = await _database
+        .customSelect(
+          'SELECT storage_path FROM attachments WHERE is_deleted = 0 '
+          'UNION SELECT storage_path FROM attachment_versions '
+          'UNION SELECT storage_path FROM document_versions',
+          readsFrom: {
+            _database.attachments,
+            _database.attachmentVersions,
+            _database.documentVersions,
+          },
+        )
+        .get();
     return rows
         .map((row) => row.read<String>('storage_path'))
         .where((path) => File(path).existsSync())

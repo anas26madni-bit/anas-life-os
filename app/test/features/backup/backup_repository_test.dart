@@ -12,7 +12,9 @@ void main() {
   late Directory directory;
 
   setUp(() async {
-    directory = await Directory.systemTemp.createTemp('backup_repository_test_');
+    directory = await Directory.systemTemp.createTemp(
+      'backup_repository_test_',
+    );
   });
 
   tearDown(() async {
@@ -22,7 +24,11 @@ void main() {
   test('defaults match approved automatic backup policy', () async {
     final database = createTestDatabase();
     addTearDown(database.close);
-    final repository = DriftBackupRepository(database, _FakeBackupPlatform(), () async => directory);
+    final repository = DriftBackupRepository(
+      database,
+      _FakeBackupPlatform(),
+      () async => directory,
+    );
 
     final settings = await repository.loadSettings();
 
@@ -35,7 +41,11 @@ void main() {
     final database = createTestDatabase();
     addTearDown(database.close);
     final platform = _FakeBackupPlatform();
-    final repository = DriftBackupRepository(database, platform, () async => directory);
+    final repository = DriftBackupRepository(
+      database,
+      platform,
+      () async => directory,
+    );
     const settings = BackupSettings(
       automaticEnabled: true,
       frequency: BackupFrequency.weekly,
@@ -43,7 +53,10 @@ void main() {
       destinationUri: 'content://backup/tree',
     );
 
-    expect(await repository.saveSettings(settings, 'secret'), isA<Success<void>>());
+    expect(
+      await repository.saveSettings(settings, 'secret'),
+      isA<Success<void>>(),
+    );
     expect((await repository.loadSettings()).frequency, BackupFrequency.weekly);
     expect(platform.configured, settings);
 
@@ -52,16 +65,26 @@ void main() {
       frequency: BackupFrequency.daily,
       retentionCount: 31,
     );
-    expect(await repository.saveSettings(invalid, ''), isA<FailureResult<void>>());
+    expect(
+      await repository.saveSettings(invalid, ''),
+      isA<FailureResult<void>>(),
+    );
   });
 
   test('manual backup uses verified snapshot and records success', () async {
     final database = createTestDatabase();
     addTearDown(database.close);
     final platform = _FakeBackupPlatform();
-    final repository = DriftBackupRepository(database, platform, () async => directory);
+    final repository = DriftBackupRepository(
+      database,
+      platform,
+      () async => directory,
+    );
 
-    final result = await repository.createManualBackup('content://backup/tree', 'secret');
+    final result = await repository.createManualBackup(
+      'content://backup/tree',
+      'secret',
+    );
 
     expect(result, isA<Success<void>>());
     expect(platform.snapshotWasPresent, isTrue);
@@ -74,7 +97,11 @@ void main() {
     final database = createTestDatabase();
     addTearDown(database.close);
     final platform = _FakeBackupPlatform()..failRestore = true;
-    final repository = DriftBackupRepository(database, platform, () async => directory);
+    final repository = DriftBackupRepository(
+      database,
+      platform,
+      () async => directory,
+    );
 
     final result = await repository.restore('content://backup/file', 'wrong');
 
@@ -99,7 +126,8 @@ final class _FakeBackupPlatform implements BackupPlatform {
     return const BackupArchiveResult(
       uri: 'content://backup/file',
       sizeBytes: 2048,
-      sha256: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+      sha256:
+          'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
     );
   }
 

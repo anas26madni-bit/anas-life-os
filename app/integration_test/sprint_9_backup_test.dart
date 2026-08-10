@@ -20,7 +20,9 @@ void main() {
       ProviderScope(
         overrides: [
           appDatabaseProvider.overrideWith((ref) async => database),
-          backupPlatformProvider.overrideWithValue(_IntegrationBackupPlatform()),
+          backupPlatformProvider.overrideWithValue(
+            _IntegrationBackupPlatform(),
+          ),
         ],
         child: MaterialApp(
           supportedLocales: AppLocalizations.supportedLocales,
@@ -37,15 +39,29 @@ void main() {
 
 final class _IntegrationBackupPlatform implements BackupPlatform {
   @override
-  Future<BackupArchiveResult> createArchive({required String databaseSnapshotPath, required List<String> managedFilePaths, required String destinationUri, required String passphrase, required String backupName}) async =>
-      const BackupArchiveResult(uri: 'content://file', sizeBytes: 1, sha256: 'hash');
+  Future<BackupArchiveResult> createArchive({
+    required String databaseSnapshotPath,
+    required List<String> managedFilePaths,
+    required String destinationUri,
+    required String passphrase,
+    required String backupName,
+  }) async => const BackupArchiveResult(
+    uri: 'content://file',
+    sizeBytes: 1,
+    sha256: 'hash',
+  );
   @override
-  Future<void> configureAutomatic({required BackupSettings settings, required String passphrase}) async {}
+  Future<void> configureAutomatic({
+    required BackupSettings settings,
+    required String passphrase,
+  }) async {}
   @override
   Future<void> disableAutomatic() async {}
   @override
-  Future<RestoreArchiveResult> restoreArchive({required String sourceUri, required String passphrase}) async =>
-      const RestoreArchiveResult(recordsRestored: 0);
+  Future<RestoreArchiveResult> restoreArchive({
+    required String sourceUri,
+    required String passphrase,
+  }) async => const RestoreArchiveResult(recordsRestored: 0);
   @override
   Future<String?> selectDestination() async => 'content://tree';
   @override

@@ -31,7 +31,9 @@ class BackupController extends AsyncNotifier<BackupViewState> {
       ref.read(backupPlatformProvider).selectDestination();
 
   Future<void> saveSettings(BackupSettings settings, String passphrase) async {
-    await _mutate((repository) => repository.saveSettings(settings, passphrase));
+    await _mutate(
+      (repository) => repository.saveSettings(settings, passphrase),
+    );
   }
 
   Future<void> manualBackup(String destination, String passphrase) async {

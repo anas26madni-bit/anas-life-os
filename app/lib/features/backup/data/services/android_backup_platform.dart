@@ -11,10 +11,12 @@ final class AndroidBackupPlatform implements BackupPlatform {
   final MethodChannel channel;
 
   @override
-  Future<String?> selectDestination() => channel.invokeMethod<String>('selectDestination');
+  Future<String?> selectDestination() =>
+      channel.invokeMethod<String>('selectDestination');
 
   @override
-  Future<String?> selectImport() => channel.invokeMethod<String>('selectImport');
+  Future<String?> selectImport() =>
+      channel.invokeMethod<String>('selectImport');
 
   @override
   Future<BackupArchiveResult> createArchive({
@@ -24,13 +26,14 @@ final class AndroidBackupPlatform implements BackupPlatform {
     required String passphrase,
     required String backupName,
   }) async {
-    final value = await channel.invokeMapMethod<String, Object?>('createArchive', {
-      'databaseSnapshotPath': databaseSnapshotPath,
-      'managedFilePaths': managedFilePaths,
-      'destinationUri': destinationUri,
-      'passphrase': passphrase,
-      'backupName': backupName,
-    });
+    final value = await channel
+        .invokeMapMethod<String, Object?>('createArchive', {
+          'databaseSnapshotPath': databaseSnapshotPath,
+          'managedFilePaths': managedFilePaths,
+          'destinationUri': destinationUri,
+          'passphrase': passphrase,
+          'backupName': backupName,
+        });
     if (value == null) throw StateError('Backup result was unavailable.');
     return BackupArchiveResult(
       uri: value['uri']! as String,
@@ -63,5 +66,6 @@ final class AndroidBackupPlatform implements BackupPlatform {
   });
 
   @override
-  Future<void> disableAutomatic() => channel.invokeMethod<void>('disableAutomatic');
+  Future<void> disableAutomatic() =>
+      channel.invokeMethod<void>('disableAutomatic');
 }
