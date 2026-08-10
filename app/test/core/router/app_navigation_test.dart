@@ -43,7 +43,7 @@ void main() {
       'Dashboard',
       'Tasks',
       'Calendar',
-      'Knowledge',
+      'Knowledge Vault',
       'More',
     ]) {
       expect(find.text(label), findsWidgets);

@@ -40,6 +40,7 @@ void main() {
           contains('/features/dashboard/'),
           contains('/features/calendar/'),
           contains('/features/search/'),
+          contains('/features/more/'),
         ),
       ),
     );

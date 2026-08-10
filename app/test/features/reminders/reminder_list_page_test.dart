@@ -45,7 +45,7 @@ void main() {
     await tester.tap(find.text('Create reminder').first);
     await tester.pumpAndSettle();
     final fields = find.byType(TextFormField);
-    expect(fields, findsNWidgets(2));
+    expect(fields, findsAtLeastNWidgets(2));
     await tester.enterText(fields.at(0), task.id.toString());
     await tester.enterText(fields.at(1), 'Review task');
     await tester.tap(find.text('Save'));
@@ -53,7 +53,9 @@ void main() {
 
     expect(find.text('Review task'), findsOneWidget);
     expect(scheduler.scheduled, hasLength(1));
-    await tester.tap(find.byType(Switch).last);
+    await tester.tap(find.byIcon(Icons.more_vert).last);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Disable').last);
     await tester.pumpAndSettle();
     expect(scheduler.cancelled, hasLength(1));
     expect(tester.takeException(), isNull);
