@@ -176,7 +176,7 @@ class _ReportBody extends StatelessWidget {
             crossAxisCount: MediaQuery.sizeOf(context).width >= 600 ? 4 : 2,
             crossAxisSpacing: AppSpacing.sm,
             mainAxisSpacing: AppSpacing.sm,
-            childAspectRatio: 1.35,
+              childAspectRatio: 1,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             children: [
