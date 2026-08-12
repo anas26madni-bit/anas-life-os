@@ -9,9 +9,7 @@ import '../test/helpers/database_test_harness.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('encrypted search works offline', (
-    tester,
-  ) async {
+  testWidgets('encrypted search works offline', (tester) async {
     final database = createTestDatabase();
     addTearDown(database.close);
     final repository = DriftSearchRepository(
