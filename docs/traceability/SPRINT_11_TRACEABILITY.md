@@ -10,3 +10,10 @@
 
 Status: implemented and awaiting mandatory physical-device evidence. Sprint 11
 must not be marked complete or merged before the physical matrix passes.
+
+Automated evidence: GitHub Actions run `31578948794` for
+`34b331b9b9bc0ccb8dc21554c7535b7d3b06d59b`; validation and API 30 integration
+passed. API 34 found that the unattended search test could start an installed
+voice recognizer and wait indefinitely for microphone input. The test now
+probes availability without starting capture; exact-head matrix retry is
+required before this automated evidence is complete.
