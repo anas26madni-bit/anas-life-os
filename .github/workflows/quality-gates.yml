@@ -75,6 +75,8 @@ jobs:
         run: dart run ../tools/verify_coverage.dart coverage/lcov.info
       - name: Build debug APK
         run: flutter build apk --debug
+      - name: Build profile APK
+        run: flutter build apk --profile
       - name: Upload debug APK artifact
         uses: actions/upload-artifact@v4
         with:
@@ -82,10 +84,21 @@ jobs:
           path: app/build/app/outputs/flutter-apk/app-debug.apk
           if-no-files-found: error
           retention-days: 14
+      - name: Upload profile APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: anas-life-os-profile-apk
+          path: app/build/app/outputs/flutter-apk/app-profile.apk
+          if-no-files-found: error
+          retention-days: 14
 
   integration:
     needs: validate
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        api-level: [30, 34]
     timeout-minutes: 45
     defaults:
       run:
@@ -130,10 +143,10 @@ jobs:
             | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
-      - name: Run Android 11 integration tests
+      - name: Run Android device-matrix integration tests
         uses: reactivecircus/android-emulator-runner@v2.37.0
         with:
-          api-level: 30
+          api-level: ${{ matrix.api-level }}
           arch: x86_64
           target: google_apis
           profile: pixel_6
