@@ -6,7 +6,7 @@ Updated: 2026-08-10 (Asia/Karachi)
 
 - Sprint 1 through Sprint 10: complete and frozen.
 - Sprint 1-7 UI/navigation gap closure: complete and verified.
-- Current branch: `codex/sprint-10-security`.
+- Current branch: `codex/sprint-11-optimization`.
 - Verified Sprint 9 head commit:
   `a8da2494727980cf88fc41e1c0988be606d64ba1`.
 - Verified GitHub Actions run: `31389153812`.
@@ -28,17 +28,21 @@ Updated: 2026-08-10 (Asia/Karachi)
 
 ## Next pending task
 
-Sprint 11 - Optimization. Resume from the verified Sprint 10 merge on `main`.
+Sprint 11 - Optimization physical-device validation. Automated implementation
+and CI verification must pass first; completion/merge requires the approved
+physical API 30 and API 34+ evidence matrix.
 
 ## Blockers
 
 - Sprint 9: none.
 - Sprint 10: none.
+- Sprint 11: mandatory physical-device performance, battery, biometric, alarm,
+  Doze and lifecycle evidence is not available in this workspace/CI.
 - Local mobile tooling remains unavailable; GitHub Actions remains the verified
   build and Android integration authority.
 
 ## Exact resume point
 
-After PR `#10` merges, resume from its verified `main` merge commit at Sprint 11
-device-matrix optimization. Do not reopen approved Sprint 10 threat/app-lock
-policies without Product Owner approval.
+Resume on `codex/sprint-11-optimization`. Verify its API 30/API 34 emulator CI,
+then execute `docs/quality/SPRINT_11_PHYSICAL_DEVICE_PROTOCOL.md` externally.
+Merge only after both physical devices pass all approved limits.

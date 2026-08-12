@@ -12,7 +12,7 @@
 | Sprint 8 | Statistics | Complete | None | Reports/charts/productivity/completion/delay/trends |
 | Sprint 9 | Backup | Complete | None | Encrypted local backup/restore/integrity/export/import/recovery tests |
 | Sprint 10 | Security | Complete | None | PIN, biometric, encryption behavior, hidden items, secure storage, permissions |
-| Sprint 11 | Optimization | Not started | Sprint 10 approval | Memory/battery/performance/accessibility/large-data/regression |
+| Sprint 11 | Optimization | In progress | Mandatory physical-device matrix | Memory/battery/performance/accessibility/large-data/regression |
 | Sprint 12 | Release Candidate | Not started | Sprint 11 approval | Final fixes/regression/docs/performance/security/accessibility/release notes/candidate |
 
 ## Current continuation point
