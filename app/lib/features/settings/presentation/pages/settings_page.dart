@@ -81,7 +81,10 @@ class SettingsPage extends ConsumerWidget {
                         ],
                         onChanged: (language) async {
                           if (language != null) {
-                            await _save(ref, value.copyWith(language: language));
+                            await _save(
+                              ref,
+                              value.copyWith(language: language),
+                            );
                           }
                         },
                       ),

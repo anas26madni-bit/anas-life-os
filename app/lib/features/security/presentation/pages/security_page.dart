@@ -254,14 +254,14 @@ class SecurityPage extends ConsumerWidget {
               final ok = await ref
                   .read(securityControllerProvider.notifier)
                   .disablePin(pin.text);
-        if (dialogContext.mounted && ok) {
-          Navigator.pop(dialogContext);
-        }
-        if (context.mounted && !ok) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(l10n.securityOperationFailed)),
-          );
-        }
+              if (dialogContext.mounted && ok) {
+                Navigator.pop(dialogContext);
+              }
+              if (context.mounted && !ok) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(l10n.securityOperationFailed)),
+                );
+              }
             },
             child: Text(l10n.disable),
           ),
