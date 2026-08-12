@@ -11,10 +11,8 @@
 Status: implemented and awaiting mandatory physical-device evidence. Sprint 11
 must not be marked complete or merged before the physical matrix passes.
 
-Automated evidence: GitHub Actions run `31578948794` for
-`34b331b9b9bc0ccb8dc21554c7535b7d3b06d59b`; validation and API 30 integration
-passed. API 34 found that its installed native voice recognizer could make even
-an availability probe nondeterministic in unattended execution. The integration
-test now covers encrypted search only; voice service unit tests remain automated
-and real recognizer behavior remains mandatory in the physical-device matrix.
-Exact-head matrix verification is required before automated evidence is complete.
+Automated evidence: exact-head GitHub Actions run `31586516491` for
+`c03a935f4e0f2042879d3325f0c610c185cb1520`; validation plus API 30 and API 34
+integration passed. The integration test covers encrypted search; voice service
+unit tests remain automated and real recognizer behavior remains mandatory in
+the physical-device matrix.

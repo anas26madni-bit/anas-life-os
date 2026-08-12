@@ -14,12 +14,10 @@ Updated: 2026-08-12 (Asia/Karachi)
   `9b06c83d5dafb37d08b773e93042c86cd04a5506`.
 - Sprint 10 pull request: `#10`, merged into `main`.
 - Sprint 11 automated head commit:
-  `34b331b9b9bc0ccb8dc21554c7535b7d3b06d59b`.
-- Sprint 11 GitHub Actions run: `31578948794`; validation and API 30
-  integration are verified. API 34 exposed a nondeterministic native voice
-  recognizer probe in an unattended emulator; the integration test is now
-  limited to encrypted search while voice remains covered by unit and mandatory
-  physical-device validation. Exact-head CI verification is pending.
+  `c03a935f4e0f2042879d3325f0c610c185cb1520`.
+- Sprint 11 GitHub Actions run: `31586516491`; validation plus API 30 and API
+  34 integration are verified. Voice remains covered by unit and mandatory
+  physical-device validation rather than a nondeterministic emulator recognizer.
 - Sprint 11 pull request: `#11`, draft and intentionally unmerged.
 
 ## Last completed sprint
@@ -31,8 +29,7 @@ Updated: 2026-08-12 (Asia/Karachi)
   approved quantitative thresholds and physical-device protocol.
 - Sprint 11 validation passed generation freshness, formatting, analyzer, full
   tests, 90.83% line and 100% branch coverage, debug/profile APK builds and API
-  30 integration. API 34 retry and mandatory physical validation remain
-  outstanding.
+  30 and API 34 integration. Mandatory physical validation remains outstanding.
 
 ## Next pending task
 
@@ -51,8 +48,7 @@ physical API 30 and API 34+ evidence matrix.
 
 ## Exact resume point
 
-Resume on `codex/sprint-11-optimization`. Verify the scoped encrypted-search
-integration correction on the API 30/API 34 GitHub Actions matrix, then execute
+Resume on `codex/sprint-11-optimization` and execute
 `docs/quality/SPRINT_11_PHYSICAL_DEVICE_PROTOCOL.md` externally on physical API
 30 low-memory/60 Hz and physical API 34+ reference devices. Archive the raw
 reports and pass/fail matrix, update this checkpoint, and merge only after both
