@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/presentation/app_top_bar.dart';
-import '../controllers/security_controller.dart';
 import '../../domain/entities/security_models.dart';
+import '../controllers/security_controller.dart';
 
 class SecurityPage extends ConsumerWidget {
   const SecurityPage({super.key});
@@ -115,14 +115,15 @@ class SecurityPage extends ConsumerWidget {
                             ),
                           ],
                           onChanged: state.preferences.autoLockEnabled
-                              ? (value) {
-                                  if (value != null)
-                                    _update(
+                              ? (value) async {
+                                  if (value != null) {
+                                    await _update(
                                       ref,
                                       state.preferences.copyWith(
                                         timeoutSeconds: value,
                                       ),
                                     );
+                                  }
                                 }
                               : null,
                         ),
@@ -211,11 +212,14 @@ class SecurityPage extends ConsumerWidget {
                   : await ref
                         .read(securityControllerProvider.notifier)
                         .configurePin(pin.text);
-              if (dialogContext.mounted && ok) Navigator.pop(dialogContext);
-              if (context.mounted && !ok)
+              if (dialogContext.mounted && ok) {
+                Navigator.pop(dialogContext);
+              }
+              if (context.mounted && !ok) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text(l10n.securityOperationFailed)),
                 );
+              }
             },
             child: Text(l10n.save),
           ),
@@ -250,11 +254,14 @@ class SecurityPage extends ConsumerWidget {
               final ok = await ref
                   .read(securityControllerProvider.notifier)
                   .disablePin(pin.text);
-              if (dialogContext.mounted && ok) Navigator.pop(dialogContext);
-              if (context.mounted && !ok)
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(l10n.securityOperationFailed)),
-                );
+        if (dialogContext.mounted && ok) {
+          Navigator.pop(dialogContext);
+        }
+        if (context.mounted && !ok) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(l10n.securityOperationFailed)),
+          );
+        }
             },
             child: Text(l10n.disable),
           ),

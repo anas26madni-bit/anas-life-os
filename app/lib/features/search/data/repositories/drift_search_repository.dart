@@ -12,22 +12,21 @@ import 'search_query_codec.dart';
 final class DriftSearchRepository implements SearchRepository {
   DriftSearchRepository(
     VerifiedSearchDatabaseSession session, {
-    AuthorizationGate? authorizationGate,
+    this.authorizationGate,
     DateTime Function()? clock,
     String Function()? uuidFactory,
   }) : _database = session.database,
-       _authorizationGate = authorizationGate,
        _clock = clock ?? DateTime.now,
        _uuidFactory = uuidFactory ?? UuidGenerator().generate;
 
   final AppDatabase _database;
-  final AuthorizationGate? _authorizationGate;
+  final AuthorizationGate? authorizationGate;
   final DateTime Function() _clock;
   final String Function() _uuidFactory;
 
   @override
   Future<Result<List<SearchResultItem>>> search(SearchQuery query) async {
-    if (_authorizationGate != null && !_authorizationGate.isAuthorized) {
+    if (authorizationGate != null && !authorizationGate!.isAuthorized) {
       return const FailureResult(
         ValidationFailure(
           code: 'search_locked',
@@ -72,7 +71,7 @@ final class DriftSearchRepository implements SearchRepository {
 
   @override
   Future<Result<void>> rebuildIndex() async {
-    if (_authorizationGate != null && !_authorizationGate.isAuthorized) {
+    if (authorizationGate != null && !authorizationGate!.isAuthorized) {
       return const FailureResult(
         ValidationFailure(
           code: 'search_locked',

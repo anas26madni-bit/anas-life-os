@@ -4,8 +4,7 @@ import '../../domain/entities/security_models.dart';
 import '../../domain/services/security_platform.dart';
 
 final class AndroidSecurityPlatform implements SecurityPlatform {
-  const AndroidSecurityPlatform({MethodChannel channel = _defaultChannel})
-    : _channel = channel;
+  const AndroidSecurityPlatform([this._channel = _defaultChannel]);
 
   static const _defaultChannel = MethodChannel('com.anaslifeos.app/security');
   final MethodChannel _channel;

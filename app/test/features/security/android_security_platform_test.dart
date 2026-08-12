@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   const channel = MethodChannel('test/security');
-  const platform = AndroidSecurityPlatform(channel: channel);
+  const platform = AndroidSecurityPlatform(channel);
   final calls = <MethodCall>[];
 
   setUp(() {

@@ -47,9 +47,10 @@ class SettingsPage extends ConsumerWidget {
                             child: Text(l10n.darkTheme),
                           ),
                         ],
-                        onChanged: (theme) {
-                          if (theme != null)
-                            _save(ref, value.copyWith(theme: theme));
+                        onChanged: (theme) async {
+                          if (theme != null) {
+                            await _save(ref, value.copyWith(theme: theme));
+                          }
                         },
                       ),
                     ),
@@ -78,9 +79,10 @@ class SettingsPage extends ConsumerWidget {
                             child: Text(l10n.urdu),
                           ),
                         ],
-                        onChanged: (language) {
-                          if (language != null)
-                            _save(ref, value.copyWith(language: language));
+                        onChanged: (language) async {
+                          if (language != null) {
+                            await _save(ref, value.copyWith(language: language));
+                          }
                         },
                       ),
                     ),
@@ -134,7 +136,7 @@ class SettingsPage extends ConsumerWidget {
   }
 
   Future<void> _save(WidgetRef ref, AppSettings settings) =>
-      ref.read(settingsControllerProvider.notifier).update(settings);
+      ref.read(settingsControllerProvider.notifier).save(settings);
 }
 
 class _SectionTitle extends StatelessWidget {

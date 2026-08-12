@@ -20,7 +20,7 @@ class SettingsController extends AsyncNotifier<AppSettings> {
     return settings;
   }
 
-  Future<void> update(AppSettings settings) async {
+  Future<void> save(AppSettings settings) async {
     await (await ref.read(settingsRepositoryProvider.future)).save(settings);
     _apply(settings);
     state = AsyncData(settings);

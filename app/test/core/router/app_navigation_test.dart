@@ -11,8 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../helpers/fakes.dart';
 import '../../helpers/database_test_harness.dart';
+import '../../helpers/fakes.dart';
 
 void main() {
   testWidgets('startup enters the shared five-tab shell', (tester) async {
