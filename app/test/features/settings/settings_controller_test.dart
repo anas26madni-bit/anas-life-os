@@ -10,9 +10,11 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   test('loads and applies persisted app settings then saves changes', () async {
     final repository = _SettingsRepository();
-    final container = ProviderContainer(overrides: [
-      settingsRepositoryProvider.overrideWith((ref) async => repository),
-    ]);
+    final container = ProviderContainer(
+      overrides: [
+        settingsRepositoryProvider.overrideWith((ref) async => repository),
+      ],
+    );
     addTearDown(container.dispose);
     final loaded = await container.read(settingsControllerProvider.future);
     expect(loaded.language, AppLanguageSetting.ur);
@@ -45,6 +47,10 @@ final class _SettingsRepository implements SettingsRepository {
     useDynamicColor: false,
     reduceMotion: true,
   );
-  @override Future<AppSettings> load() async => value;
-  @override Future<void> save(AppSettings settings) async { value = settings; }
+  @override
+  Future<AppSettings> load() async => value;
+  @override
+  Future<void> save(AppSettings settings) async {
+    value = settings;
+  }
 }
