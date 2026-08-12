@@ -32,12 +32,13 @@ void main() {
           expect(tester.takeException(), isNull);
           expect(
             Directionality.of(tester.element(find.byType(MorePage))),
-            locale.languageCode == 'ur'
-                ? TextDirection.rtl
-                : TextDirection.ltr,
+            locale.languageCode == 'ur' ? TextDirection.rtl : TextDirection.ltr,
           );
           for (final tile in find.byType(ListTile).evaluate()) {
-            expect(tester.getSize(find.byWidget(tile.widget)).height, greaterThanOrEqualTo(48));
+            expect(
+              tester.getSize(find.byWidget(tile.widget)).height,
+              greaterThanOrEqualTo(48),
+            );
           }
         },
       );
