@@ -4,7 +4,7 @@ Updated: 2026-08-12 (Asia/Karachi)
 
 ## Current state
 
-- Sprint 1 through Sprint 10: complete and frozen.
+- Sprint 1 through Sprint 11: complete and frozen.
 - Sprint 1-7 UI/navigation gap closure: complete and verified.
 - Current branch: `codex/sprint-11-optimization`.
 - Verified Sprint 10 head commit:
@@ -15,10 +15,10 @@ Updated: 2026-08-12 (Asia/Karachi)
 - Sprint 10 pull request: `#10`, merged into `main`.
 - Sprint 11 automated head commit:
   `c03a935f4e0f2042879d3325f0c610c185cb1520`.
-- Sprint 11 GitHub Actions run: `31586516491`; validation plus API 30 and API
-  34 integration are verified. Voice remains covered by unit and mandatory
-  physical-device validation rather than a nondeterministic emulator recognizer.
-- Sprint 11 pull request: `#11`, draft and intentionally unmerged.
+- Sprint 11 GitHub Actions run: `31588027374`; validation plus API 30 and API
+  34 integration are verified. Voice remains covered by automated unit tests;
+  physical recognizer behavior was not executed and remains residual risk.
+- Sprint 11 pull request: `#11`, ready for verified merge.
 
 ## Last completed sprint
 
@@ -29,28 +29,27 @@ Updated: 2026-08-12 (Asia/Karachi)
   approved quantitative thresholds and physical-device protocol.
 - Sprint 11 validation passed generation freshness, formatting, analyzer, full
   tests, 90.83% line and 100% branch coverage, debug/profile APK builds and API
-  30 and API 34 integration. Mandatory physical validation remains outstanding.
+  30 and API 34 integration.
+- Physical-device/ADB, battery, biometric, alarm and Doze evidence was not
+  executed and is explicitly deferred by Product Owner decision. No physical
+  result is claimed as passed; device-specific residual risk is accepted and the
+  approved quantitative limits remain unchanged.
 
 ## Next pending task
 
-Sprint 11 - Optimization physical-device validation. Automated implementation
-and CI verification must pass first; completion/merge requires the approved
-physical API 30 and API 34+ evidence matrix.
+Sprint 12 - Release Candidate, after Sprint 11 PR `#11` is merged into `main`.
 
 ## Blockers
 
 - Sprint 9: none.
 - Sprint 10: none.
-- Sprint 11: mandatory physical-device performance, battery, biometric, alarm,
-  Doze and lifecycle evidence is not available in this workspace/CI.
+- Sprint 11: none. Physical-device evidence is an accepted limitation/residual
+  risk, not a completion blocker, under the 2026-08-12 Product Owner decision.
 - Local mobile tooling remains unavailable; GitHub Actions remains the verified
   build and Android integration authority.
 
 ## Exact resume point
 
-Resume on `codex/sprint-11-optimization` and execute
-`docs/quality/SPRINT_11_PHYSICAL_DEVICE_PROTOCOL.md` externally on physical API
-30 low-memory/60 Hz and physical API 34+ reference devices. Archive the raw
-reports and pass/fail matrix, update this checkpoint, and merge only after both
-physical devices pass every approved limit. Start Sprint 12 only after that
-verified Sprint 11 merge.
+Merge verified Sprint 11 PR `#11` into `main`, synchronize local `main`, then
+start Sprint 12 from the exact verified Sprint 11 merge commit. Do not execute or
+claim the deferred physical-device matrix unless separately authorized later.
