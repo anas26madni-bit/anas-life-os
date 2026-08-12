@@ -831,4 +831,157 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get backupFailed => 'Failed';
+
+  @override
+  String get securityTitle => 'Security';
+
+  @override
+  String get settingsTitle => 'Settings';
+
+  @override
+  String get appLocked => 'App locked';
+
+  @override
+  String get unlockMessage => 'Authenticate to access your private data.';
+
+  @override
+  String get pinLabel => 'PIN';
+
+  @override
+  String get enterPin => 'Enter your PIN';
+
+  @override
+  String get pinMinimum => 'Use at least 6 digits.';
+
+  @override
+  String get unlock => 'Unlock';
+
+  @override
+  String get useBiometric => 'Use biometric';
+
+  @override
+  String get biometricPromptTitle => 'Unlock Anas Life OS';
+
+  @override
+  String get biometricPromptSubtitle => 'Use your enrolled biometric';
+
+  @override
+  String get usePin => 'Use PIN';
+
+  @override
+  String get invalidPin => 'The PIN is incorrect.';
+
+  @override
+  String cooldownMessage(int seconds) {
+    return 'Try again in $seconds seconds.';
+  }
+
+  @override
+  String get configurePin => 'Set PIN';
+
+  @override
+  String get changePin => 'Change PIN';
+
+  @override
+  String get disablePin => 'Disable PIN';
+
+  @override
+  String get currentPin => 'Current PIN';
+
+  @override
+  String get newPin => 'New PIN';
+
+  @override
+  String get confirmPin => 'Confirm PIN';
+
+  @override
+  String get pinsDoNotMatch => 'PINs do not match.';
+
+  @override
+  String get biometricLock => 'Biometric unlock';
+
+  @override
+  String get biometricUnavailable =>
+      'Strong biometric authentication is unavailable.';
+
+  @override
+  String get autoLock => 'Auto-lock';
+
+  @override
+  String get autoLockTimeout => 'Auto-lock timeout';
+
+  @override
+  String get immediately => 'Immediately';
+
+  @override
+  String get seconds30 => '30 seconds';
+
+  @override
+  String get minute1 => '1 minute';
+
+  @override
+  String get minutes5 => '5 minutes';
+
+  @override
+  String get minutes15 => '15 minutes';
+
+  @override
+  String get hiddenItemsProtection => 'Protect hidden items';
+
+  @override
+  String get securityFailClosed =>
+      'Protected data stays unavailable until authentication succeeds.';
+
+  @override
+  String get appearance => 'Appearance';
+
+  @override
+  String get themeSetting => 'Theme';
+
+  @override
+  String get systemDefault => 'System default';
+
+  @override
+  String get lightTheme => 'Light';
+
+  @override
+  String get darkTheme => 'Dark';
+
+  @override
+  String get languageSetting => 'Language';
+
+  @override
+  String get english => 'English';
+
+  @override
+  String get urdu => 'Urdu';
+
+  @override
+  String get dynamicColor => 'Dynamic color';
+
+  @override
+  String get fontScale => 'Text size';
+
+  @override
+  String get reduceMotion => 'Reduce motion';
+
+  @override
+  String get accessibilitySettings => 'Accessibility';
+
+  @override
+  String get settingsSaved => 'Settings saved';
+
+  @override
+  String get securityOperationFailed =>
+      'Security settings could not be changed.';
+
+  @override
+  String get aboutTitle => 'About';
+
+  @override
+  String get appVersionLabel => 'Version 1.0 release candidate';
+
+  @override
+  String get privacySummary =>
+      'Offline by default. No account, ads, analytics or tracking.';
 }

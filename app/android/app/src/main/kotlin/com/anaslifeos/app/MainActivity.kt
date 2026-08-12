@@ -4,7 +4,7 @@ import android.content.Context
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.util.Base64
-import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import java.security.KeyStore
@@ -14,15 +14,17 @@ import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
 
-class MainActivity : FlutterActivity() {
+class MainActivity : FlutterFragmentActivity() {
     private lateinit var voiceSearch: OnDeviceVoiceSearchPlatform
     private lateinit var backupPlatform: BackupPlatform
+    private lateinit var securityPlatform: SecurityPlatform
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         val custody = DatabaseKeyCustody(applicationContext)
         ReminderPlatform(this, flutterEngine.dartExecutor.binaryMessenger)
         backupPlatform = BackupPlatform(this, flutterEngine.dartExecutor.binaryMessenger, custody)
+        securityPlatform = SecurityPlatform(this, flutterEngine.dartExecutor.binaryMessenger)
         voiceSearch = OnDeviceVoiceSearchPlatform(
             this,
             flutterEngine.dartExecutor.binaryMessenger,

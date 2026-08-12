@@ -4,9 +4,9 @@ Updated: 2026-08-10 (Asia/Karachi)
 
 ## Current state
 
-- Sprint 1 through Sprint 9: complete and frozen.
+- Sprint 1 through Sprint 10: complete and frozen.
 - Sprint 1-7 UI/navigation gap closure: complete and verified.
-- Current branch: `main`.
+- Current branch: `codex/sprint-10-security`.
 - Verified Sprint 9 head commit:
   `a8da2494727980cf88fc41e1c0988be606d64ba1`.
 - Verified GitHub Actions run: `31389153812`.
@@ -28,18 +28,17 @@ Updated: 2026-08-10 (Asia/Karachi)
 
 ## Next pending task
 
-Sprint 10 - Security. Resume from its authoritative scope and genuine pending
-security/app-lock decisions on verified `main`.
+Sprint 11 - Optimization. Resume from the verified Sprint 10 merge on `main`.
 
 ## Blockers
 
 - Sprint 9: none.
+- Sprint 10: none.
 - Local mobile tooling remains unavailable; GitHub Actions remains the verified
   build and Android integration authority.
 
 ## Exact resume point
 
-Resume from verified `main` merge commit
-`6ac3ccf6fe42be7bbd21804910219bb18f5659bf` at the Sprint 10 Security decision
-gate. Do not reopen approved Sprint 9 backup, retention or scheduling policies
-without Product Owner approval.
+After PR `#10` merges, resume from its verified `main` merge commit at Sprint 11
+device-matrix optimization. Do not reopen approved Sprint 10 threat/app-lock
+policies without Product Owner approval.

@@ -167,6 +167,16 @@ RouteBase get $appShellRoute => StatefulShellRouteData.$route(
               factory: $BackupRoute._fromState,
             ),
             GoRouteData.$route(
+              path: 'security',
+              hasOverriddenOnExit: false,
+              factory: $SecurityRoute._fromState,
+            ),
+            GoRouteData.$route(
+              path: 'settings',
+              hasOverriddenOnExit: false,
+              factory: $SettingsRoute._fromState,
+            ),
+            GoRouteData.$route(
               path: 'documents',
               hasOverriddenOnExit: false,
               factory: $DocumentsRoute._fromState,
@@ -479,6 +489,46 @@ mixin $BackupRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/more/backup');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $SecurityRoute on GoRouteData {
+  static SecurityRoute _fromState(GoRouterState state) => const SecurityRoute();
+
+  @override
+  String get location => GoRouteData.$location('/more/security');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $SettingsRoute on GoRouteData {
+  static SettingsRoute _fromState(GoRouterState state) => const SettingsRoute();
+
+  @override
+  String get location => GoRouteData.$location('/more/settings');
 
   @override
   void go(BuildContext context) => context.go(location);

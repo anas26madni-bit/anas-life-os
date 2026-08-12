@@ -1,5 +1,11 @@
 # Changelog
 
+## Sprint 10 - Security and Settings
+
+- Added fail-closed PIN, strong-biometric, lifecycle app-lock and protected UI.
+- Added authorization-gated private search and hidden-content protections.
+- Added localized persistent security, theme, language and accessibility settings.
+
 All notable project changes are recorded here.
 
 ## [Unreleased]

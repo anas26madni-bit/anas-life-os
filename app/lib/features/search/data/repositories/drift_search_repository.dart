@@ -3,6 +3,7 @@ import 'package:drift/drift.dart';
 import '../../../../core/database/uuid_generator.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/result.dart';
+import '../../../../core/security/authorization_gate.dart';
 import '../../../database_foundation/data/database/app_database.dart';
 import '../../domain/entities/search_models.dart';
 import '../../domain/repositories/search_repository.dart';
@@ -11,6 +12,7 @@ import 'search_query_codec.dart';
 final class DriftSearchRepository implements SearchRepository {
   DriftSearchRepository(
     VerifiedSearchDatabaseSession session, {
+    this.authorizationGate,
     DateTime Function()? clock,
     String Function()? uuidFactory,
   }) : _database = session.database,
@@ -18,11 +20,20 @@ final class DriftSearchRepository implements SearchRepository {
        _uuidFactory = uuidFactory ?? UuidGenerator().generate;
 
   final AppDatabase _database;
+  final AuthorizationGate? authorizationGate;
   final DateTime Function() _clock;
   final String Function() _uuidFactory;
 
   @override
   Future<Result<List<SearchResultItem>>> search(SearchQuery query) async {
+    if (authorizationGate != null && !authorizationGate!.isAuthorized) {
+      return const FailureResult(
+        ValidationFailure(
+          code: 'search_locked',
+          safeMessage: 'Authentication is required for private search.',
+        ),
+      );
+    }
     final validation = _validate(query);
     if (validation != null) return FailureResult(validation);
     try {
@@ -60,6 +71,14 @@ final class DriftSearchRepository implements SearchRepository {
 
   @override
   Future<Result<void>> rebuildIndex() async {
+    if (authorizationGate != null && !authorizationGate!.isAuthorized) {
+      return const FailureResult(
+        ValidationFailure(
+          code: 'search_locked',
+          safeMessage: 'Authentication is required for private search.',
+        ),
+      );
+    }
     try {
       await _database.transaction(() async {
         await _database.customStatement('DELETE FROM search_documents;');

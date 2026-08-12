@@ -46,6 +46,18 @@ class MorePage extends StatelessWidget {
               title: localization.backupTitle,
               onTap: () => const BackupRoute().go(context),
             ),
+            const SizedBox(height: AppSpacing.sm),
+            _DestinationCard(
+              icon: Icons.security_outlined,
+              title: localization.securityTitle,
+              onTap: () => const SecurityRoute().go(context),
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            _DestinationCard(
+              icon: Icons.settings_outlined,
+              title: localization.settingsTitle,
+              onTap: () => const SettingsRoute().go(context),
+            ),
           ],
         ),
       ),

@@ -11,6 +11,8 @@ import '../../features/knowledge/presentation/pages/knowledge_home_page.dart';
 import '../../features/more/presentation/pages/more_page.dart';
 import '../../features/reminders/presentation/pages/reminder_list_page.dart';
 import '../../features/search/presentation/pages/universal_search_page.dart';
+import '../../features/security/presentation/pages/security_page.dart';
+import '../../features/settings/presentation/pages/settings_page.dart';
 import '../../features/statistics/presentation/pages/statistics_page.dart';
 import '../../features/tasks/presentation/pages/project_detail_page.dart';
 import '../../features/tasks/presentation/pages/project_list_page.dart';
@@ -90,6 +92,8 @@ class SearchRoute extends GoRouteData with $SearchRoute {
             TypedGoRoute<RemindersRoute>(path: 'reminders'),
             TypedGoRoute<StatisticsRoute>(path: 'statistics'),
             TypedGoRoute<BackupRoute>(path: 'backup'),
+            TypedGoRoute<SecurityRoute>(path: 'security'),
+            TypedGoRoute<SettingsRoute>(path: 'settings'),
             TypedGoRoute<DocumentsRoute>(
               path: 'documents',
               routes: [TypedGoRoute<DocumentDetailRoute>(path: ':documentId')],
@@ -245,6 +249,22 @@ class BackupRoute extends GoRouteData with $BackupRoute {
 
   @override
   Widget build(BuildContext context, GoRouterState state) => const BackupPage();
+}
+
+class SecurityRoute extends GoRouteData with $SecurityRoute {
+  const SecurityRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const SecurityPage();
+}
+
+class SettingsRoute extends GoRouteData with $SettingsRoute {
+  const SettingsRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const SettingsPage();
 }
 
 class DocumentsRoute extends GoRouteData with $DocumentsRoute {

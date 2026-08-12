@@ -53,6 +53,12 @@ default daily or optional weekly scheduling, and retain seven successful
 versions by default with a configurable 1-30 range. Manual/exported backups are
 never automatically pruned.
 
+Sprint 10 app lock uses a minimum six-digit PIN with a native Argon2id salted
+verifier, persistent progressive cooldown after five failures, no wipe and no
+recovery backdoor. Android strong biometrics fall back to PIN. Protected data
+fails closed across process/lifecycle locks, search and UI disclosure surfaces;
+`FLAG_SECURE` protects screenshots/recents. Rooted OS protection is not claimed.
+
 ## Things Never To Change
 Never modify an approved Project Bible master without owner approval. Never weaken offline privacy, local data ownership, Clean Architecture, database-first sequencing, soft-delete policy, cryptographic modularity, accessibility, localization/RTL, traceability, or quality gates. Never require cloud, login, analytics, advertising, or tracking for core functionality.
 
