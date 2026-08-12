@@ -21,6 +21,12 @@ import '../../features/search/data/repositories/drift_search_repository.dart';
 import '../../features/search/data/services/android_voice_search_service.dart';
 import '../../features/search/domain/repositories/search_repository.dart';
 import '../../features/search/domain/services/voice_search_service.dart';
+import '../../features/security/data/repositories/drift_security_repository.dart';
+import '../../features/security/data/services/android_security_platform.dart';
+import '../../features/security/domain/repositories/security_repository.dart';
+import '../../features/security/domain/services/security_platform.dart';
+import '../../features/settings/data/repositories/drift_settings_repository.dart';
+import '../../features/settings/domain/repositories/settings_repository.dart';
 import '../../features/statistics/data/repositories/drift_statistics_repository.dart';
 import '../../features/statistics/domain/repositories/statistics_repository.dart';
 import '../../features/tasks/data/repositories/drift_project_repository.dart';
@@ -36,6 +42,7 @@ import '../database/database_file_resolver.dart';
 import '../database/database_initializer.dart';
 import '../database/encrypted_database_opener.dart';
 import '../logging/app_logger.dart';
+import '../security/authorization_gate.dart';
 
 final appLoggerProvider = Provider<AppLogger>(
   (ref) => throw StateError('AppLogger override was not installed.'),
@@ -51,6 +58,14 @@ final androidDatabasePlatformProvider = Provider<AndroidDatabasePlatform>(
 
 final backupPlatformProvider = Provider<BackupPlatform>(
   (ref) => const AndroidBackupPlatform(),
+);
+
+final securityPlatformProvider = Provider<SecurityPlatform>(
+  (ref) => const AndroidSecurityPlatform(),
+);
+
+final authorizationGateProvider = Provider<AuthorizationGate>(
+  (ref) => AuthorizationGate(),
 );
 
 final appDatabaseProvider = FutureProvider<AppDatabase>((ref) async {
@@ -129,7 +144,10 @@ final calendarRepositoryProvider = FutureProvider<CalendarRepository>((
 final searchRepositoryProvider = FutureProvider<SearchRepository>((ref) async {
   final database = await ref.watch(appDatabaseProvider.future);
   final session = await database.verifySearchSession();
-  return DriftSearchRepository(session);
+  return DriftSearchRepository(
+    session,
+    authorizationGate: ref.watch(authorizationGateProvider),
+  );
 });
 
 final statisticsRepositoryProvider = FutureProvider<StatisticsRepository>((
@@ -152,3 +170,13 @@ final backupRepositoryProvider = FutureProvider<BackupRepository>((ref) async {
 final voiceSearchServiceProvider = Provider<VoiceSearchService>(
   (ref) => const AndroidVoiceSearchService(),
 );
+
+final securityRepositoryProvider = FutureProvider<SecurityRepository>((ref) async {
+  final database = await ref.watch(appDatabaseProvider.future);
+  return DriftSecurityRepository(database);
+});
+
+final settingsRepositoryProvider = FutureProvider<SettingsRepository>((ref) async {
+  final database = await ref.watch(appDatabaseProvider.future);
+  return DriftSettingsRepository(database);
+});

@@ -13,12 +13,16 @@ class ThemePreferences {
     this.seedColor = AppTheme.defaultSeedColor,
     this.useDynamicColor = true,
     this.locale,
+    this.fontScale = 1,
+    this.reduceMotion = false,
   });
 
   final ThemeMode mode;
   final Color seedColor;
   final bool useDynamicColor;
   final Locale? locale;
+  final double fontScale;
+  final bool reduceMotion;
 
   ThemePreferences copyWith({
     ThemeMode? mode,
@@ -26,12 +30,16 @@ class ThemePreferences {
     bool? useDynamicColor,
     Locale? locale,
     bool clearLocale = false,
+    double? fontScale,
+    bool? reduceMotion,
   }) {
     return ThemePreferences(
       mode: mode ?? this.mode,
       seedColor: seedColor ?? this.seedColor,
       useDynamicColor: useDynamicColor ?? this.useDynamicColor,
       locale: clearLocale ? null : locale ?? this.locale,
+      fontScale: fontScale ?? this.fontScale,
+      reduceMotion: reduceMotion ?? this.reduceMotion,
     );
   }
 }
@@ -54,5 +62,9 @@ class ThemeController extends Notifier<ThemePreferences> {
 
   void setUseDynamicColor(bool enabled) {
     state = state.copyWith(useDynamicColor: enabled);
+  }
+
+  void setAccessibility({required double fontScale, required bool reduceMotion}) {
+    state = state.copyWith(fontScale: fontScale, reduceMotion: reduceMotion);
   }
 }

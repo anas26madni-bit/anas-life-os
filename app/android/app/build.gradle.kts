@@ -52,6 +52,7 @@ flutter {
 }
 
 dependencies {
+    implementation("androidx.biometric:biometric:1.1.0")
     implementation("androidx.work:work-runtime-ktx:2.10.5")
     implementation("org.bouncycastle:bcprov-jdk18on:1.83")
 }

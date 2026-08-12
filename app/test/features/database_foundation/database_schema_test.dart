@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../helpers/database_test_harness.dart';
 
 void main() {
-  test('creates the approved schema through Sprint 9 with indexes', () async {
+  test('creates the approved schema through Sprint 10 with indexes', () async {
     final database = createTestDatabase();
     addTearDown(database.close);
 
@@ -59,6 +59,10 @@ void main() {
         'search_fts',
         'search_history',
         'search_index_queue',
+        'security_settings',
+        'app_lock_sessions',
+        'security_audit_log',
+        'system_settings',
         'subcategories',
         'tags',
         'task_dependencies',
@@ -100,6 +104,8 @@ void main() {
         'idx_saved_searches_name',
         'idx_search_documents_entity',
         'idx_search_history_searched',
+        'idx_app_lock_sessions_created',
+        'idx_security_audit_created',
       ]),
     );
 

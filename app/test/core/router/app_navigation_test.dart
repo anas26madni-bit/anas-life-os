@@ -12,9 +12,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../helpers/fakes.dart';
+import '../../helpers/database_test_harness.dart';
 
 void main() {
   testWidgets('startup enters the shared five-tab shell', (tester) async {
+    final database = createTestDatabase();
+    addTearDown(database.close);
     appRouter.go('/');
     await tester.pumpWidget(
       ProviderScope(
@@ -26,6 +29,8 @@ void main() {
               ),
             ),
           ),
+          appDatabaseProvider.overrideWith((ref) async => database),
+          securityPlatformProvider.overrideWithValue(const FakeSecurityPlatform()),
           dashboardRepositoryProvider.overrideWith(
             (ref) async => _DashboardRepository(),
           ),
@@ -54,10 +59,14 @@ void main() {
   });
 
   testWidgets('tab switching keeps one shared shell', (tester) async {
+    final database = createTestDatabase();
+    addTearDown(database.close);
     appRouter.go('/dashboard');
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
+          appDatabaseProvider.overrideWith((ref) async => database),
+          securityPlatformProvider.overrideWithValue(const FakeSecurityPlatform()),
           dashboardRepositoryProvider.overrideWith(
             (ref) async => _DashboardRepository(),
           ),

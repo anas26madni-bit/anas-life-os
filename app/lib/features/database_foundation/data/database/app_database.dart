@@ -15,6 +15,7 @@ import '../../../reminders/data/tables/reminder_tables.dart';
 import '../../../reminders/domain/entities/reminder_enums.dart';
 import '../../../search/data/tables/search_tables.dart';
 import '../../../search/domain/entities/search_models.dart';
+import '../../../security/data/tables/security_tables.dart';
 import '../../../statistics/data/tables/statistics_tables.dart';
 import '../../../tasks/data/tables/attachment_table.dart';
 import '../../../tasks/data/tables/checklist_tables.dart';
@@ -78,6 +79,10 @@ part 'app_database.g.dart';
     BackupProfiles,
     BackupHistory,
     RestoreHistory,
+    SecuritySettings,
+    AppLockSessions,
+    SecurityAuditLog,
+    SystemSettings,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -266,7 +271,7 @@ class AppDatabase extends _$AppDatabase {
           return;
         }
       }
-      if (from <= 7 && to == 8) {
+      if (from <= 7 && to >= 8) {
         await transaction(() async {
           await migrator.createTable(backupProfiles);
           await migrator.createTable(backupHistory);
@@ -278,6 +283,28 @@ class AppDatabase extends _$AppDatabase {
               fromVersion: 7,
               toVersion: 8,
               migrationName: 'sprint_9_backup_restore',
+              startedAt: now,
+              completedAt: Value(now),
+              status: MigrationStatus.succeeded,
+            ),
+          );
+          await verifyIntegrity();
+        });
+        if (to == 8) return;
+      }
+      if (from <= 8 && to == 9) {
+        await transaction(() async {
+          await migrator.createTable(securitySettings);
+          await migrator.createTable(appLockSessions);
+          await migrator.createTable(securityAuditLog);
+          await migrator.createTable(systemSettings);
+          final now = DateTime.now().toUtc().microsecondsSinceEpoch;
+          await into(migrationHistory).insert(
+            MigrationHistoryCompanion.insert(
+              uuid: UuidGenerator().generate(),
+              fromVersion: 8,
+              toVersion: 9,
+              migrationName: 'sprint_10_security_settings',
               startedAt: now,
               completedAt: Value(now),
               status: MigrationStatus.succeeded,

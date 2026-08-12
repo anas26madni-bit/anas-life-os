@@ -1,4 +1,5 @@
 import 'package:anas_life_os/core/errors/result.dart';
+import 'package:anas_life_os/core/security/authorization_gate.dart';
 import 'package:anas_life_os/features/database_foundation/data/database/app_database.dart';
 import 'package:anas_life_os/features/search/data/repositories/drift_search_repository.dart';
 import 'package:anas_life_os/features/search/domain/entities/search_models.dart';
@@ -7,6 +8,20 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../helpers/database_test_harness.dart';
 
 void main() {
+  test('rejects search while the encrypted session is locked', () async {
+    final database = createTestDatabase();
+    addTearDown(database.close);
+    final gate = AuthorizationGate();
+    final repository = DriftSearchRepository(
+      await database.verifySearchSession(),
+      authorizationGate: gate,
+    );
+
+    final result = await repository.search(const SearchQuery(text: 'private'));
+
+    expect(result, isA<FailureResult<List<SearchResultItem>>>());
+  });
+
   test(
     'search requires and uses a verified encrypted database session',
     () async {
