@@ -828,4 +828,155 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get backupFailed => 'ناکام';
+
+  @override
+  String get securityTitle => 'سیکیورٹی';
+
+  @override
+  String get settingsTitle => 'ترتیبات';
+
+  @override
+  String get appLocked => 'ایپ مقفل ہے';
+
+  @override
+  String get unlockMessage => 'اپنے نجی ڈیٹا تک رسائی کے لیے تصدیق کریں۔';
+
+  @override
+  String get pinLabel => 'پن';
+
+  @override
+  String get enterPin => 'اپنا پن درج کریں';
+
+  @override
+  String get pinMinimum => 'کم از کم 6 ہندسے استعمال کریں۔';
+
+  @override
+  String get unlock => 'کھولیں';
+
+  @override
+  String get useBiometric => 'بایومیٹرک استعمال کریں';
+
+  @override
+  String get biometricPromptTitle => 'Anas Life OS کھولیں';
+
+  @override
+  String get biometricPromptSubtitle => 'اپنا رجسٹرڈ بایومیٹرک استعمال کریں';
+
+  @override
+  String get usePin => 'پن استعمال کریں';
+
+  @override
+  String get invalidPin => 'پن درست نہیں ہے۔';
+
+  @override
+  String cooldownMessage(int seconds) {
+    return '$seconds سیکنڈ بعد دوبارہ کوشش کریں۔';
+  }
+
+  @override
+  String get configurePin => 'پن مقرر کریں';
+
+  @override
+  String get changePin => 'پن تبدیل کریں';
+
+  @override
+  String get disablePin => 'پن بند کریں';
+
+  @override
+  String get currentPin => 'موجودہ پن';
+
+  @override
+  String get newPin => 'نیا پن';
+
+  @override
+  String get confirmPin => 'پن کی تصدیق';
+
+  @override
+  String get pinsDoNotMatch => 'پن ایک جیسے نہیں ہیں۔';
+
+  @override
+  String get biometricLock => 'بایومیٹرک سے کھولیں';
+
+  @override
+  String get biometricUnavailable => 'مضبوط بایومیٹرک تصدیق دستیاب نہیں۔';
+
+  @override
+  String get autoLock => 'خودکار مقفل';
+
+  @override
+  String get autoLockTimeout => 'خودکار مقفل کا وقت';
+
+  @override
+  String get immediately => 'فوراً';
+
+  @override
+  String get seconds30 => '30 سیکنڈ';
+
+  @override
+  String get minute1 => '1 منٹ';
+
+  @override
+  String get minutes5 => '5 منٹ';
+
+  @override
+  String get minutes15 => '15 منٹ';
+
+  @override
+  String get hiddenItemsProtection => 'پوشیدہ اشیا محفوظ کریں';
+
+  @override
+  String get securityFailClosed =>
+      'تصدیق کامیاب ہونے تک محفوظ ڈیٹا دستیاب نہیں ہوگا۔';
+
+  @override
+  String get appearance => 'ظاہری شکل';
+
+  @override
+  String get themeSetting => 'تھیم';
+
+  @override
+  String get systemDefault => 'سسٹم کی طے شدہ';
+
+  @override
+  String get lightTheme => 'روشن';
+
+  @override
+  String get darkTheme => 'تاریک';
+
+  @override
+  String get languageSetting => 'زبان';
+
+  @override
+  String get english => 'انگریزی';
+
+  @override
+  String get urdu => 'اردو';
+
+  @override
+  String get dynamicColor => 'متحرک رنگ';
+
+  @override
+  String get fontScale => 'متن کا سائز';
+
+  @override
+  String get reduceMotion => 'حرکت کم کریں';
+
+  @override
+  String get accessibilitySettings => 'رسائی پذیری';
+
+  @override
+  String get settingsSaved => 'ترتیبات محفوظ ہوگئیں';
+
+  @override
+  String get securityOperationFailed => 'سیکیورٹی ترتیبات تبدیل نہیں ہوسکیں۔';
+
+  @override
+  String get aboutTitle => 'تعارف';
+
+  @override
+  String get appVersionLabel => 'ورژن 1.0 ریلیز امیدوار';
+
+  @override
+  String get privacySummary =>
+      'طے شدہ طور پر آف لائن۔ کوئی اکاؤنٹ، اشتہار، تجزیات یا نگرانی نہیں۔';
 }

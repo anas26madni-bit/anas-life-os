@@ -1495,6 +1495,300 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed'**
   String get backupFailed;
+
+  /// No description provided for @securityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get securityTitle;
+
+  /// No description provided for @settingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsTitle;
+
+  /// No description provided for @appLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'App locked'**
+  String get appLocked;
+
+  /// No description provided for @unlockMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Authenticate to access your private data.'**
+  String get unlockMessage;
+
+  /// No description provided for @pinLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'PIN'**
+  String get pinLabel;
+
+  /// No description provided for @enterPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your PIN'**
+  String get enterPin;
+
+  /// No description provided for @pinMinimum.
+  ///
+  /// In en, this message translates to:
+  /// **'Use at least 6 digits.'**
+  String get pinMinimum;
+
+  /// No description provided for @unlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock'**
+  String get unlock;
+
+  /// No description provided for @useBiometric.
+  ///
+  /// In en, this message translates to:
+  /// **'Use biometric'**
+  String get useBiometric;
+
+  /// No description provided for @biometricPromptTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock Anas Life OS'**
+  String get biometricPromptTitle;
+
+  /// No description provided for @biometricPromptSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Use your enrolled biometric'**
+  String get biometricPromptSubtitle;
+
+  /// No description provided for @usePin.
+  ///
+  /// In en, this message translates to:
+  /// **'Use PIN'**
+  String get usePin;
+
+  /// No description provided for @invalidPin.
+  ///
+  /// In en, this message translates to:
+  /// **'The PIN is incorrect.'**
+  String get invalidPin;
+
+  /// No description provided for @cooldownMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again in {seconds} seconds.'**
+  String cooldownMessage(int seconds);
+
+  /// No description provided for @configurePin.
+  ///
+  /// In en, this message translates to:
+  /// **'Set PIN'**
+  String get configurePin;
+
+  /// No description provided for @changePin.
+  ///
+  /// In en, this message translates to:
+  /// **'Change PIN'**
+  String get changePin;
+
+  /// No description provided for @disablePin.
+  ///
+  /// In en, this message translates to:
+  /// **'Disable PIN'**
+  String get disablePin;
+
+  /// No description provided for @currentPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Current PIN'**
+  String get currentPin;
+
+  /// No description provided for @newPin.
+  ///
+  /// In en, this message translates to:
+  /// **'New PIN'**
+  String get newPin;
+
+  /// No description provided for @confirmPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm PIN'**
+  String get confirmPin;
+
+  /// No description provided for @pinsDoNotMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'PINs do not match.'**
+  String get pinsDoNotMatch;
+
+  /// No description provided for @biometricLock.
+  ///
+  /// In en, this message translates to:
+  /// **'Biometric unlock'**
+  String get biometricLock;
+
+  /// No description provided for @biometricUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Strong biometric authentication is unavailable.'**
+  String get biometricUnavailable;
+
+  /// No description provided for @autoLock.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-lock'**
+  String get autoLock;
+
+  /// No description provided for @autoLockTimeout.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-lock timeout'**
+  String get autoLockTimeout;
+
+  /// No description provided for @immediately.
+  ///
+  /// In en, this message translates to:
+  /// **'Immediately'**
+  String get immediately;
+
+  /// No description provided for @seconds30.
+  ///
+  /// In en, this message translates to:
+  /// **'30 seconds'**
+  String get seconds30;
+
+  /// No description provided for @minute1.
+  ///
+  /// In en, this message translates to:
+  /// **'1 minute'**
+  String get minute1;
+
+  /// No description provided for @minutes5.
+  ///
+  /// In en, this message translates to:
+  /// **'5 minutes'**
+  String get minutes5;
+
+  /// No description provided for @minutes15.
+  ///
+  /// In en, this message translates to:
+  /// **'15 minutes'**
+  String get minutes15;
+
+  /// No description provided for @hiddenItemsProtection.
+  ///
+  /// In en, this message translates to:
+  /// **'Protect hidden items'**
+  String get hiddenItemsProtection;
+
+  /// No description provided for @securityFailClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'Protected data stays unavailable until authentication succeeds.'**
+  String get securityFailClosed;
+
+  /// No description provided for @appearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get appearance;
+
+  /// No description provided for @themeSetting.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get themeSetting;
+
+  /// No description provided for @systemDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'System default'**
+  String get systemDefault;
+
+  /// No description provided for @lightTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get lightTheme;
+
+  /// No description provided for @darkTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get darkTheme;
+
+  /// No description provided for @languageSetting.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get languageSetting;
+
+  /// No description provided for @english.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get english;
+
+  /// No description provided for @urdu.
+  ///
+  /// In en, this message translates to:
+  /// **'Urdu'**
+  String get urdu;
+
+  /// No description provided for @dynamicColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Dynamic color'**
+  String get dynamicColor;
+
+  /// No description provided for @fontScale.
+  ///
+  /// In en, this message translates to:
+  /// **'Text size'**
+  String get fontScale;
+
+  /// No description provided for @reduceMotion.
+  ///
+  /// In en, this message translates to:
+  /// **'Reduce motion'**
+  String get reduceMotion;
+
+  /// No description provided for @accessibilitySettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Accessibility'**
+  String get accessibilitySettings;
+
+  /// No description provided for @settingsSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings saved'**
+  String get settingsSaved;
+
+  /// No description provided for @securityOperationFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Security settings could not be changed.'**
+  String get securityOperationFailed;
+
+  /// No description provided for @aboutTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get aboutTitle;
+
+  /// No description provided for @appVersionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Version 1.0 release candidate'**
+  String get appVersionLabel;
+
+  /// No description provided for @privacySummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline by default. No account, ads, analytics or tracking.'**
+  String get privacySummary;
 }
 
 class _AppLocalizationsDelegate
