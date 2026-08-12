@@ -28,8 +28,8 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-    expect(find.byType(DropdownButton<AppThemeSetting>), findsOneWidget);
-    expect(find.byType(DropdownButton<AppLanguageSetting>), findsOneWidget);
+      expect(find.byType(DropdownButton<AppThemeSetting>), findsOneWidget);
+      expect(find.byType(DropdownButton<AppLanguageSetting>), findsOneWidget);
       expect(find.byType(Slider), findsOneWidget);
       expect(find.byType(SwitchListTile), findsNWidgets(2));
       expect(tester.takeException(), isNull);
