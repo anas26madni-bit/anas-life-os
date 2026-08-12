@@ -8,7 +8,10 @@ void main() {
   test('persists theme, language and accessibility settings', () async {
     final database = createTestDatabase();
     addTearDown(database.close);
-    final repository = DriftSettingsRepository(database, clock: () => DateTime.utc(2026));
+    final repository = DriftSettingsRepository(
+      database,
+      clock: () => DateTime.utc(2026),
+    );
     const settings = AppSettings(
       theme: AppThemeSetting.dark,
       language: AppLanguageSetting.ur,

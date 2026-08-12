@@ -56,8 +56,10 @@ class SystemSettings extends Table {
   IntColumn get id => integer().withDefault(const Constant(1))();
   TextColumn get language => text().withDefault(const Constant('system'))();
   TextColumn get theme => text().withDefault(const Constant('system'))();
-  IntColumn get fontScalePercent => integer().withDefault(const Constant(100))();
-  IntColumn get accentColor => integer().withDefault(const Constant(4282339765))();
+  IntColumn get fontScalePercent =>
+      integer().withDefault(const Constant(100))();
+  IntColumn get accentColor =>
+      integer().withDefault(const Constant(4282339765))();
   BoolColumn get useDynamicColor =>
       boolean().withDefault(const Constant(true))();
   BoolColumn get reduceMotion => boolean().withDefault(const Constant(false))();

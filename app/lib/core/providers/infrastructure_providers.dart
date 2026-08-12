@@ -171,12 +171,16 @@ final voiceSearchServiceProvider = Provider<VoiceSearchService>(
   (ref) => const AndroidVoiceSearchService(),
 );
 
-final securityRepositoryProvider = FutureProvider<SecurityRepository>((ref) async {
+final securityRepositoryProvider = FutureProvider<SecurityRepository>((
+  ref,
+) async {
   final database = await ref.watch(appDatabaseProvider.future);
   return DriftSecurityRepository(database);
 });
 
-final settingsRepositoryProvider = FutureProvider<SettingsRepository>((ref) async {
+final settingsRepositoryProvider = FutureProvider<SettingsRepository>((
+  ref,
+) async {
   final database = await ref.watch(appDatabaseProvider.future);
   return DriftSettingsRepository(database);
 });

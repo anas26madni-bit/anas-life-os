@@ -64,7 +64,10 @@ class ThemeController extends Notifier<ThemePreferences> {
     state = state.copyWith(useDynamicColor: enabled);
   }
 
-  void setAccessibility({required double fontScale, required bool reduceMotion}) {
+  void setAccessibility({
+    required double fontScale,
+    required bool reduceMotion,
+  }) {
     state = state.copyWith(fontScale: fontScale, reduceMotion: reduceMotion);
   }
 }

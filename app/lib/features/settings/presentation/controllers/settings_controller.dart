@@ -5,12 +5,17 @@ import '../../../../core/providers/infrastructure_providers.dart';
 import '../../../../core/theme/theme_controller.dart';
 import '../../domain/entities/app_settings.dart';
 
-final settingsControllerProvider = AsyncNotifierProvider<SettingsController, AppSettings>(SettingsController.new);
+final settingsControllerProvider =
+    AsyncNotifierProvider<SettingsController, AppSettings>(
+      SettingsController.new,
+    );
 
 class SettingsController extends AsyncNotifier<AppSettings> {
   @override
   Future<AppSettings> build() async {
-    final settings = await (await ref.watch(settingsRepositoryProvider.future)).load();
+    final settings = await (await ref.watch(
+      settingsRepositoryProvider.future,
+    )).load();
     _apply(settings);
     return settings;
   }

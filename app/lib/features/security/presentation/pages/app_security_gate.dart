@@ -58,12 +58,12 @@ class _AppSecurityGateState extends ConsumerState<AppSecurityGate>
         color: Theme.of(context).colorScheme.surface,
         child: const Center(child: CircularProgressIndicator.adaptive()),
       ),
-      error: (error, stackTrace) => ColoredBox(
-        color: Theme.of(context).colorScheme.surface,
-      ),
+      error: (error, stackTrace) =>
+          ColoredBox(color: Theme.of(context).colorScheme.surface),
       data: (data) => data.isLocked
           ? _UnlockPage(
-              biometricEnabled: data.preferences.biometricEnabled &&
+              biometricEnabled:
+                  data.preferences.biometricEnabled &&
                   data.nativeStatus.biometricAvailable,
             )
           : widget.child,
@@ -106,7 +106,10 @@ class _UnlockPageState extends ConsumerState<_UnlockPage> {
                   children: [
                     const Icon(Icons.lock_outline, size: 64),
                     const SizedBox(height: AppSpacing.md),
-                    Text(l10n.appLocked, style: Theme.of(context).textTheme.headlineSmall),
+                    Text(
+                      l10n.appLocked,
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
                     const SizedBox(height: AppSpacing.sm),
                     Text(l10n.unlockMessage, textAlign: TextAlign.center),
                     const SizedBox(height: AppSpacing.lg),
@@ -116,7 +119,10 @@ class _UnlockPageState extends ConsumerState<_UnlockPage> {
                       obscureText: true,
                       keyboardType: TextInputType.number,
                       autofillHints: const [AutofillHints.password],
-                      decoration: InputDecoration(labelText: l10n.enterPin, errorText: _error),
+                      decoration: InputDecoration(
+                        labelText: l10n.enterPin,
+                        errorText: _error,
+                      ),
                       onSubmitted: (_) => _unlock(),
                     ),
                     const SizedBox(height: AppSpacing.md),
@@ -151,8 +157,13 @@ class _UnlockPageState extends ConsumerState<_UnlockPage> {
   }
 
   Future<void> _unlock() async {
-    setState(() { _busy = true; _error = null; });
-    final result = await ref.read(securityControllerProvider.notifier).unlockWithPin(_pin.text);
+    setState(() {
+      _busy = true;
+      _error = null;
+    });
+    final result = await ref
+        .read(securityControllerProvider.notifier)
+        .unlockWithPin(_pin.text);
     if (!mounted || result.success) return;
     final l10n = AppLocalizations.of(context);
     setState(() {
@@ -165,13 +176,21 @@ class _UnlockPageState extends ConsumerState<_UnlockPage> {
 
   Future<void> _biometric() async {
     final l10n = AppLocalizations.of(context);
-    setState(() { _busy = true; _error = null; });
-    final result = await ref.read(securityControllerProvider.notifier).unlockWithBiometric(
-      title: l10n.biometricPromptTitle,
-      subtitle: l10n.biometricPromptSubtitle,
-      cancelLabel: l10n.usePin,
-    );
+    setState(() {
+      _busy = true;
+      _error = null;
+    });
+    final result = await ref
+        .read(securityControllerProvider.notifier)
+        .unlockWithBiometric(
+          title: l10n.biometricPromptTitle,
+          subtitle: l10n.biometricPromptSubtitle,
+          cancelLabel: l10n.usePin,
+        );
     if (!mounted || result.success) return;
-    setState(() { _busy = false; _error = l10n.invalidPin; });
+    setState(() {
+      _busy = false;
+      _error = l10n.invalidPin;
+    });
   }
 }

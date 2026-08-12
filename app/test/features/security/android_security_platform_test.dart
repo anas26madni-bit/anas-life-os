@@ -53,10 +53,18 @@ void main() {
     expect((await platform.disablePin('654321')).success, isTrue);
     await platform.setSecureWindow(true);
 
-    expect(calls.map((call) => call.method), containsAll(<String>[
-      'status', 'configurePin', 'changePin', 'verifyPin',
-      'authenticateBiometric', 'disablePin', 'setSecureWindow',
-    ]));
+    expect(
+      calls.map((call) => call.method),
+      containsAll(<String>[
+        'status',
+        'configurePin',
+        'changePin',
+        'verifyPin',
+        'authenticateBiometric',
+        'disablePin',
+        'setSecureWindow',
+      ]),
+    );
     expect(calls.last.arguments, isTrue);
   });
 }

@@ -30,7 +30,9 @@ void main() {
             ),
           ),
           appDatabaseProvider.overrideWith((ref) async => database),
-          securityPlatformProvider.overrideWithValue(const FakeSecurityPlatform()),
+          securityPlatformProvider.overrideWithValue(
+            const FakeSecurityPlatform(),
+          ),
           dashboardRepositoryProvider.overrideWith(
             (ref) async => _DashboardRepository(),
           ),
@@ -66,7 +68,9 @@ void main() {
       ProviderScope(
         overrides: [
           appDatabaseProvider.overrideWith((ref) async => database),
-          securityPlatformProvider.overrideWithValue(const FakeSecurityPlatform()),
+          securityPlatformProvider.overrideWithValue(
+            const FakeSecurityPlatform(),
+          ),
           dashboardRepositoryProvider.overrideWith(
             (ref) async => _DashboardRepository(),
           ),

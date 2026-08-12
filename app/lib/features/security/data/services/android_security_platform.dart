@@ -4,9 +4,8 @@ import '../../domain/entities/security_models.dart';
 import '../../domain/services/security_platform.dart';
 
 final class AndroidSecurityPlatform implements SecurityPlatform {
-  const AndroidSecurityPlatform({
-    MethodChannel channel = _defaultChannel,
-  }) : _channel = channel;
+  const AndroidSecurityPlatform({MethodChannel channel = _defaultChannel})
+    : _channel = channel;
 
   static const _defaultChannel = MethodChannel('com.anaslifeos.app/security');
   final MethodChannel _channel;
@@ -23,10 +22,8 @@ final class AndroidSecurityPlatform implements SecurityPlatform {
   }
 
   @override
-  Future<UnlockResult> configurePin(String pin) => _result(
-    'configurePin',
-    <String, Object?>{'pin': pin},
-  );
+  Future<UnlockResult> configurePin(String pin) =>
+      _result('configurePin', <String, Object?>{'pin': pin});
 
   @override
   Future<UnlockResult> verifyPin(String pin) =>

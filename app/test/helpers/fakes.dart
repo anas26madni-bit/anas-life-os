@@ -62,12 +62,25 @@ final class FakeSecurityPlatform implements SecurityPlatform {
     cooldownSeconds: 0,
   );
   @override
-  Future<UnlockResult> authenticateBiometric({required String title, required String subtitle, required String cancelLabel}) async => const UnlockResult(success: false);
-  @override Future<UnlockResult> changePin(String currentPin, String newPin) async => const UnlockResult(success: true);
-  @override Future<UnlockResult> configurePin(String pin) async => const UnlockResult(success: true);
-  @override Future<UnlockResult> disablePin(String currentPin) async => const UnlockResult(success: true);
-  @override Future<void> setSecureWindow(bool enabled) async {}
-  @override Future<UnlockResult> verifyPin(String pin) async => const UnlockResult(success: true);
+  Future<UnlockResult> authenticateBiometric({
+    required String title,
+    required String subtitle,
+    required String cancelLabel,
+  }) async => const UnlockResult(success: false);
+  @override
+  Future<UnlockResult> changePin(String currentPin, String newPin) async =>
+      const UnlockResult(success: true);
+  @override
+  Future<UnlockResult> configurePin(String pin) async =>
+      const UnlockResult(success: true);
+  @override
+  Future<UnlockResult> disablePin(String currentPin) async =>
+      const UnlockResult(success: true);
+  @override
+  Future<void> setSecureWindow(bool enabled) async {}
+  @override
+  Future<UnlockResult> verifyPin(String pin) async =>
+      const UnlockResult(success: true);
 }
 
 final class FakeSecurityPlatform implements SecurityPlatform {
@@ -82,12 +95,25 @@ final class FakeSecurityPlatform implements SecurityPlatform {
     cooldownSeconds: 0,
   );
   @override
-  Future<UnlockResult> authenticateBiometric({required String title, required String subtitle, required String cancelLabel}) async => const UnlockResult(success: false);
-  @override Future<UnlockResult> changePin(String currentPin, String newPin) async => const UnlockResult(success: true);
-  @override Future<UnlockResult> configurePin(String pin) async => const UnlockResult(success: true);
-  @override Future<UnlockResult> disablePin(String currentPin) async => const UnlockResult(success: true);
-  @override Future<void> setSecureWindow(bool enabled) async {}
-  @override Future<UnlockResult> verifyPin(String pin) async => const UnlockResult(success: true);
+  Future<UnlockResult> authenticateBiometric({
+    required String title,
+    required String subtitle,
+    required String cancelLabel,
+  }) async => const UnlockResult(success: false);
+  @override
+  Future<UnlockResult> changePin(String currentPin, String newPin) async =>
+      const UnlockResult(success: true);
+  @override
+  Future<UnlockResult> configurePin(String pin) async =>
+      const UnlockResult(success: true);
+  @override
+  Future<UnlockResult> disablePin(String currentPin) async =>
+      const UnlockResult(success: true);
+  @override
+  Future<void> setSecureWindow(bool enabled) async {}
+  @override
+  Future<UnlockResult> verifyPin(String pin) async =>
+      const UnlockResult(success: true);
 }
 
 class FakeDatabaseInitializer extends DatabaseInitializer {

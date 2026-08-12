@@ -18,8 +18,10 @@ class SettingsPage extends ConsumerWidget {
       appBar: AppTopBar(title: Text(l10n.settingsTitle)),
       body: SafeArea(
         child: settings.when(
-          loading: () => const Center(child: CircularProgressIndicator.adaptive()),
-          error: (error, stackTrace) => Center(child: Text(l10n.securityOperationFailed)),
+          loading: () =>
+              const Center(child: CircularProgressIndicator.adaptive()),
+          error: (error, stackTrace) =>
+              Center(child: Text(l10n.securityOperationFailed)),
           data: (value) => ListView(
             padding: const EdgeInsets.all(AppSpacing.md),
             children: [
@@ -32,29 +34,54 @@ class SettingsPage extends ConsumerWidget {
                       trailing: DropdownButton<AppThemeSetting>(
                         value: value.theme,
                         items: [
-                          DropdownMenuItem(value: AppThemeSetting.system, child: Text(l10n.systemDefault)),
-                          DropdownMenuItem(value: AppThemeSetting.light, child: Text(l10n.lightTheme)),
-                          DropdownMenuItem(value: AppThemeSetting.dark, child: Text(l10n.darkTheme)),
+                          DropdownMenuItem(
+                            value: AppThemeSetting.system,
+                            child: Text(l10n.systemDefault),
+                          ),
+                          DropdownMenuItem(
+                            value: AppThemeSetting.light,
+                            child: Text(l10n.lightTheme),
+                          ),
+                          DropdownMenuItem(
+                            value: AppThemeSetting.dark,
+                            child: Text(l10n.darkTheme),
+                          ),
                         ],
-                        onChanged: (theme) { if (theme != null) _save(ref, value.copyWith(theme: theme)); },
+                        onChanged: (theme) {
+                          if (theme != null)
+                            _save(ref, value.copyWith(theme: theme));
+                        },
                       ),
                     ),
                     SwitchListTile(
                       secondary: const Icon(Icons.color_lens_outlined),
                       title: Text(l10n.dynamicColor),
                       value: value.useDynamicColor,
-                      onChanged: (enabled) => _save(ref, value.copyWith(useDynamicColor: enabled)),
+                      onChanged: (enabled) =>
+                          _save(ref, value.copyWith(useDynamicColor: enabled)),
                     ),
                     ListTile(
                       title: Text(l10n.languageSetting),
                       trailing: DropdownButton<AppLanguageSetting>(
                         value: value.language,
                         items: [
-                          DropdownMenuItem(value: AppLanguageSetting.system, child: Text(l10n.systemDefault)),
-                          DropdownMenuItem(value: AppLanguageSetting.en, child: Text(l10n.english)),
-                          DropdownMenuItem(value: AppLanguageSetting.ur, child: Text(l10n.urdu)),
+                          DropdownMenuItem(
+                            value: AppLanguageSetting.system,
+                            child: Text(l10n.systemDefault),
+                          ),
+                          DropdownMenuItem(
+                            value: AppLanguageSetting.en,
+                            child: Text(l10n.english),
+                          ),
+                          DropdownMenuItem(
+                            value: AppLanguageSetting.ur,
+                            child: Text(l10n.urdu),
+                          ),
                         ],
-                        onChanged: (language) { if (language != null) _save(ref, value.copyWith(language: language)); },
+                        onChanged: (language) {
+                          if (language != null)
+                            _save(ref, value.copyWith(language: language));
+                        },
                       ),
                     ),
                   ],
@@ -73,7 +100,10 @@ class SettingsPage extends ConsumerWidget {
                         max: 200,
                         divisions: 12,
                         label: '${value.fontScalePercent}%',
-                        onChanged: (scale) => _save(ref, value.copyWith(fontScalePercent: scale.round())),
+                        onChanged: (scale) => _save(
+                          ref,
+                          value.copyWith(fontScalePercent: scale.round()),
+                        ),
                       ),
                       trailing: Text('${value.fontScalePercent}%'),
                     ),
@@ -81,7 +111,8 @@ class SettingsPage extends ConsumerWidget {
                       secondary: const Icon(Icons.motion_photos_off_outlined),
                       title: Text(l10n.reduceMotion),
                       value: value.reduceMotion,
-                      onChanged: (enabled) => _save(ref, value.copyWith(reduceMotion: enabled)),
+                      onChanged: (enabled) =>
+                          _save(ref, value.copyWith(reduceMotion: enabled)),
                     ),
                   ],
                 ),
@@ -112,7 +143,10 @@ class _SectionTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsetsDirectional.only(start: AppSpacing.sm, bottom: AppSpacing.xs),
+    padding: const EdgeInsetsDirectional.only(
+      start: AppSpacing.sm,
+      bottom: AppSpacing.xs,
+    ),
     child: Text(text, style: Theme.of(context).textTheme.titleMedium),
   );
 }

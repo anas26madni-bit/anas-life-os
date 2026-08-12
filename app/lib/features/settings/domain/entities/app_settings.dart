@@ -1,4 +1,5 @@
 enum AppThemeSetting { system, light, dark }
+
 enum AppLanguageSetting { system, en, ur }
 
 final class AppSettings {

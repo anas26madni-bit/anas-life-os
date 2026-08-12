@@ -8,22 +8,29 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../helpers/database_test_harness.dart';
 
 void main() {
-  testWidgets('settings expose persisted appearance and accessibility controls', (tester) async {
-    final database = createTestDatabase();
-    addTearDown(database.close);
-    await tester.pumpWidget(ProviderScope(
-      overrides: [appDatabaseProvider.overrideWith((ref) async => database)],
-      child: MaterialApp(
-        supportedLocales: AppLocalizations.supportedLocales,
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        home: const SettingsPage(),
-      ),
-    ));
-    await tester.pumpAndSettle();
+  testWidgets(
+    'settings expose persisted appearance and accessibility controls',
+    (tester) async {
+      final database = createTestDatabase();
+      addTearDown(database.close);
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            appDatabaseProvider.overrideWith((ref) async => database),
+          ],
+          child: MaterialApp(
+            supportedLocales: AppLocalizations.supportedLocales,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            home: const SettingsPage(),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
 
-    expect(find.byType(DropdownButton<dynamic>), findsNWidgets(2));
-    expect(find.byType(Slider), findsOneWidget);
-    expect(find.byType(SwitchListTile), findsNWidgets(2));
-    expect(tester.takeException(), isNull);
-  });
+      expect(find.byType(DropdownButton<dynamic>), findsNWidgets(2));
+      expect(find.byType(Slider), findsOneWidget);
+      expect(find.byType(SwitchListTile), findsNWidgets(2));
+      expect(tester.takeException(), isNull);
+    },
+  );
 }
