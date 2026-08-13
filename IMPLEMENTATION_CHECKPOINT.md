@@ -1,12 +1,12 @@
 # Anas Life OS implementation checkpoint
 
-Updated: 2026-08-12 (Asia/Karachi)
+Updated: 2026-08-13 (Asia/Karachi)
 
 ## Current state
 
-- Sprint 1 through Sprint 11: complete and frozen.
+- Sprint 1 through Sprint 12: complete and frozen.
 - Sprint 1-7 UI/navigation gap closure: complete and verified.
-- Current branch: `main`.
+- Current branch: `codex/sprint-12-release`.
 - Verified Sprint 10 head commit:
   `9047d45a0d3ee20065332e37f35d08353311568b`.
 - Verified Sprint 10 GitHub Actions run: `31573232066`.
@@ -36,9 +36,17 @@ Updated: 2026-08-12 (Asia/Karachi)
   result is claimed as passed; device-specific residual risk is accepted and the
   approved quantitative limits remain unchanged.
 
-## Next pending task
+## Last completed sprint
 
-Sprint 12 - Release Candidate from the synchronized Sprint 11 `main` baseline.
+Sprint 12 - Version 1.0.0 Release Candidate.
+
+- Verified Sprint 12 implementation commit:
+  `8c2548cef69f8b85eae49516252021a24ab61e18`.
+- Verified Sprint 12 GitHub Actions run: `31668658016`; validation,
+  release-candidate, API 30 and API 34 jobs passed.
+- 107 tests passed with 90.83% business line and 100% branch coverage.
+- Release APK/AAB signatures passed and their SHA-256 values are recorded in
+  `docs/quality/SPRINT_12_RELEASE_READINESS.md`.
 
 ## Blockers
 
@@ -51,6 +59,7 @@ Sprint 12 - Release Candidate from the synchronized Sprint 11 `main` baseline.
 
 ## Exact resume point
 
-Resume on synchronized `main` after this checkpoint update and start Sprint 12.
-Do not execute or claim the deferred physical-device matrix unless separately
-authorized later.
+Resume on `codex/sprint-12-release`, verify the final evidence-only commit in CI,
+merge PR `#12`, synchronize `main`, and record the final merge/main commit. Do
+not execute or claim the deferred physical-device matrix unless separately
+authorized later. Do not begin Future Release work.

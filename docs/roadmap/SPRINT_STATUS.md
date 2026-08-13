@@ -13,9 +13,9 @@
 | Sprint 9 | Backup | Complete | None | Encrypted local backup/restore/integrity/export/import/recovery tests |
 | Sprint 10 | Security | Complete | None | PIN, biometric, encryption behavior, hidden items, secure storage, permissions |
 | Sprint 11 | Optimization | Complete | Physical-device evidence explicitly deferred by Product Owner; residual risk recorded | Memory/battery/performance/accessibility/large-data/regression |
-| Sprint 12 | Release Candidate | Not started | Sprint 11 approval | Final fixes/regression/docs/performance/security/accessibility/release notes/candidate |
+| Sprint 12 | Release Candidate | Complete | None | Final fixes/regression/docs/performance/security/accessibility/release notes/candidate |
 
 ## Current continuation point
 
-Sprint 1-11 and the authorized UI/navigation gap closure are complete. Resume at
-Sprint 12 Release Candidate after the verified Sprint 11 merge.
+Sprint 1-12 and the authorized UI/navigation gap closure are complete. Version
+1.0.0 release-candidate artifacts and final automated evidence are verified.

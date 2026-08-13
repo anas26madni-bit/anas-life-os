@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.0.0-rc1] - 2026-08-13
+
+### Release candidate
+
+- Finalized Version 1.0.0 release identity and hardened minified Android
+  release-candidate configuration.
+- Added signed APK/AAB build, signature verification, SHA-256 manifest and
+  retained CI artifacts while preserving user-only production-key custody.
+- Added final release-readiness, Future Release boundary and privacy regressions.
+- Added Version 1 release notes, traceability and accepted-risk documentation.
+
+### Validation
+
+- Exact-head CI run `31668658016` passed 107 tests, 90.83% business-line and
+  100% branch coverage, API 30/API 34 integration and signed APK/AAB audit.
+- Artifact SHA-256 values are recorded in the Sprint 12 release-readiness report.
+
 ## Sprint 10 - Security and Settings
 
 - Added fail-closed PIN, strong-biometric, lifecycle app-lock and protected UI.
