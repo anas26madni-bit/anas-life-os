@@ -1,12 +1,12 @@
 # Anas Life OS implementation checkpoint
 
-Updated: 2026-08-12 (Asia/Karachi)
+Updated: 2026-08-13 (Asia/Karachi)
 
 ## Current state
 
 - Sprint 1 through Sprint 11: complete and frozen.
 - Sprint 1-7 UI/navigation gap closure: complete and verified.
-- Current branch: `main`.
+- Current branch: `codex/sprint-12-release`.
 - Verified Sprint 10 head commit:
   `9047d45a0d3ee20065332e37f35d08353311568b`.
 - Verified Sprint 10 GitHub Actions run: `31573232066`.
@@ -36,9 +36,9 @@ Updated: 2026-08-12 (Asia/Karachi)
   result is claimed as passed; device-specific residual risk is accepted and the
   approved quantitative limits remain unchanged.
 
-## Next pending task
+## Current task
 
-Sprint 12 - Release Candidate from the synchronized Sprint 11 `main` baseline.
+Sprint 12 - Release Candidate implementation and exact-head validation.
 
 ## Blockers
 
@@ -51,6 +51,8 @@ Sprint 12 - Release Candidate from the synchronized Sprint 11 `main` baseline.
 
 ## Exact resume point
 
-Resume on synchronized `main` after this checkpoint update and start Sprint 12.
-Do not execute or claim the deferred physical-device matrix unless separately
-authorized later.
+Resume on `codex/sprint-12-release`. Verify generation, formatting, analyzer,
+tests, coverage, API 30/API 34 integration, release APK/AAB signatures and
+SHA-256 manifest in exact-head CI. Record final evidence, merge only when all
+available gates pass, then synchronize `main`. Do not execute or claim the
+deferred physical-device matrix unless separately authorized later.

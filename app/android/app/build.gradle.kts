@@ -37,6 +37,9 @@ android {
             versionNameSuffix = "-debug"
         }
         release {
+            // Version 1 release-candidate artifacts use the approved development
+            // signature. Production signing keys remain exclusively user-held.
+            signingConfig = signingConfigs.getByName("debug")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
