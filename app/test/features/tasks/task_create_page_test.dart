@@ -109,7 +109,11 @@ void main() {
       dueDay,
     );
 
-    await tester.ensureVisible(find.byKey(const Key('task-reminder-enabled')));
+    await tester.scrollUntilVisible(
+      find.byKey(const Key('task-reminder-enabled')),
+      200,
+      scrollable: _createScrollable,
+    );
     tester
         .widget<SwitchListTile>(find.byKey(const Key('task-reminder-enabled')))
         .onChanged!(true);
