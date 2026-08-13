@@ -334,7 +334,7 @@ Future<void> _pumpDetail(
 }
 
 Future<void> _pickDate(WidgetTester tester, Finder tile, int day) async {
-  await tester.testTextInput.hide();
+  tester.testTextInput.hide();
   await tester.pumpAndSettle();
   await tester.dragUntilVisible(
     tile,
