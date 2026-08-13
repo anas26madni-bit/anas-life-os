@@ -6,7 +6,7 @@ Updated: 2026-08-13 (Asia/Karachi)
 
 - Sprint 1 through Sprint 12: complete and frozen.
 - Sprint 1-7 UI/navigation gap closure: complete and verified.
-- Current branch: `codex/sprint-12-release`.
+- Current branch: `main`.
 - Verified Sprint 10 head commit:
   `9047d45a0d3ee20065332e37f35d08353311568b`.
 - Verified Sprint 10 GitHub Actions run: `31573232066`.
@@ -41,9 +41,12 @@ Updated: 2026-08-13 (Asia/Karachi)
 Sprint 12 - Version 1.0.0 Release Candidate.
 
 - Verified Sprint 12 implementation commit:
-  `8c2548cef69f8b85eae49516252021a24ab61e18`.
-- Verified Sprint 12 GitHub Actions run: `31668658016`; validation,
+  `4c1042b9d47f7907ae3366fbb760336781ca69ab`.
+- Verified Sprint 12 GitHub Actions run: `31670480368`; validation,
   release-candidate, API 30 and API 34 jobs passed.
+- Verified Sprint 12 merge commit:
+  `33c6d1b69d61b8f9e93faa6b25fd1852d80d039e`.
+- Sprint 12 pull request: `#12`, merged into `main`.
 - 107 tests passed with 90.83% business line and 100% branch coverage.
 - Release APK/AAB signatures passed and their SHA-256 values are recorded in
   `docs/quality/SPRINT_12_RELEASE_READINESS.md`.
@@ -59,7 +62,7 @@ Sprint 12 - Version 1.0.0 Release Candidate.
 
 ## Exact resume point
 
-Resume on `codex/sprint-12-release`, verify the final evidence-only commit in CI,
-merge PR `#12`, synchronize `main`, and record the final merge/main commit. Do
-not execute or claim the deferred physical-device matrix unless separately
-authorized later. Do not begin Future Release work.
+Version 1 Sprint execution is complete. Resume from synchronized `main` only for
+an explicitly authorized release operation or Future Release scope. Do not
+execute or claim the deferred physical-device matrix unless separately
+authorized later.
