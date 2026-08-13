@@ -138,8 +138,10 @@ jobs:
       - name: Verify release signatures
         shell: bash
         run: |
-          apksigner verify --verbose --print-certs build/app/outputs/flutter-apk/app-release.apk
-          jarsigner -verify -strict build/app/outputs/bundle/release/app-release.aab
+          apksigner_path=$(find "$ANDROID_SDK_ROOT/build-tools" -type f -name apksigner | sort -V | tail -n 1)
+          test -x "$apksigner_path"
+          "$apksigner_path" verify --verbose --print-certs build/app/outputs/flutter-apk/app-release.apk
+          jarsigner -verify -verbose -certs build/app/outputs/bundle/release/app-release.aab
       - name: Generate SHA-256 manifest
         shell: bash
         run: |
