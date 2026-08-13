@@ -336,12 +336,11 @@ Future<void> _pumpDetail(
 Future<void> _pickDate(WidgetTester tester, Finder tile, int day) async {
   tester.testTextInput.hide();
   await tester.pumpAndSettle();
-  await tester.dragUntilVisible(
-    tile,
-    find.byKey(const Key('task-create-scroll-view')),
-    const Offset(0, -200),
-  );
-  await tester.tap(tile);
+  tester
+      .widget<ListTile>(
+        find.descendant(of: tile, matching: find.byType(ListTile)),
+      )
+      .onTap!();
   await tester.pumpAndSettle();
   await tester.tap(find.text('$day').last);
   await tester.tap(find.text('OK'));
