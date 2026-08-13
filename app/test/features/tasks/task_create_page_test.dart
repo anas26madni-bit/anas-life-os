@@ -86,9 +86,7 @@ void main() {
         .onChanged!(TaskStatus.inProgress);
     await tester.pump();
     tester
-        .widget<SwitchListTile>(
-          find.byKey(const Key('task-mandatory-field')),
-        )
+        .widget<SwitchListTile>(find.byKey(const Key('task-mandatory-field')))
         .onChanged!(true);
     await tester.pump();
     tester
@@ -111,13 +109,9 @@ void main() {
       dueDay,
     );
 
-    await tester.ensureVisible(
-      find.byKey(const Key('task-reminder-enabled')),
-    );
+    await tester.ensureVisible(find.byKey(const Key('task-reminder-enabled')));
     tester
-        .widget<SwitchListTile>(
-          find.byKey(const Key('task-reminder-enabled')),
-        )
+        .widget<SwitchListTile>(find.byKey(const Key('task-reminder-enabled')))
         .onChanged!(true);
     await tester.pumpAndSettle();
     expect(find.byKey(const Key('task-reminder-date')), findsOneWidget);
@@ -145,7 +139,10 @@ void main() {
     expect(reminders.single.message, created.description);
     expect(reminders.single.enabled, isTrue);
     expect(scheduler.scheduled, hasLength(1));
-    expect(scheduler.scheduled.single.occurrence.reminderId, reminders.single.id);
+    expect(
+      scheduler.scheduled.single.occurrence.reminderId,
+      reminders.single.id,
+    );
 
     await _pumpDetail(tester, database, scheduler, created.id);
     await tester.tap(find.byIcon(Icons.edit_outlined));
@@ -159,49 +156,53 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('enforces the 300 character title limit and rejects invalid dates', (
-    tester,
-  ) async {
-    final database = createTestDatabase();
-    addTearDown(database.close);
-    await _pumpCreate(tester, database, FakeReminderScheduler());
+  testWidgets(
+    'enforces the 300 character title limit and rejects invalid dates',
+    (tester) async {
+      final database = createTestDatabase();
+      addTearDown(database.close);
+      await _pumpCreate(tester, database, FakeReminderScheduler());
 
-    await tester.enterText(
-      find.byKey(const Key('task-title-field')),
-      String.fromCharCodes(List.filled(301, 120)),
-    );
-    final titleInput = tester.widget<EditableText>(
-      find.descendant(
-        of: find.byKey(const Key('task-title-field')),
-        matching: find.byType(EditableText),
-      ),
-    );
-    expect(titleInput.controller.text.runes.length, lessThanOrEqualTo(300));
-    expect(await _tasks(database), isEmpty);
+      await tester.enterText(
+        find.byKey(const Key('task-title-field')),
+        String.fromCharCodes(List.filled(301, 120)),
+      );
+      final titleInput = tester.widget<EditableText>(
+        find.descendant(
+          of: find.byKey(const Key('task-title-field')),
+          matching: find.byType(EditableText),
+        ),
+      );
+      expect(titleInput.controller.text.runes.length, lessThanOrEqualTo(300));
+      expect(await _tasks(database), isEmpty);
 
-    await tester.enterText(
-      find.byKey(const Key('task-title-field')),
-      'Invalid dates',
-    );
-    final now = DateTime.now();
-    final lastDay = DateUtils.getDaysInMonth(now.year, now.month);
-    final dueDay = now.day == 1 ? 1 : now.day - 1;
-    final startDay = now.day == lastDay ? lastDay : now.day + 1;
-    await _pickDate(
-      tester,
-      find.byKey(const Key('task-start-date-field')),
-      startDay,
-    );
-    await _pickDate(
-      tester,
-      find.byKey(const Key('task-due-date-tile')),
-      dueDay,
-    );
-    await tester.tap(find.byKey(const Key('task-create-save')));
-    await tester.pump();
-    expect(find.text('Due date cannot be before start date.'), findsOneWidget);
-    expect(await _tasks(database), isEmpty);
-  });
+      await tester.enterText(
+        find.byKey(const Key('task-title-field')),
+        'Invalid dates',
+      );
+      final now = DateTime.now();
+      final lastDay = DateUtils.getDaysInMonth(now.year, now.month);
+      final dueDay = now.day == 1 ? 1 : now.day - 1;
+      final startDay = now.day == lastDay ? lastDay : now.day + 1;
+      await _pickDate(
+        tester,
+        find.byKey(const Key('task-start-date-field')),
+        startDay,
+      );
+      await _pickDate(
+        tester,
+        find.byKey(const Key('task-due-date-tile')),
+        dueDay,
+      );
+      await tester.tap(find.byKey(const Key('task-create-save')));
+      await tester.pump();
+      expect(
+        find.text('Due date cannot be before start date.'),
+        findsOneWidget,
+      );
+      expect(await _tasks(database), isEmpty);
+    },
+  );
 
   testWidgets('cancel creates nothing and a reopened form has fresh state', (
     tester,
@@ -247,9 +248,7 @@ void main() {
 
           expect(
             Directionality.of(tester.element(find.byType(TaskCreatePage))),
-            locale.languageCode == 'ur'
-                ? TextDirection.rtl
-                : TextDirection.ltr,
+            locale.languageCode == 'ur' ? TextDirection.rtl : TextDirection.ltr,
           );
           await tester.enterText(
             find.byKey(const Key('task-title-field')),
@@ -334,11 +333,7 @@ Future<void> _pumpDetail(
   await tester.pumpAndSettle();
 }
 
-Future<void> _pickDate(
-  WidgetTester tester,
-  Finder tile,
-  int day,
-) async {
+Future<void> _pickDate(WidgetTester tester, Finder tile, int day) async {
   await tester.ensureVisible(tile);
   await tester.tap(tile);
   await tester.pumpAndSettle();
@@ -348,9 +343,9 @@ Future<void> _pickDate(
 }
 
 Future<ProjectEntity> _createProject(AppDatabase database) async {
-  final result = await DriftProjectRepository(database).create(
-    title: 'Project',
-  );
+  final result = await DriftProjectRepository(
+    database,
+  ).create(title: 'Project');
   return (result as Success<ProjectEntity>).value;
 }
 

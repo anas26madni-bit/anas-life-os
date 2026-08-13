@@ -186,7 +186,8 @@ class TaskFormFields extends StatelessWidget {
         ),
         FormField<bool>(
           initialValue: data.mandatory,
-          validator: (_) => data.mandatory &&
+          validator: (_) =>
+              data.mandatory &&
                   TaskFormData._positiveId(data.parentTaskId) == null
               ? localization.mandatoryTaskRequiresParent
               : null,
@@ -244,7 +245,8 @@ class TaskFormFields extends StatelessWidget {
         ),
         FormField<DateTime?>(
           key: const Key('task-due-date-field'),
-          validator: (_) => data.startAt != null &&
+          validator: (_) =>
+              data.startAt != null &&
                   data.dueAt != null &&
                   data.dueAt!.isBefore(data.startAt!)
               ? localization.invalidTaskDates

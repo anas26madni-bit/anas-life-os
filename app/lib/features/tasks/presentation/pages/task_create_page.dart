@@ -87,9 +87,9 @@ class _TaskCreatePageState extends ConsumerState<TaskCreatePage> {
                   leading: const Icon(Icons.schedule_outlined),
                   title: Text(localization.reminderTime),
                   subtitle: Text(
-                    MaterialLocalizations.of(context).formatTimeOfDay(
-                      TimeOfDay.fromDateTime(_reminderAt),
-                    ),
+                    MaterialLocalizations.of(
+                      context,
+                    ).formatTimeOfDay(TimeOfDay.fromDateTime(_reminderAt)),
                   ),
                   onTap: _selectReminderTime,
                 ),

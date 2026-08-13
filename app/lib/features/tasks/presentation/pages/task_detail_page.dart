@@ -234,10 +234,7 @@ Future<void> _editTask(
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   const SizedBox(height: AppSpacing.md),
-                  TaskFormFields(
-                    data: data,
-                    onChanged: () => setState(() {}),
-                  ),
+                  TaskFormFields(data: data, onChanged: () => setState(() {})),
                   const SizedBox(height: AppSpacing.md),
                   FilledButton(
                     onPressed: () => key.currentState!.validate()
@@ -254,9 +251,6 @@ Future<void> _editTask(
     ),
   );
   if (saved == true) {
-    await ref.read(taskDetailActionsProvider).update(
-      task.id,
-      data.toDraft(),
-    );
+    await ref.read(taskDetailActionsProvider).update(task.id, data.toDraft());
   }
 }
