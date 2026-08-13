@@ -13,8 +13,9 @@
 
 ### Validation
 
-- Exact-head CI results and artifact hashes are recorded in the final Sprint 12
-  checkpoint and release-readiness report after successful execution.
+- Exact-head CI run `31668658016` passed 107 tests, 90.83% business-line and
+  100% branch coverage, API 30/API 34 integration and signed APK/AAB audit.
+- Artifact SHA-256 values are recorded in the Sprint 12 release-readiness report.
 
 ## Sprint 10 - Security and Settings
 

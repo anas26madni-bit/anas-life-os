@@ -15,15 +15,26 @@
 
 | Criterion | Evidence | Status |
 |---|---|---|
-| Requirements and regression | Full unit/widget/database/architecture suite | Pending CI |
-| Generated source | Generate then tracked-diff check | Pending CI |
-| Static quality | Formatter and analyzer with fatal warnings | Pending CI |
-| Coverage | Business line and branch coverage at least 90% | Pending CI |
-| Android integration | API 30 and API 34 emulator matrix | Pending CI |
-| Security | Release-config regression, minify/shrink, signature verification | Pending CI |
-| Artifacts | Release APK, AAB and SHA-256 manifest | Pending CI |
+| Requirements and regression | 107 unit/widget/database/architecture tests | Pass |
+| Generated source | Generate then tracked-diff check | Pass |
+| Static quality | Formatter and analyzer with fatal warnings | Pass |
+| Coverage | 90.83% business line; 100% branch | Pass |
+| Android integration | API 30 and API 34 emulator matrix | Pass |
+| Security | Release-config regression, minify/shrink, signature verification | Pass |
+| Artifacts | Release APK, AAB and SHA-256 manifest | Pass |
 | Critical bugs / High security findings | None known at candidate creation | Pass |
-| Future Release boundary | Static absence regression | Pending CI |
+| Future Release boundary | Static absence regression | Pass |
+
+Exact-head evidence: GitHub Actions run `31668658016` for commit
+`8c2548cef69f8b85eae49516252021a24ab61e18`. All four jobs passed: validation,
+release candidate, API 30 integration and API 34 integration.
+
+Artifact paths and SHA-256:
+
+- `app/build/app/outputs/flutter-apk/app-release.apk`:
+  `cf746512737b733c5126fcbdf95e2f6134e0f6d3b68dafdc15e2490f83e1d017`
+- `app/build/app/outputs/bundle/release/app-release.aab`:
+  `854bc6c3c0b94f0fb2a4efc6960a5d3a2f39d21ee1a72467956c23528f9dd483`
 
 ## Version 1 acceptance matrix
 
@@ -42,8 +53,8 @@ does not fabricate or substitute an unexecuted manual session.
 
 ## Completion package
 
-- Test report: exact-head GitHub Actions job matrix, pending final run.
-- Coverage report: business line/branch metrics, pending final run.
+- Test report: exact-head GitHub Actions run `31668658016`, all four jobs Pass.
+- Coverage report: 90.83% business line and 100% branch coverage.
 - Bug report: no open Critical bug or High security finding known; any CI defect
   must be recorded and fixed before completion.
 - Known limitations: physical-device evidence and production signing below.

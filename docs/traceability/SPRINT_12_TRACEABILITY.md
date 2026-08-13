@@ -11,4 +11,7 @@
 | P10-OI-005 resolution | Debug-signed candidate; production key remains user-only |
 | P11-RISK-001 | Accepted physical-device limitation and production-signing boundary recorded |
 
-Final status is recorded only after exact-head gates and artifact verification.
+Final evidence: GitHub Actions run `31668658016` for
+`8c2548cef69f8b85eae49516252021a24ab61e18`; validation, release-candidate,
+API 30 and API 34 jobs passed. Release APK/AAB hashes are recorded in
+`docs/quality/SPRINT_12_RELEASE_READINESS.md`.

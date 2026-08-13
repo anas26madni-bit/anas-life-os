@@ -15,7 +15,7 @@ This roadmap is derived from the approved Part 11 Master. Part 11 remains the so
 | 9 | Backup | Backup, restore, integrity validation, encrypted export, import, recovery tests | Complete |
 | 10 | Security | PIN, biometric authentication, encryption, hidden items, secure storage, permission validation | Complete |
 | 11 | Optimization | Memory, battery, performance, accessibility, large-database and regression testing | Complete |
-| 12 | Release Candidate | Final fixes, regression, documentation, performance/security/accessibility validation, release notes, Version 1 candidate | Not started |
+| 12 | Release Candidate | Final fixes, regression, documentation, performance/security/accessibility validation, release notes, Version 1 candidate | Complete |
 
 ## Sprint controls
 
