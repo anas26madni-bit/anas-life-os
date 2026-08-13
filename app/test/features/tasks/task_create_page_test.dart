@@ -342,10 +342,7 @@ Future<void> _pickDate(WidgetTester tester, Finder tile, int day) async {
   await tester.pumpAndSettle();
 }
 
-Finder get _createScrollable => find.descendant(
-  of: find.byKey(const Key('task-create-scroll-view')),
-  matching: find.byType(Scrollable),
-);
+Finder get _createScrollable => find.byType(Scrollable).first;
 
 Future<ProjectEntity> _createProject(AppDatabase database) async {
   final result = await DriftProjectRepository(
