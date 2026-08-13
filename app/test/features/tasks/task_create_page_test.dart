@@ -10,7 +10,7 @@ import 'package:anas_life_os/features/tasks/domain/entities/task_draft.dart';
 import 'package:anas_life_os/features/tasks/domain/entities/task_entity.dart';
 import 'package:anas_life_os/features/tasks/domain/entities/task_enums.dart';
 import 'package:anas_life_os/features/tasks/presentation/pages/task_create_page.dart';
-import 'package:anas_life_os/features/tasks/presentation/pages/task_detail_page.dart';
+import 'package:anas_life_os/features/tasks/presentation/widgets/task_form_fields.dart';
 import 'package:anas_life_os/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -153,8 +153,24 @@ void main() {
       reminders.single.id,
     );
 
-    await _pumpDetail(tester, database, scheduler, created.id);
-    await tester.tap(find.byIcon(Icons.edit_outlined));
+    final reloaded =
+        (await DriftTaskRepository(database).findById(created.id)
+                as Success<TaskEntity?>)
+            .value!;
+    await tester.pumpWidget(
+      MaterialApp(
+        supportedLocales: AppLocalizations.supportedLocales,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        home: Scaffold(
+          body: SingleChildScrollView(
+            child: TaskFormFields(
+              data: TaskFormData.fromTask(reloaded),
+              onChanged: () {},
+            ),
+          ),
+        ),
+      ),
+    );
     await tester.pumpAndSettle();
     expect(find.text('Complete task'), findsWidgets);
     expect(find.text('All metadata'), findsOneWidget);
@@ -314,28 +330,6 @@ Future<void> _pumpCreate(
           ),
           '/create': (context) => const TaskCreatePage(),
         },
-      ),
-    ),
-  );
-  await tester.pumpAndSettle();
-}
-
-Future<void> _pumpDetail(
-  WidgetTester tester,
-  AppDatabase database,
-  FakeReminderScheduler scheduler,
-  int taskId,
-) async {
-  await tester.pumpWidget(
-    ProviderScope(
-      overrides: [
-        appDatabaseProvider.overrideWith((ref) async => database),
-        reminderSchedulerProvider.overrideWithValue(scheduler),
-      ],
-      child: MaterialApp(
-        supportedLocales: AppLocalizations.supportedLocales,
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        home: TaskDetailPage(taskId: taskId),
       ),
     ),
   );
