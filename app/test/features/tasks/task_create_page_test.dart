@@ -118,6 +118,11 @@ void main() {
         .widget<SwitchListTile>(find.byKey(const Key('task-reminder-enabled')))
         .onChanged!(true);
     await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.byKey(const Key('task-reminder-time')),
+      100,
+      scrollable: _createScrollable,
+    );
     expect(find.byKey(const Key('task-reminder-date')), findsOneWidget);
     expect(find.byKey(const Key('task-reminder-time')), findsOneWidget);
 
