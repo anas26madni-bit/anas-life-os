@@ -50,6 +50,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get taskTitleRequired => 'Enter a task title.';
 
   @override
+  String get taskTitleTooLong => 'Task title cannot exceed 300 characters.';
+
+  @override
   String get save => 'Save';
 
   @override
@@ -451,6 +454,36 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get projectId => 'Project ID';
+
+  @override
+  String get parentTaskId => 'Parent task ID';
+
+  @override
+  String get parentTaskHelper => 'Required only for mandatory subtasks.';
+
+  @override
+  String get mandatoryTaskRequiresParent =>
+      'Choose a parent task before marking this subtask mandatory.';
+
+  @override
+  String get invalidTaskDates => 'Due date cannot be before start date.';
+
+  @override
+  String get reminderSectionTitle => 'Reminder';
+
+  @override
+  String get reminderEnabled => 'Enable reminder';
+
+  @override
+  String get reminderDate => 'Date';
+
+  @override
+  String get reminderTime => 'Time';
+
+  @override
+  String taskSavedReminderFailed(String message) {
+    return 'Task saved, but its reminder could not be scheduled: $message';
+  }
 
   @override
   String get addTag => 'Add tag';

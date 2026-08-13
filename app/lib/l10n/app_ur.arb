@@ -63,6 +63,7 @@
   "createTask": "کام بنائیں",
   "taskTitle": "کام کا عنوان",
   "taskTitleRequired": "کام کا عنوان درج کریں۔",
+  "taskTitleTooLong": "کام کا عنوان 300 حروف سے زیادہ نہیں ہو سکتا۔",
   "save": "محفوظ کریں",
   "cancel": "منسوخ",
   "completeTask": "کام مکمل کریں",
@@ -196,6 +197,16 @@
 , "startDate": "آغاز کی تاریخ"
 , "dueDate": "آخری تاریخ"
 , "projectId": "منصوبہ آئی ڈی"
+, "parentTaskId": "بنیادی کام کی آئی ڈی"
+, "parentTaskHelper": "صرف لازمی ذیلی کام کے لیے درکار ہے۔"
+, "mandatoryTaskRequiresParent": "ذیلی کام کو لازمی بنانے سے پہلے بنیادی کام منتخب کریں۔"
+, "invalidTaskDates": "آخری تاریخ آغاز کی تاریخ سے پہلے نہیں ہو سکتی۔"
+, "reminderSectionTitle": "یاد دہانی"
+, "reminderEnabled": "یاد دہانی فعال کریں"
+, "reminderDate": "تاریخ"
+, "reminderTime": "وقت"
+, "taskSavedReminderFailed": "کام محفوظ ہو گیا، لیکن یاد دہانی طے نہیں ہو سکی: {message}"
+, "@taskSavedReminderFailed": {"placeholders": {"message": {"type": "String"}}}
 , "addTag": "ٹیگ شامل کریں"
 , "addChecklist": "چیک لسٹ شامل کریں"
 , "listView": "فہرست"

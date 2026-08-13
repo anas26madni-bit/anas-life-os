@@ -23,8 +23,17 @@ class TaskListController extends AsyncNotifier<List<TaskEntity>> {
     return _unwrap(await useCases.list());
   }
 
-  Future<void> create(TaskDraft draft) async {
-    await _mutate((useCases) => useCases.create(draft));
+  Future<TaskEntity> create(TaskDraft draft) async {
+    state = const AsyncLoading<List<TaskEntity>>();
+    try {
+      final useCases = await ref.read(taskUseCasesProvider.future);
+      final created = _unwrap(await useCases.create(draft));
+      state = AsyncData(_unwrap(await useCases.list()));
+      return created;
+    } on Object catch (error, stackTrace) {
+      state = AsyncError(error, stackTrace);
+      rethrow;
+    }
   }
 
   Future<void> complete(int id) async {

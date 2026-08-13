@@ -176,6 +176,12 @@ abstract class AppLocalizations {
   /// **'Enter a task title.'**
   String get taskTitleRequired;
 
+  /// No description provided for @taskTitleTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Task title cannot exceed 300 characters.'**
+  String get taskTitleTooLong;
+
   /// No description provided for @save.
   ///
   /// In en, this message translates to:
@@ -961,6 +967,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Project ID'**
   String get projectId;
+
+  /// No description provided for @parentTaskId.
+  ///
+  /// In en, this message translates to:
+  /// **'Parent task ID'**
+  String get parentTaskId;
+
+  /// No description provided for @parentTaskHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Required only for mandatory subtasks.'**
+  String get parentTaskHelper;
+
+  /// No description provided for @mandatoryTaskRequiresParent.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a parent task before marking this subtask mandatory.'**
+  String get mandatoryTaskRequiresParent;
+
+  /// No description provided for @invalidTaskDates.
+  ///
+  /// In en, this message translates to:
+  /// **'Due date cannot be before start date.'**
+  String get invalidTaskDates;
+
+  /// No description provided for @reminderSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder'**
+  String get reminderSectionTitle;
+
+  /// No description provided for @reminderEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable reminder'**
+  String get reminderEnabled;
+
+  /// No description provided for @reminderDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get reminderDate;
+
+  /// No description provided for @reminderTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get reminderTime;
+
+  /// No description provided for @taskSavedReminderFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Task saved, but its reminder could not be scheduled: {message}'**
+  String taskSavedReminderFailed(String message);
 
   /// No description provided for @addTag.
   ///
