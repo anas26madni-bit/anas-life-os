@@ -147,6 +147,7 @@ class TaskFormFields extends StatelessWidget {
         const SizedBox(height: AppSpacing.md),
         DropdownButtonFormField<TaskPriority>(
           key: const Key('task-priority-field'),
+          isExpanded: true,
           initialValue: data.priority,
           decoration: InputDecoration(labelText: localization.priority),
           items: TaskPriority.values
@@ -166,6 +167,7 @@ class TaskFormFields extends StatelessWidget {
         const SizedBox(height: AppSpacing.md),
         DropdownButtonFormField<TaskStatus>(
           key: const Key('task-status-field'),
+          isExpanded: true,
           initialValue: data.status,
           decoration: InputDecoration(labelText: localization.status),
           items: TaskStatus.values

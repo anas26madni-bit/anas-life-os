@@ -257,7 +257,7 @@ void main() {
           await tester.scrollUntilVisible(
             find.byKey(const Key('task-reminder-section')),
             250,
-            scrollable: find.byKey(const Key('task-create-scroll-view')),
+            scrollable: _createScrollable,
           );
           expect(find.byKey(const Key('task-create-save')), findsOneWidget);
           expect(
@@ -334,13 +334,18 @@ Future<void> _pumpDetail(
 }
 
 Future<void> _pickDate(WidgetTester tester, Finder tile, int day) async {
-  await tester.ensureVisible(tile);
+  await tester.scrollUntilVisible(tile, 200, scrollable: _createScrollable);
   await tester.tap(tile);
   await tester.pumpAndSettle();
   await tester.tap(find.text('$day').last);
   await tester.tap(find.text('OK'));
   await tester.pumpAndSettle();
 }
+
+Finder get _createScrollable => find.descendant(
+  of: find.byKey(const Key('task-create-scroll-view')),
+  matching: find.byType(Scrollable),
+);
 
 Future<ProjectEntity> _createProject(AppDatabase database) async {
   final result = await DriftProjectRepository(
