@@ -69,10 +69,12 @@ void main() {
       find.byKey(const Key('task-project-field')),
       '${project.id}',
     );
-    await tester.enterText(
-      find.byKey(const Key('task-parent-field')),
-      '${parent.id}',
-    );
+    tester
+        .widget<DropdownButtonFormField<int?>>(
+          find.byKey(const Key('task-parent-field')),
+        )
+        .onChanged!(parent.id);
+    await tester.pump();
     tester
         .widget<DropdownButtonFormField<TaskPriority>>(
           find.byKey(const Key('task-priority-field')),
@@ -132,6 +134,7 @@ void main() {
     final tasks = await _tasks(database);
     final created = tasks.singleWhere((task) => task.title == 'Complete task');
     expect(created.description, 'All metadata');
+    expect(created.uuid, isNotEmpty);
     expect(created.projectId, project.id);
     expect(created.parentTaskId, parent.id);
     expect(created.priority, TaskPriority.high);
@@ -179,6 +182,7 @@ void main() {
     expect(find.text('In progress'), findsWidgets);
     expect(find.text('Progress: 55%'), findsOneWidget);
     expect(tester.takeException(), isNull);
+    expect(find.textContaining('Task ID'), findsNothing);
   });
 
   testWidgets(

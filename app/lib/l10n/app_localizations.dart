@@ -257,13 +257,13 @@ abstract class AppLocalizations {
   /// No description provided for @reminderTaskId.
   ///
   /// In en, this message translates to:
-  /// **'Task ID'**
+  /// **'Task'**
   String get reminderTaskId;
 
   /// No description provided for @reminderTaskRequired.
   ///
   /// In en, this message translates to:
-  /// **'Enter a valid task ID.'**
+  /// **'Select a task.'**
   String get reminderTaskRequired;
 
   /// No description provided for @reminderTitle.
@@ -971,7 +971,7 @@ abstract class AppLocalizations {
   /// No description provided for @parentTaskId.
   ///
   /// In en, this message translates to:
-  /// **'Parent task ID'**
+  /// **'Parent task'**
   String get parentTaskId;
 
   /// No description provided for @parentTaskHelper.
@@ -979,6 +979,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Required only for mandatory subtasks.'**
   String get parentTaskHelper;
+
+  /// No description provided for @noParentTask.
+  ///
+  /// In en, this message translates to:
+  /// **'No parent task'**
+  String get noParentTask;
 
   /// No description provided for @mandatoryTaskRequiresParent.
   ///
@@ -1015,6 +1021,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Time'**
   String get reminderTime;
+
+  /// No description provided for @audibleReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Audible reminder'**
+  String get audibleReminder;
 
   /// No description provided for @taskSavedReminderFailed.
   ///

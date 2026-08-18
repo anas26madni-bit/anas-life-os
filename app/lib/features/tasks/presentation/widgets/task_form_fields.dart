@@ -13,7 +13,7 @@ final class TaskFormData {
     this.title = '',
     this.description = '',
     this.projectId = '',
-    this.parentTaskId = '',
+    this.parentTaskId,
     this.priority = TaskPriority.none,
     this.status = TaskStatus.pending,
     this.mandatory = false,
@@ -29,7 +29,7 @@ final class TaskFormData {
     title: task.title,
     description: task.description ?? '',
     projectId: task.projectId?.toString() ?? '',
-    parentTaskId: task.parentTaskId?.toString() ?? '',
+    parentTaskId: task.parentTaskId,
     priority: task.priority,
     status: task.status,
     mandatory: task.isMandatory,
@@ -44,7 +44,7 @@ final class TaskFormData {
   String title;
   String description;
   String projectId;
-  String parentTaskId;
+  int? parentTaskId;
   TaskPriority priority;
   TaskStatus status;
   bool mandatory;
@@ -59,7 +59,7 @@ final class TaskFormData {
     title: title,
     description: description.trim().isEmpty ? null : description.trim(),
     projectId: _positiveId(projectId),
-    parentTaskId: _positiveId(parentTaskId),
+    parentTaskId: parentTaskId,
     categoryId: categoryId,
     subcategoryId: subcategoryId,
     sortOrder: sortOrder,
@@ -82,12 +82,14 @@ class TaskFormFields extends StatelessWidget {
     required this.data,
     required this.onChanged,
     this.allowParentSelection = false,
+    this.parentCandidates = const [],
     super.key,
   });
 
   final TaskFormData data;
   final VoidCallback onChanged;
   final bool allowParentSelection;
+  final List<TaskEntity> parentCandidates;
 
   @override
   Widget build(BuildContext context) {
@@ -132,16 +134,30 @@ class TaskFormFields extends StatelessWidget {
         ),
         if (allowParentSelection) ...[
           const SizedBox(height: AppSpacing.md),
-          TextFormField(
+          DropdownButtonFormField<int?>(
             key: const Key('task-parent-field'),
             initialValue: data.parentTaskId,
-            keyboardType: TextInputType.number,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            isExpanded: true,
             decoration: InputDecoration(
               labelText: localization.parentTaskId,
               helperText: localization.parentTaskHelper,
             ),
-            onChanged: (value) => data.parentTaskId = value,
+            items: [
+              DropdownMenuItem<int?>(
+                value: null,
+                child: Text(localization.noParentTask),
+              ),
+              ...parentCandidates.map(
+                (task) => DropdownMenuItem<int?>(
+                  value: task.id,
+                  child: Text(task.title, overflow: TextOverflow.ellipsis),
+                ),
+              ),
+            ],
+            onChanged: (value) {
+              data.parentTaskId = value;
+              onChanged();
+            },
           ),
         ],
         const SizedBox(height: AppSpacing.md),
@@ -188,9 +204,7 @@ class TaskFormFields extends StatelessWidget {
         ),
         FormField<bool>(
           initialValue: data.mandatory,
-          validator: (_) =>
-              data.mandatory &&
-                  TaskFormData._positiveId(data.parentTaskId) == null
+          validator: (_) => data.mandatory && data.parentTaskId == null
               ? localization.mandatoryTaskRequiresParent
               : null,
           builder: (field) => Column(

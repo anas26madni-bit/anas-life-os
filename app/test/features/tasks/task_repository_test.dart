@@ -23,6 +23,14 @@ void main() {
     final created = (createdResult as Success<TaskEntity>).value;
     expect(created.title, 'Plan sprint');
     expect(
+      created.uuid,
+      matches(
+        RegExp(
+          r'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$',
+        ),
+      ),
+    );
+    expect(
       (await repository.list() as Success<List<TaskEntity>>).value,
       hasLength(1),
     );
@@ -32,18 +40,48 @@ void main() {
       created.id,
       const TaskDraft(title: 'Plan Sprint 3', progress: 25),
     );
-    expect((updated as Success<TaskEntity>).value.version, 2);
+    final updatedTask = (updated as Success<TaskEntity>).value;
+    expect(updatedTask.version, 2);
+    expect(updatedTask.id, created.id);
+    expect(updatedTask.uuid, created.uuid);
     expect(await database.select(database.taskHistory).get(), hasLength(2));
 
     final deleted = await repository.softDelete(created.id);
-    expect((deleted as Success<TaskEntity>).value.isDeleted, isTrue);
+    final deletedTask = (deleted as Success<TaskEntity>).value;
+    expect(deletedTask.isDeleted, isTrue);
+    expect(deletedTask.uuid, created.uuid);
     expect(
       (await repository.list() as Success<List<TaskEntity>>).value,
       isEmpty,
     );
 
     final restored = await repository.restore(created.id);
-    expect((restored as Success<TaskEntity>).value.isDeleted, isFalse);
+    final restoredTask = (restored as Success<TaskEntity>).value;
+    expect(restoredTask.isDeleted, isFalse);
+    expect(restoredTask.uuid, created.uuid);
+  });
+
+  test('generates a unique persistent task UUID completely offline', () async {
+    final database = createTestDatabase();
+    addTearDown(database.close);
+    final repository = DriftTaskRepository(database);
+
+    final created = <TaskEntity>[];
+    for (var index = 0; index < 25; index++) {
+      created.add(
+        (await repository.create(TaskDraft(title: 'Task $index'))
+                as Success<TaskEntity>)
+            .value,
+      );
+    }
+
+    expect(created.map((task) => task.id).toSet(), hasLength(created.length));
+    expect(created.map((task) => task.uuid).toSet(), hasLength(created.length));
+    for (final task in created) {
+      final reloaded =
+          (await repository.findById(task.id) as Success<TaskEntity?>).value;
+      expect(reloaded?.uuid, task.uuid);
+    }
   });
 
   test('enforces mandatory subtasks and dependency cycles', () async {

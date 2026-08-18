@@ -89,10 +89,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get createReminder => 'Create reminder';
 
   @override
-  String get reminderTaskId => 'Task ID';
+  String get reminderTaskId => 'Task';
 
   @override
-  String get reminderTaskRequired => 'Enter a valid task ID.';
+  String get reminderTaskRequired => 'Select a task.';
 
   @override
   String get reminderTitle => 'Reminder title';
@@ -456,10 +456,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get projectId => 'Project ID';
 
   @override
-  String get parentTaskId => 'Parent task ID';
+  String get parentTaskId => 'Parent task';
 
   @override
   String get parentTaskHelper => 'Required only for mandatory subtasks.';
+
+  @override
+  String get noParentTask => 'No parent task';
 
   @override
   String get mandatoryTaskRequiresParent =>
@@ -479,6 +482,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reminderTime => 'Time';
+
+  @override
+  String get audibleReminder => 'Audible reminder';
 
   @override
   String taskSavedReminderFailed(String message) {

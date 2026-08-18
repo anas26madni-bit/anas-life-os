@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/errors/result.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/presentation/app_top_bar.dart';
 import '../../../../shared/presentation/async_state_view.dart';
+import '../../../reminders/domain/entities/reminder_entity.dart';
+import '../../../reminders/presentation/controllers/reminder_list_controller.dart';
 import '../../domain/entities/task_entity.dart';
 import '../controllers/task_detail_controller.dart';
 import '../widgets/task_form_fields.dart';
+import '../widgets/task_reminder_fields.dart';
 
 class TaskDetailPage extends ConsumerWidget {
   const TaskDetailPage({required this.taskId, super.key});
@@ -210,6 +214,17 @@ Future<void> _editTask(
   final localization = AppLocalizations.of(context);
   final key = GlobalKey<FormState>();
   final data = TaskFormData.fromTask(task);
+  final reminderUseCases = await ref.read(reminderUseCasesProvider.future);
+  final reminderResult = await reminderUseCases.list(limit: 200);
+  final reminders = switch (reminderResult) {
+    Success<List<ReminderEntity>>(:final value) => value,
+    FailureResult<List<ReminderEntity>>() => const <ReminderEntity>[],
+  };
+  final existingReminder = reminders
+      .where((reminder) => reminder.taskId == task.id)
+      .firstOrNull;
+  final reminderData = TaskReminderFormData.fromReminder(existingReminder);
+  if (!context.mounted) return;
   final saved = await showModalBottomSheet<bool>(
     context: context,
     isScrollControlled: true,
@@ -235,8 +250,14 @@ Future<void> _editTask(
                   ),
                   const SizedBox(height: AppSpacing.md),
                   TaskFormFields(data: data, onChanged: () => setState(() {})),
+                  const SizedBox(height: AppSpacing.lg),
+                  TaskReminderFields(
+                    data: reminderData,
+                    onChanged: () => setState(() {}),
+                  ),
                   const SizedBox(height: AppSpacing.md),
                   FilledButton(
+                    key: const Key('task-edit-save'),
                     onPressed: () => key.currentState!.validate()
                         ? Navigator.pop(context, true)
                         : null,
@@ -252,5 +273,48 @@ Future<void> _editTask(
   );
   if (saved == true) {
     await ref.read(taskDetailActionsProvider).update(task.id, data.toDraft());
+    if (existingReminder == null && reminderData.enabled) {
+      final result = await reminderUseCases.create(
+        reminderData.toDraft(
+          taskId: task.id,
+          title: data.title.trim(),
+          message: data.description.trim().isEmpty
+              ? null
+              : data.description.trim(),
+        ),
+      );
+      if (result case FailureResult<ReminderEntity>(:final failure)) {
+        throw StateError(failure.safeMessage);
+      }
+    } else if (existingReminder != null) {
+      if (reminderData.enabled) {
+        final result = await reminderUseCases.update(
+          existingReminder.id,
+          reminderData.toDraft(
+            taskId: task.id,
+            title: data.title.trim(),
+            message: data.description.trim().isEmpty
+                ? null
+                : data.description.trim(),
+          ),
+        );
+        if (result case FailureResult<ReminderEntity>(:final failure)) {
+          throw StateError(failure.safeMessage);
+        }
+      } else if (existingReminder.enabled) {
+        final result = await reminderUseCases.setEnabled(
+          existingReminder.id,
+          false,
+        );
+        if (result case FailureResult<ReminderEntity>(:final failure)) {
+          throw StateError(failure.safeMessage);
+        }
+      }
+    }
+    ref.invalidate(reminderListControllerProvider);
   }
+}
+
+extension<T> on Iterable<T> {
+  T? get firstOrNull => isEmpty ? null : first;
 }

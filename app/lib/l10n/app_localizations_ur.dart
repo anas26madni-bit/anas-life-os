@@ -88,10 +88,10 @@ class AppLocalizationsUr extends AppLocalizations {
   String get createReminder => 'یاد دہانی بنائیں';
 
   @override
-  String get reminderTaskId => 'کام کی شناخت';
+  String get reminderTaskId => 'کام';
 
   @override
-  String get reminderTaskRequired => 'درست کام کی شناخت درج کریں۔';
+  String get reminderTaskRequired => 'کام منتخب کریں۔';
 
   @override
   String get reminderTitle => 'یاد دہانی کا عنوان';
@@ -454,10 +454,13 @@ class AppLocalizationsUr extends AppLocalizations {
   String get projectId => 'منصوبہ آئی ڈی';
 
   @override
-  String get parentTaskId => 'بنیادی کام کی آئی ڈی';
+  String get parentTaskId => 'بنیادی کام';
 
   @override
   String get parentTaskHelper => 'صرف لازمی ذیلی کام کے لیے درکار ہے۔';
+
+  @override
+  String get noParentTask => 'کوئی بنیادی کام نہیں';
 
   @override
   String get mandatoryTaskRequiresParent =>
@@ -478,6 +481,9 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get reminderTime => 'وقت';
+
+  @override
+  String get audibleReminder => 'آواز والی یاد دہانی';
 
   @override
   String taskSavedReminderFailed(String message) {

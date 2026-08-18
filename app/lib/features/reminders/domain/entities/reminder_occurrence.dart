@@ -11,6 +11,7 @@ final class ReminderOccurrence {
     required this.voiceEnabled,
     required this.fullScreen,
     required this.priority,
+    this.sound,
   });
 
   final int reminderId;
@@ -22,6 +23,7 @@ final class ReminderOccurrence {
   final bool voiceEnabled;
   final bool fullScreen;
   final ReminderPriority priority;
+  final String? sound;
 }
 
 final class ReminderRepeatPattern {
