@@ -83,7 +83,7 @@ final class DriftDashboardRepository implements DashboardRepository {
                 _database.tasks.status.isInValues(active),
           ),
           completedToday: completed,
-          upcoming: await count(between(_database.tasks.dueAt, start, weekEnd)),
+          upcoming: await _upcomingReminderCount(start, weekEnd),
           favorites: await count(
             _database.tasks.favorite.equals(true) |
                 _database.tasks.pinned.equals(true),
@@ -243,6 +243,24 @@ final class DriftDashboardRepository implements DashboardRepository {
             _database.taskHistory.changedAt.isBiggerOrEqualValue(
               _micros(since),
             ),
+          ))
+        .map((row) => row.read(total) ?? 0)
+        .getSingle();
+  }
+
+  Future<int> _upcomingReminderCount(DateTime start, DateTime end) async {
+    final total = _database.reminders.id.count();
+    return (_database.selectOnly(_database.reminders)
+          ..addColumns([total])
+          ..where(
+            _database.reminders.isDeleted.equals(false) &
+                _database.reminders.enabled.equals(true) &
+                _database.reminders.scheduledAt.isBiggerOrEqualValue(
+                  _micros(start),
+                ) &
+                _database.reminders.scheduledAt.isSmallerThanValue(
+                  _micros(end),
+                ),
           ))
         .map((row) => row.read(total) ?? 0)
         .getSingle();

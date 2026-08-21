@@ -1319,7 +1319,7 @@ abstract class AppLocalizations {
   /// No description provided for @dashboardWidgetLabel.
   ///
   /// In en, this message translates to:
-  /// **'{kind, select, today{Today} tomorrow{Tomorrow} pending{Pending} overdue{Overdue} completedToday{Completed today} upcoming{Next seven days} favorites{Pinned and favorites} progress{Completion progress} recentKnowledge{Recent knowledge} dateTime{Date and time} quickActions{Quick actions} miniCalendar{Mini calendar} recentProjects{Recent projects} recentActivity{Recent activity} productivity{Productivity score} other{Dashboard widget}}'**
+  /// **'{kind, select, today{Today} tomorrow{Tomorrow} pending{Pending} overdue{Overdue} completedToday{Completed today} upcoming{Upcoming reminders} favorites{Pinned and favorites} progress{Completion progress} recentKnowledge{Recent knowledge} dateTime{Date and time} quickActions{Quick actions} miniCalendar{Mini calendar} recentProjects{Recent projects} recentActivity{Recent activity} productivity{Productivity score} other{Dashboard widget}}'**
   String dashboardWidgetLabel(String kind);
 
   /// No description provided for @dashboardSizeLabel.

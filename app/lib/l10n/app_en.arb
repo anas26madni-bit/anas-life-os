@@ -215,7 +215,7 @@
   "protectedLocalStorage": "Protected local storage",
   "sourceUnavailable": "The authorized source is no longer available.",
   "availableActions": "Tasks, calendar and search",
-  "dashboardWidgetLabel": "{kind, select, today{Today} tomorrow{Tomorrow} pending{Pending} overdue{Overdue} completedToday{Completed today} upcoming{Next seven days} favorites{Pinned and favorites} progress{Completion progress} recentKnowledge{Recent knowledge} dateTime{Date and time} quickActions{Quick actions} miniCalendar{Mini calendar} recentProjects{Recent projects} recentActivity{Recent activity} productivity{Productivity score} other{Dashboard widget}}",
+  "dashboardWidgetLabel": "{kind, select, today{Today} tomorrow{Tomorrow} pending{Pending} overdue{Overdue} completedToday{Completed today} upcoming{Upcoming reminders} favorites{Pinned and favorites} progress{Completion progress} recentKnowledge{Recent knowledge} dateTime{Date and time} quickActions{Quick actions} miniCalendar{Mini calendar} recentProjects{Recent projects} recentActivity{Recent activity} productivity{Productivity score} other{Dashboard widget}}",
   "@dashboardWidgetLabel": {"placeholders": {"kind": {"type": "String"}}},
   "dashboardSizeLabel": "{size, select, compact{Compact} regular{Regular} expanded{Expanded} other{Size}}",
   "@dashboardSizeLabel": {"placeholders": {"size": {"type": "String"}}},

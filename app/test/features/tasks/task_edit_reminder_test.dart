@@ -83,6 +83,50 @@ void main() {
           .value,
       isTrue,
     );
+    tester
+        .widget<SwitchListTile>(find.byKey(const Key('task-reminder-enabled')))
+        .onChanged!(false);
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.byKey(const Key('task-edit-save')),
+      200,
+      scrollable: find.byType(Scrollable).last,
+    );
+    await tester.tap(find.byKey(const Key('task-edit-save')));
+    await tester.pumpAndSettle();
+    final disabled =
+        (await DriftReminderRepository(database).list()
+                as Success<List<ReminderEntity>>)
+            .value
+            .single;
+    expect(disabled.enabled, isFalse);
+    expect(scheduler.cancelled, contains(disabled.id));
+
+    await tester.tap(find.byIcon(Icons.edit_outlined));
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.byKey(const Key('task-reminder-enabled')),
+      200,
+      scrollable: find.byType(Scrollable).last,
+    );
+    tester
+        .widget<SwitchListTile>(find.byKey(const Key('task-reminder-enabled')))
+        .onChanged!(true);
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.byKey(const Key('task-edit-save')),
+      200,
+      scrollable: find.byType(Scrollable).last,
+    );
+    await tester.tap(find.byKey(const Key('task-edit-save')));
+    await tester.pumpAndSettle();
+    final reenabled =
+        (await DriftReminderRepository(database).list()
+                as Success<List<ReminderEntity>>)
+            .value
+            .single;
+    expect(reenabled.enabled, isTrue);
+    expect(scheduler.scheduled.length, greaterThanOrEqualTo(2));
   });
 }
 

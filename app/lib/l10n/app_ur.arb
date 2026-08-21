@@ -265,7 +265,7 @@
 , "protectedLocalStorage": "محفوظ مقامی ذخیرہ"
 , "sourceUnavailable": "مجاز ماخذ اب دستیاب نہیں ہے۔"
 , "availableActions": "کام، کیلنڈر اور تلاش"
-, "dashboardWidgetLabel": "{kind, select, today{آج} tomorrow{کل} pending{زیر التوا} overdue{تاخیر شدہ} completedToday{آج مکمل} upcoming{اگلے سات دن} favorites{پن اور پسندیدہ} progress{تکمیل کی پیش رفت} recentKnowledge{حالیہ معلومات} dateTime{تاریخ اور وقت} quickActions{فوری اعمال} miniCalendar{مختصر کیلنڈر} recentProjects{حالیہ منصوبے} recentActivity{حالیہ سرگرمی} productivity{پیداواری اسکور} other{ڈیش بورڈ ویجیٹ}}"
+, "dashboardWidgetLabel": "{kind, select, today{آج} tomorrow{کل} pending{زیر التوا} overdue{تاخیر شدہ} completedToday{آج مکمل} upcoming{آنے والی یاد دہانیاں} favorites{پن اور پسندیدہ} progress{تکمیل کی پیش رفت} recentKnowledge{حالیہ معلومات} dateTime{تاریخ اور وقت} quickActions{فوری اعمال} miniCalendar{مختصر کیلنڈر} recentProjects{حالیہ منصوبے} recentActivity{حالیہ سرگرمی} productivity{پیداواری اسکور} other{ڈیش بورڈ ویجیٹ}}"
 , "@dashboardWidgetLabel": {"placeholders": {"kind": {"type": "String"}}}
 , "dashboardSizeLabel": "{size, select, compact{مختصر} regular{عام} expanded{کشادہ} other{حجم}}"
 , "@dashboardSizeLabel": {"placeholders": {"size": {"type": "String"}}}

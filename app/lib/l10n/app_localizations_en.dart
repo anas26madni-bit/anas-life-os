@@ -705,7 +705,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'pending': 'Pending',
       'overdue': 'Overdue',
       'completedToday': 'Completed today',
-      'upcoming': 'Next seven days',
+      'upcoming': 'Upcoming reminders',
       'favorites': 'Pinned and favorites',
       'progress': 'Completion progress',
       'recentKnowledge': 'Recent knowledge',

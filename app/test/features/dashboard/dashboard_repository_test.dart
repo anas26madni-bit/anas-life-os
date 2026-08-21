@@ -1,8 +1,11 @@
 import 'package:anas_life_os/core/errors/result.dart';
 import 'package:anas_life_os/features/dashboard/data/repositories/drift_dashboard_repository.dart';
 import 'package:anas_life_os/features/dashboard/domain/entities/dashboard_models.dart';
+import 'package:anas_life_os/features/reminders/data/repositories/drift_reminder_repository.dart';
+import 'package:anas_life_os/features/reminders/domain/entities/reminder_draft.dart';
 import 'package:anas_life_os/features/tasks/data/repositories/drift_task_repository.dart';
 import 'package:anas_life_os/features/tasks/domain/entities/task_draft.dart';
+import 'package:anas_life_os/features/tasks/domain/entities/task_entity.dart';
 import 'package:anas_life_os/features/tasks/domain/entities/task_enums.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -48,18 +51,29 @@ void main() {
       database,
       clock: () => DateTime.utc(2026, 8, 7, 12),
     );
-    await tasks.create(
-      TaskDraft(
-        title: 'Today',
-        dueAt: DateTime.utc(2026, 8, 7, 15),
-        status: TaskStatus.pending,
-      ),
-    );
+    final today =
+        (await tasks.create(
+                  TaskDraft(
+                    title: 'Today',
+                    dueAt: DateTime.utc(2026, 8, 7, 15),
+                    status: TaskStatus.pending,
+                  ),
+                )
+                as Success<TaskEntity>)
+            .value;
     await tasks.create(
       TaskDraft(
         title: 'Overdue',
         dueAt: DateTime.utc(2026, 8, 6, 15),
         status: TaskStatus.pending,
+      ),
+    );
+    await DriftReminderRepository(database).create(
+      ReminderDraft(
+        taskId: today.id,
+        title: 'Upcoming reminder',
+        scheduledAt: DateTime.utc(2026, 8, 8, 12),
+        timezoneId: 'UTC',
       ),
     );
     final snapshot =
@@ -71,5 +85,6 @@ void main() {
     expect(snapshot.today, 1);
     expect(snapshot.pending, 2);
     expect(snapshot.overdue, 1);
+    expect(snapshot.upcoming, 1);
   });
 }

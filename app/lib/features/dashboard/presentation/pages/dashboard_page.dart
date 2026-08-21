@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../core/router/app_router.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/semantic_colors.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/presentation/app_top_bar.dart';
 import '../../../../shared/presentation/async_state_view.dart';
@@ -48,26 +49,36 @@ class DashboardPage extends ConsumerWidget {
             ]..sort((left, right) => left.sortOrder.compareTo(right.sortOrder));
             return RefreshIndicator(
               onRefresh: ref.read(dashboardControllerProvider.notifier).refresh,
-              child: CustomScrollView(
-                slivers: [
-                  SliverPadding(
-                    padding: const EdgeInsets.all(AppSpacing.md),
-                    sliver: SliverList.list(
-                      children: [
-                        for (final preference in visible.where(
-                          (item) => item.visible,
-                        )) ...[
-                          _DashboardCard(
-                            preference: preference,
-                            snapshot: state.snapshot,
-                          ),
-                          const SizedBox(height: AppSpacing.sm),
-                        ],
-                      ],
-                    ),
+              child: LayoutBuilder(
+                builder: (context, constraints) => ListView(
+                  key: const Key('dashboard-scroll-view'),
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpacing.md,
+                    AppSpacing.md,
+                    AppSpacing.md,
+                    112,
                   ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 96)),
-                ],
+                  children: [
+                    Center(
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 1080),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            _DashboardHero(snapshot: state.snapshot),
+                            const SizedBox(height: AppSpacing.md),
+                            _DashboardGrid(
+                              preferences: visible
+                                  .where((item) => item.visible)
+                                  .toList(growable: false),
+                              snapshot: state.snapshot,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           },
@@ -197,50 +208,344 @@ class DashboardPage extends ConsumerWidget {
       AppLocalizations.of(context).dashboardSizeLabel(size.name);
 }
 
+class _DashboardHero extends StatelessWidget {
+  const _DashboardHero({required this.snapshot});
+
+  final DashboardSnapshot snapshot;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final localization = AppLocalizations.of(context);
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: AlignmentDirectional.topStart,
+          end: AlignmentDirectional.bottomEnd,
+          colors: [scheme.primaryContainer, scheme.secondaryContainer],
+        ),
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.lg),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: scheme.surface.withValues(alpha: .7),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(AppSpacing.sm),
+                    child: Icon(
+                      Icons.space_dashboard_rounded,
+                      color: scheme.primary,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: AppSpacing.sm),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        localization.dashboardTitle,
+                        style: theme.textTheme.headlineSmall?.copyWith(
+                          color: scheme.onPrimaryContainer,
+                        ),
+                      ),
+                      Text(
+                        DateFormat.yMMMMEEEEd().format(DateTime.now()),
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: scheme.onPrimaryContainer.withValues(
+                            alpha: .78,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            Wrap(
+              spacing: AppSpacing.sm,
+              runSpacing: AppSpacing.sm,
+              children: [
+                _HeroMetric(
+                  label: DashboardPage._label(
+                    context,
+                    DashboardWidgetKind.pending,
+                  ),
+                  value: snapshot.pending,
+                ),
+                _HeroMetric(
+                  label: DashboardPage._label(
+                    context,
+                    DashboardWidgetKind.overdue,
+                  ),
+                  value: snapshot.overdue,
+                ),
+                _HeroMetric(
+                  label: DashboardPage._label(
+                    context,
+                    DashboardWidgetKind.completedToday,
+                  ),
+                  value: snapshot.completedToday,
+                ),
+                _HeroMetric(
+                  label: DashboardPage._label(
+                    context,
+                    DashboardWidgetKind.upcoming,
+                  ),
+                  value: snapshot.upcoming,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _HeroMetric extends StatelessWidget {
+  const _HeroMetric({required this.label, required this.value});
+
+  final String label;
+  final int value;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Container(
+      constraints: const BoxConstraints(minWidth: 112, minHeight: 64),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.sm,
+        vertical: AppSpacing.xs,
+      ),
+      decoration: BoxDecoration(
+        color: scheme.surface.withValues(alpha: .72),
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '$value',
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(color: scheme.onSurface),
+          ),
+          Text(
+            label,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(
+              context,
+            ).textTheme.labelMedium?.copyWith(color: scheme.onSurfaceVariant),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _DashboardGrid extends StatelessWidget {
+  const _DashboardGrid({required this.preferences, required this.snapshot});
+
+  final List<DashboardWidgetPreference> preferences;
+  final DashboardSnapshot snapshot;
+
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, constraints) {
+      final columns = constraints.maxWidth >= 840
+          ? 3
+          : constraints.maxWidth >= 520
+          ? 2
+          : 1;
+      const gap = AppSpacing.sm;
+      final unit = (constraints.maxWidth - gap * (columns - 1)) / columns;
+      return Wrap(
+        spacing: gap,
+        runSpacing: gap,
+        children: preferences
+            .map((preference) {
+              final forceWide =
+                  preference.kind == DashboardWidgetKind.quickActions ||
+                  preference.kind == DashboardWidgetKind.miniCalendar ||
+                  preference.kind == DashboardWidgetKind.progress;
+              final spansAll =
+                  forceWide || preference.size == DashboardWidgetSize.expanded;
+              return SizedBox(
+                width: spansAll ? constraints.maxWidth : unit,
+                child: _DashboardCard(
+                  preference: preference,
+                  snapshot: snapshot,
+                ),
+              );
+            })
+            .toList(growable: false),
+      );
+    },
+  );
+}
+
 class _DashboardCard extends StatelessWidget {
   const _DashboardCard({required this.preference, required this.snapshot});
+
   final DashboardWidgetPreference preference;
   final DashboardSnapshot snapshot;
 
   @override
-  Widget build(BuildContext context) => Semantics(
-    label:
-        '${DashboardPage._label(context, preference.kind)}: ${DashboardPage._value(context, snapshot, preference.kind)}',
-    child: Card(
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          minHeight: switch (preference.size) {
-            DashboardWidgetSize.compact => 96,
-            DashboardWidgetSize.regular => 128,
-            DashboardWidgetSize.expanded => 176,
-          },
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.md),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(DashboardPage._label(context, preference.kind)),
-              const SizedBox(height: AppSpacing.xs),
-              if (preference.kind == DashboardWidgetKind.quickActions)
-                _QuickActions()
-              else if (preference.kind == DashboardWidgetKind.miniCalendar)
-                _MiniCalendar()
-              else
-                Text(
-                  DashboardPage._value(context, snapshot, preference.kind),
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-            ],
+  Widget build(BuildContext context) {
+    final label = DashboardPage._label(context, preference.kind);
+    final value = DashboardPage._value(context, snapshot, preference.kind);
+    final accent = _accent(context);
+    final onTap = _onTap(context);
+    return Semantics(
+      button: onTap != null,
+      label: '$label: $value',
+      child: Card(
+        key: Key('dashboard-card-${preference.kind.name}'),
+        child: InkWell(
+          onTap: onTap,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: switch (preference.size) {
+                DashboardWidgetSize.compact => 112,
+                DashboardWidgetSize.regular => 136,
+                DashboardWidgetSize.expanded => 168,
+              },
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(AppSpacing.md),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: accent.withValues(alpha: .12),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(AppSpacing.xs),
+                          child: Icon(_icon(), color: accent, size: 22),
+                        ),
+                      ),
+                      const SizedBox(width: AppSpacing.sm),
+                      Expanded(
+                        child: Text(
+                          label,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ),
+                      if (onTap != null)
+                        Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          size: 16,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                    ],
+                  ),
+                  const SizedBox(height: AppSpacing.sm),
+                  if (preference.kind == DashboardWidgetKind.quickActions)
+                    const _QuickActions()
+                  else if (preference.kind == DashboardWidgetKind.miniCalendar)
+                    const _MiniCalendar()
+                  else ...[
+                    Text(
+                      value,
+                      style: Theme.of(context).textTheme.headlineMedium
+                          ?.copyWith(
+                            color: accent,
+                            fontWeight: FontWeight.w700,
+                          ),
+                    ),
+                    if (preference.kind == DashboardWidgetKind.progress &&
+                        snapshot.completionRate != null) ...[
+                      const SizedBox(height: AppSpacing.sm),
+                      LinearProgressIndicator(
+                        value: snapshot.completionRate!.clamp(0, 100) / 100,
+                        borderRadius: BorderRadius.circular(8),
+                        minHeight: 8,
+                      ),
+                    ],
+                  ],
+                ],
+              ),
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  Color _accent(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final semantic = Theme.of(context).extension<SemanticColors>()!;
+    return switch (preference.kind) {
+      DashboardWidgetKind.overdue => scheme.error,
+      DashboardWidgetKind.pending => semantic.warning,
+      DashboardWidgetKind.completedToday => semantic.success,
+      DashboardWidgetKind.upcoming => semantic.info,
+      DashboardWidgetKind.tomorrow => scheme.secondary,
+      _ => scheme.primary,
+    };
+  }
+
+  IconData _icon() => switch (preference.kind) {
+    DashboardWidgetKind.today => Icons.today_rounded,
+    DashboardWidgetKind.tomorrow => Icons.event_rounded,
+    DashboardWidgetKind.pending => Icons.pending_actions_rounded,
+    DashboardWidgetKind.overdue => Icons.notification_important_rounded,
+    DashboardWidgetKind.completedToday => Icons.task_alt_rounded,
+    DashboardWidgetKind.upcoming => Icons.notifications_active_rounded,
+    DashboardWidgetKind.favorites => Icons.star_rounded,
+    DashboardWidgetKind.progress => Icons.donut_large_rounded,
+    DashboardWidgetKind.recentKnowledge => Icons.auto_stories_rounded,
+    DashboardWidgetKind.dateTime => Icons.schedule_rounded,
+    DashboardWidgetKind.quickActions => Icons.bolt_rounded,
+    DashboardWidgetKind.miniCalendar => Icons.calendar_month_rounded,
+    DashboardWidgetKind.recentProjects => Icons.folder_copy_rounded,
+    DashboardWidgetKind.recentActivity => Icons.history_rounded,
+    DashboardWidgetKind.productivity => Icons.insights_rounded,
+  };
+
+  VoidCallback? _onTap(BuildContext context) => switch (preference.kind) {
+    DashboardWidgetKind.today ||
+    DashboardWidgetKind.tomorrow ||
+    DashboardWidgetKind.pending ||
+    DashboardWidgetKind.overdue ||
+    DashboardWidgetKind.completedToday ||
+    DashboardWidgetKind.favorites => () => const TasksRoute().go(context),
+    DashboardWidgetKind.upcoming => () => const RemindersRoute().push<void>(
+      context,
     ),
-  );
+    DashboardWidgetKind.recentKnowledge => () => const KnowledgeRoute().go(
+      context,
+    ),
+    DashboardWidgetKind.recentProjects =>
+      () => const ProjectsRoute().push<void>(context),
+    DashboardWidgetKind.productivity || DashboardWidgetKind.progress =>
+      () => const StatisticsRoute().push<void>(context),
+    _ => null,
+  };
 }
 
 class _QuickActions extends StatelessWidget {
+  const _QuickActions();
+
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context);
@@ -248,20 +553,25 @@ class _QuickActions extends StatelessWidget {
       spacing: AppSpacing.sm,
       runSpacing: AppSpacing.sm,
       children: [
-        ActionChip(
-          avatar: const Icon(Icons.add_task, size: 18),
-          label: Text(localization.tasksTitle),
-          onPressed: () => const TasksRoute().go(context),
+        FilledButton.tonalIcon(
+          onPressed: () => const TaskCreateRoute().push<void>(context),
+          icon: const Icon(Icons.add_task_rounded),
+          label: Text(localization.quickAdd),
         ),
-        ActionChip(
-          avatar: const Icon(Icons.calendar_month_outlined, size: 18),
-          label: Text(localization.calendarTitle),
+        FilledButton.tonalIcon(
           onPressed: () => const CalendarRoute().go(context),
+          icon: const Icon(Icons.calendar_month_outlined),
+          label: Text(localization.calendarTitle),
         ),
-        ActionChip(
-          avatar: const Icon(Icons.search, size: 18),
-          label: Text(localization.searchTitle),
+        FilledButton.tonalIcon(
           onPressed: () => const SearchRoute().push<void>(context),
+          icon: const Icon(Icons.search_rounded),
+          label: Text(localization.searchTitle),
+        ),
+        FilledButton.tonalIcon(
+          onPressed: () => const KnowledgeRoute().go(context),
+          icon: const Icon(Icons.auto_stories_outlined),
+          label: Text(localization.knowledgeTitle),
         ),
       ],
     );
@@ -269,6 +579,8 @@ class _QuickActions extends StatelessWidget {
 }
 
 class _MiniCalendar extends StatelessWidget {
+  const _MiniCalendar();
+
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now();

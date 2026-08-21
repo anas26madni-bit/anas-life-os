@@ -703,7 +703,7 @@ class AppLocalizationsUr extends AppLocalizations {
       'pending': 'زیر التوا',
       'overdue': 'تاخیر شدہ',
       'completedToday': 'آج مکمل',
-      'upcoming': 'اگلے سات دن',
+      'upcoming': 'آنے والی یاد دہانیاں',
       'favorites': 'پن اور پسندیدہ',
       'progress': 'تکمیل کی پیش رفت',
       'recentKnowledge': 'حالیہ معلومات',

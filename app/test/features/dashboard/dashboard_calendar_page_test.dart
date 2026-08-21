@@ -1,5 +1,6 @@
 import 'package:anas_life_os/core/errors/result.dart';
 import 'package:anas_life_os/core/providers/infrastructure_providers.dart';
+import 'package:anas_life_os/core/theme/app_theme.dart';
 import 'package:anas_life_os/features/calendar/domain/entities/calendar_models.dart';
 import 'package:anas_life_os/features/calendar/domain/repositories/calendar_repository.dart';
 import 'package:anas_life_os/features/calendar/presentation/pages/calendar_page.dart';
@@ -26,12 +27,53 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    expect(find.text('Dashboard'), findsOneWidget);
+    expect(find.text('Dashboard'), findsWidgets);
     await tester.tap(find.byTooltip('Customize dashboard'));
     await tester.pumpAndSettle();
     expect(find.text('Reset'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
+
+  for (final configuration in const [
+    (Locale('en'), Size(320, 568)),
+    (Locale('ur'), Size(640, 360)),
+  ]) {
+    testWidgets(
+      'modern dashboard is responsive in ${configuration.$1.languageCode} at ${configuration.$2}',
+      (tester) async {
+        await tester.binding.setSurfaceSize(configuration.$2);
+        addTearDown(() => tester.binding.setSurfaceSize(null));
+        await tester.pumpWidget(
+          ProviderScope(
+            overrides: [
+              dashboardRepositoryProvider.overrideWith(
+                (ref) async => _FakeDashboardRepository(),
+              ),
+            ],
+            child: _TestApp(
+              home: const DashboardPage(),
+              locale: configuration.$1,
+              textScaler: const TextScaler.linear(2),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+        expect(
+          Directionality.of(tester.element(find.byType(DashboardPage))),
+          configuration.$1.languageCode == 'ur'
+              ? TextDirection.rtl
+              : TextDirection.ltr,
+        );
+        expect(find.byKey(const Key('dashboard-scroll-view')), findsOneWidget);
+        await tester.scrollUntilVisible(
+          find.byKey(const Key('dashboard-card-upcoming')),
+          200,
+          scrollable: find.byType(Scrollable).first,
+        );
+        expect(tester.takeException(), isNull);
+      },
+    );
+  }
 
   testWidgets('calendar exposes every approved view in RTL', (tester) async {
     await tester.pumpWidget(
@@ -65,19 +107,23 @@ void main() {
 }
 
 class _TestApp extends StatelessWidget {
-  const _TestApp({required this.home, this.locale});
+  const _TestApp({
+    required this.home,
+    this.locale,
+    this.textScaler = const TextScaler.linear(1.4),
+  });
   final Widget home;
   final Locale? locale;
+  final TextScaler textScaler;
 
   @override
   Widget build(BuildContext context) => MaterialApp(
     locale: locale,
+    theme: AppTheme.light(seedColor: AppTheme.defaultSeedColor),
     localizationsDelegates: AppLocalizations.localizationsDelegates,
     supportedLocales: AppLocalizations.supportedLocales,
     builder: (context, child) => MediaQuery(
-      data: MediaQuery.of(
-        context,
-      ).copyWith(textScaler: const TextScaler.linear(1.4)),
+      data: MediaQuery.of(context).copyWith(textScaler: textScaler),
       child: child!,
     ),
     home: home,

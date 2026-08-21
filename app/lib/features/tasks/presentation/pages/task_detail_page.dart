@@ -301,6 +301,15 @@ Future<void> _editTask(
         if (result case FailureResult<ReminderEntity>(:final failure)) {
           throw StateError(failure.safeMessage);
         }
+        if (!existingReminder.enabled) {
+          final enabled = await reminderUseCases.setEnabled(
+            existingReminder.id,
+            true,
+          );
+          if (enabled case FailureResult<ReminderEntity>(:final failure)) {
+            throw StateError(failure.safeMessage);
+          }
+        }
       } else if (existingReminder.enabled) {
         final result = await reminderUseCases.setEnabled(
           existingReminder.id,
