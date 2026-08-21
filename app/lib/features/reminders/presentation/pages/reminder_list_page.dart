@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/presentation/app_top_bar.dart';
+import '../../../tasks/domain/entities/task_entity.dart';
+import '../../../tasks/presentation/controllers/task_list_controller.dart';
 import '../../domain/entities/reminder_draft.dart';
 import '../../domain/entities/reminder_entity.dart';
 import '../../domain/entities/reminder_enums.dart';
@@ -17,6 +19,7 @@ class ReminderListPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final localization = AppLocalizations.of(context);
     final reminders = ref.watch(reminderListControllerProvider);
+    final tasks = ref.watch(taskListControllerProvider).value ?? [];
     ref.listen(reminderListControllerProvider, (previous, next) {
       if (next case AsyncError(:final error)) {
         ScaffoldMessenger.of(
@@ -36,7 +39,7 @@ class ReminderListPage extends ConsumerWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _showCreateDialog(context, ref),
+        onPressed: () => _showCreateDialog(context, ref, tasks: tasks),
         icon: const Icon(Icons.add_alert_outlined),
         label: Text(localization.createReminder),
       ),
@@ -54,7 +57,8 @@ class ReminderListPage extends ConsumerWidget {
             ),
             data: (items) => items.isEmpty
                 ? _ReminderEmptyState(
-                    onCreate: () => _showCreateDialog(context, ref),
+                    onCreate: () =>
+                        _showCreateDialog(context, ref, tasks: tasks),
                   )
                 : ListView.separated(
                     padding: const EdgeInsets.fromLTRB(
@@ -77,6 +81,7 @@ class ReminderListPage extends ConsumerWidget {
                       onEdit: () => _showCreateDialog(
                         context,
                         ref,
+                        tasks: tasks,
                         initial: items[index],
                       ),
                       onSnooze: () => ref
@@ -93,6 +98,7 @@ class ReminderListPage extends ConsumerWidget {
   Future<void> _showCreateDialog(
     BuildContext context,
     WidgetRef ref, {
+    required List<TaskEntity> tasks,
     ReminderEntity? initial,
   }) async {
     final localization = AppLocalizations.of(context);
@@ -130,16 +136,27 @@ class ReminderListPage extends ConsumerWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    TextFormField(
-                      initialValue: taskId == 0 ? null : '$taskId',
+                    DropdownButtonFormField<int>(
+                      key: const Key('reminder-task-selector'),
+                      initialValue: taskId == 0 ? null : taskId,
                       autofocus: true,
+                      isExpanded: true,
                       decoration: InputDecoration(
                         labelText: localization.reminderTaskId,
                       ),
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      onChanged: (value) => taskId = int.tryParse(value) ?? 0,
-                      validator: (value) => (int.tryParse(value ?? '') ?? 0) < 1
+                      items: tasks
+                          .map(
+                            (task) => DropdownMenuItem<int>(
+                              value: task.id,
+                              child: Text(
+                                task.title,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          )
+                          .toList(growable: false),
+                      onChanged: (value) => taskId = value ?? 0,
+                      validator: (value) => (value ?? 0) < 1
                           ? localization.reminderTaskRequired
                           : null,
                     ),

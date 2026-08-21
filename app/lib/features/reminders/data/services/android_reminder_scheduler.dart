@@ -29,6 +29,7 @@ final class AndroidReminderScheduler implements ReminderScheduler {
         'voice': occurrence.voiceEnabled,
         'fullScreen': occurrence.fullScreen,
         'priority': occurrence.priority.name,
+        'sound': occurrence.sound,
         'frequency': repeat.frequency.name,
         'interval': repeat.interval,
         'weekdayMask': repeat.weekdayMask,

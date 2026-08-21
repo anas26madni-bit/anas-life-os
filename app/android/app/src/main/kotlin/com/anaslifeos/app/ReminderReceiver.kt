@@ -10,6 +10,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.hardware.camera2.CameraManager
+import android.media.AudioAttributes
+import android.media.RingtoneManager
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -83,7 +85,14 @@ private class ReminderNotificationPresenter(private val context: Context) {
 
     fun show(record: ReminderRecord) {
         createChannels()
-        val channel = if (record.priority in setOf("high", "critical")) CHANNEL_HIGH else CHANNEL_NORMAL
+        val urgent = record.priority in setOf("high", "critical")
+        val audible = record.sound != "silent"
+        val channel = when {
+            urgent && audible -> CHANNEL_HIGH
+            urgent -> CHANNEL_HIGH_SILENT
+            audible -> CHANNEL_NORMAL
+            else -> CHANNEL_NORMAL_SILENT
+        }
         val launchIntent = context.packageManager.getLaunchIntentForPackage(context.packageName)
             ?.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         val launchPending = launchIntent?.let {
@@ -140,12 +149,21 @@ private class ReminderNotificationPresenter(private val context: Context) {
         )
 
     private fun createChannels() {
+        val alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+            ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val alarmAttributes = AudioAttributes.Builder()
+            .setUsage(AudioAttributes.USAGE_ALARM)
+            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+            .build()
         notificationManager.createNotificationChannel(
             NotificationChannel(
                 CHANNEL_NORMAL,
                 context.getString(R.string.reminder_channel_normal),
                 NotificationManager.IMPORTANCE_DEFAULT,
-            ).apply { description = context.getString(R.string.reminder_channel_normal_description) },
+            ).apply {
+                description = context.getString(R.string.reminder_channel_normal_description)
+                setSound(alarmSound, alarmAttributes)
+            },
         )
         notificationManager.createNotificationChannel(
             NotificationChannel(
@@ -154,6 +172,30 @@ private class ReminderNotificationPresenter(private val context: Context) {
                 NotificationManager.IMPORTANCE_HIGH,
             ).apply {
                 description = context.getString(R.string.reminder_channel_urgent_description)
+                enableLights(true)
+                lightColor = Color.WHITE
+                enableVibration(true)
+                setSound(alarmSound, alarmAttributes)
+            },
+        )
+        notificationManager.createNotificationChannel(
+            NotificationChannel(
+                CHANNEL_NORMAL_SILENT,
+                context.getString(R.string.reminder_channel_normal),
+                NotificationManager.IMPORTANCE_DEFAULT,
+            ).apply {
+                description = context.getString(R.string.reminder_channel_normal_description)
+                setSound(null, null)
+            },
+        )
+        notificationManager.createNotificationChannel(
+            NotificationChannel(
+                CHANNEL_HIGH_SILENT,
+                context.getString(R.string.reminder_channel_urgent),
+                NotificationManager.IMPORTANCE_HIGH,
+            ).apply {
+                description = context.getString(R.string.reminder_channel_urgent_description)
+                setSound(null, null)
                 enableLights(true)
                 lightColor = Color.WHITE
                 enableVibration(true)
@@ -203,7 +245,9 @@ private class ReminderNotificationPresenter(private val context: Context) {
     }
 
     companion object {
-        private const val CHANNEL_NORMAL = "reminders_normal_v1"
-        private const val CHANNEL_HIGH = "reminders_urgent_v1"
+        private const val CHANNEL_NORMAL = "reminders_normal_audible_v2"
+        private const val CHANNEL_HIGH = "reminders_urgent_audible_v2"
+        private const val CHANNEL_NORMAL_SILENT = "reminders_normal_silent_v2"
+        private const val CHANNEL_HIGH_SILENT = "reminders_urgent_silent_v2"
     }
 }

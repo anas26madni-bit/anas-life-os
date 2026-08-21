@@ -18,6 +18,7 @@ internal data class ReminderRecord(
     val voice: Boolean,
     val fullScreen: Boolean,
     val priority: String,
+    val sound: String?,
     val frequency: String,
     val interval: Int,
     val weekdayMask: Int,
@@ -45,6 +46,7 @@ internal data class ReminderRecord(
         put("voice", voice)
         put("fullScreen", fullScreen)
         put("priority", priority)
+        put("sound", sound)
         put("frequency", frequency)
         put("interval", interval)
         put("weekdayMask", weekdayMask)
@@ -141,6 +143,7 @@ internal data class ReminderRecord(
             voice = value.optBoolean("voice"),
             fullScreen = value.optBoolean("fullScreen"),
             priority = value.optString("priority", "normal"),
+            sound = value.optionalString("sound"),
             frequency = value.optString("frequency", "none"),
             interval = value.optInt("interval", 1).coerceAtLeast(1),
             weekdayMask = value.optInt("weekdayMask"),

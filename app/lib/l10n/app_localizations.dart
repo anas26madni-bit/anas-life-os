@@ -176,6 +176,12 @@ abstract class AppLocalizations {
   /// **'Enter a task title.'**
   String get taskTitleRequired;
 
+  /// No description provided for @taskTitleTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Task title cannot exceed 300 characters.'**
+  String get taskTitleTooLong;
+
   /// No description provided for @save.
   ///
   /// In en, this message translates to:
@@ -251,13 +257,13 @@ abstract class AppLocalizations {
   /// No description provided for @reminderTaskId.
   ///
   /// In en, this message translates to:
-  /// **'Task ID'**
+  /// **'Task'**
   String get reminderTaskId;
 
   /// No description provided for @reminderTaskRequired.
   ///
   /// In en, this message translates to:
-  /// **'Enter a valid task ID.'**
+  /// **'Select a task.'**
   String get reminderTaskRequired;
 
   /// No description provided for @reminderTitle.
@@ -962,6 +968,72 @@ abstract class AppLocalizations {
   /// **'Project ID'**
   String get projectId;
 
+  /// No description provided for @parentTaskId.
+  ///
+  /// In en, this message translates to:
+  /// **'Parent task'**
+  String get parentTaskId;
+
+  /// No description provided for @parentTaskHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Required only for mandatory subtasks.'**
+  String get parentTaskHelper;
+
+  /// No description provided for @noParentTask.
+  ///
+  /// In en, this message translates to:
+  /// **'No parent task'**
+  String get noParentTask;
+
+  /// No description provided for @mandatoryTaskRequiresParent.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a parent task before marking this subtask mandatory.'**
+  String get mandatoryTaskRequiresParent;
+
+  /// No description provided for @invalidTaskDates.
+  ///
+  /// In en, this message translates to:
+  /// **'Due date cannot be before start date.'**
+  String get invalidTaskDates;
+
+  /// No description provided for @reminderSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder'**
+  String get reminderSectionTitle;
+
+  /// No description provided for @reminderEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable reminder'**
+  String get reminderEnabled;
+
+  /// No description provided for @reminderDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get reminderDate;
+
+  /// No description provided for @reminderTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get reminderTime;
+
+  /// No description provided for @audibleReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Audible reminder'**
+  String get audibleReminder;
+
+  /// No description provided for @taskSavedReminderFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Task saved, but its reminder could not be scheduled: {message}'**
+  String taskSavedReminderFailed(String message);
+
   /// No description provided for @addTag.
   ///
   /// In en, this message translates to:
@@ -1247,7 +1319,7 @@ abstract class AppLocalizations {
   /// No description provided for @dashboardWidgetLabel.
   ///
   /// In en, this message translates to:
-  /// **'{kind, select, today{Today} tomorrow{Tomorrow} pending{Pending} overdue{Overdue} completedToday{Completed today} upcoming{Next seven days} favorites{Pinned and favorites} progress{Completion progress} recentKnowledge{Recent knowledge} dateTime{Date and time} quickActions{Quick actions} miniCalendar{Mini calendar} recentProjects{Recent projects} recentActivity{Recent activity} productivity{Productivity score} other{Dashboard widget}}'**
+  /// **'{kind, select, today{Today} tomorrow{Tomorrow} pending{Pending} overdue{Overdue} completedToday{Completed today} upcoming{Upcoming reminders} favorites{Pinned and favorites} progress{Completion progress} recentKnowledge{Recent knowledge} dateTime{Date and time} quickActions{Quick actions} miniCalendar{Mini calendar} recentProjects{Recent projects} recentActivity{Recent activity} productivity{Productivity score} other{Dashboard widget}}'**
   String dashboardWidgetLabel(String kind);
 
   /// No description provided for @dashboardSizeLabel.

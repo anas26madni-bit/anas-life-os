@@ -49,6 +49,9 @@ class AppLocalizationsUr extends AppLocalizations {
   String get taskTitleRequired => 'کام کا عنوان درج کریں۔';
 
   @override
+  String get taskTitleTooLong => 'کام کا عنوان 300 حروف سے زیادہ نہیں ہو سکتا۔';
+
+  @override
   String get save => 'محفوظ کریں';
 
   @override
@@ -85,10 +88,10 @@ class AppLocalizationsUr extends AppLocalizations {
   String get createReminder => 'یاد دہانی بنائیں';
 
   @override
-  String get reminderTaskId => 'کام کی شناخت';
+  String get reminderTaskId => 'کام';
 
   @override
-  String get reminderTaskRequired => 'درست کام کی شناخت درج کریں۔';
+  String get reminderTaskRequired => 'کام منتخب کریں۔';
 
   @override
   String get reminderTitle => 'یاد دہانی کا عنوان';
@@ -451,6 +454,43 @@ class AppLocalizationsUr extends AppLocalizations {
   String get projectId => 'منصوبہ آئی ڈی';
 
   @override
+  String get parentTaskId => 'بنیادی کام';
+
+  @override
+  String get parentTaskHelper => 'صرف لازمی ذیلی کام کے لیے درکار ہے۔';
+
+  @override
+  String get noParentTask => 'کوئی بنیادی کام نہیں';
+
+  @override
+  String get mandatoryTaskRequiresParent =>
+      'ذیلی کام کو لازمی بنانے سے پہلے بنیادی کام منتخب کریں۔';
+
+  @override
+  String get invalidTaskDates =>
+      'آخری تاریخ آغاز کی تاریخ سے پہلے نہیں ہو سکتی۔';
+
+  @override
+  String get reminderSectionTitle => 'یاد دہانی';
+
+  @override
+  String get reminderEnabled => 'یاد دہانی فعال کریں';
+
+  @override
+  String get reminderDate => 'تاریخ';
+
+  @override
+  String get reminderTime => 'وقت';
+
+  @override
+  String get audibleReminder => 'آواز والی یاد دہانی';
+
+  @override
+  String taskSavedReminderFailed(String message) {
+    return 'کام محفوظ ہو گیا، لیکن یاد دہانی طے نہیں ہو سکی: $message';
+  }
+
+  @override
   String get addTag => 'ٹیگ شامل کریں';
 
   @override
@@ -663,7 +703,7 @@ class AppLocalizationsUr extends AppLocalizations {
       'pending': 'زیر التوا',
       'overdue': 'تاخیر شدہ',
       'completedToday': 'آج مکمل',
-      'upcoming': 'اگلے سات دن',
+      'upcoming': 'آنے والی یاد دہانیاں',
       'favorites': 'پن اور پسندیدہ',
       'progress': 'تکمیل کی پیش رفت',
       'recentKnowledge': 'حالیہ معلومات',

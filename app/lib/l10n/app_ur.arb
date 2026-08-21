@@ -63,6 +63,7 @@
   "createTask": "کام بنائیں",
   "taskTitle": "کام کا عنوان",
   "taskTitleRequired": "کام کا عنوان درج کریں۔",
+  "taskTitleTooLong": "کام کا عنوان 300 حروف سے زیادہ نہیں ہو سکتا۔",
   "save": "محفوظ کریں",
   "cancel": "منسوخ",
   "completeTask": "کام مکمل کریں",
@@ -75,8 +76,8 @@
   "openReminders": "یاد دہانیاں کھولیں",
   "remindersTitle": "یاد دہانیاں",
   "createReminder": "یاد دہانی بنائیں",
-  "reminderTaskId": "کام کی شناخت",
-  "reminderTaskRequired": "درست کام کی شناخت درج کریں۔",
+  "reminderTaskId": "کام",
+  "reminderTaskRequired": "کام منتخب کریں۔",
   "reminderTitle": "یاد دہانی کا عنوان",
   "reminderTitleRequired": "یاد دہانی کا عنوان درج کریں۔",
   "reminderDateTime": "یاد دہانی کی تاریخ اور وقت",
@@ -196,6 +197,18 @@
 , "startDate": "آغاز کی تاریخ"
 , "dueDate": "آخری تاریخ"
 , "projectId": "منصوبہ آئی ڈی"
+, "parentTaskId": "بنیادی کام"
+, "parentTaskHelper": "صرف لازمی ذیلی کام کے لیے درکار ہے۔"
+, "noParentTask": "کوئی بنیادی کام نہیں"
+, "mandatoryTaskRequiresParent": "ذیلی کام کو لازمی بنانے سے پہلے بنیادی کام منتخب کریں۔"
+, "invalidTaskDates": "آخری تاریخ آغاز کی تاریخ سے پہلے نہیں ہو سکتی۔"
+, "reminderSectionTitle": "یاد دہانی"
+, "reminderEnabled": "یاد دہانی فعال کریں"
+, "reminderDate": "تاریخ"
+, "reminderTime": "وقت"
+, "audibleReminder": "آواز والی یاد دہانی"
+, "taskSavedReminderFailed": "کام محفوظ ہو گیا، لیکن یاد دہانی طے نہیں ہو سکی: {message}"
+, "@taskSavedReminderFailed": {"placeholders": {"message": {"type": "String"}}}
 , "addTag": "ٹیگ شامل کریں"
 , "addChecklist": "چیک لسٹ شامل کریں"
 , "listView": "فہرست"
@@ -252,7 +265,7 @@
 , "protectedLocalStorage": "محفوظ مقامی ذخیرہ"
 , "sourceUnavailable": "مجاز ماخذ اب دستیاب نہیں ہے۔"
 , "availableActions": "کام، کیلنڈر اور تلاش"
-, "dashboardWidgetLabel": "{kind, select, today{آج} tomorrow{کل} pending{زیر التوا} overdue{تاخیر شدہ} completedToday{آج مکمل} upcoming{اگلے سات دن} favorites{پن اور پسندیدہ} progress{تکمیل کی پیش رفت} recentKnowledge{حالیہ معلومات} dateTime{تاریخ اور وقت} quickActions{فوری اعمال} miniCalendar{مختصر کیلنڈر} recentProjects{حالیہ منصوبے} recentActivity{حالیہ سرگرمی} productivity{پیداواری اسکور} other{ڈیش بورڈ ویجیٹ}}"
+, "dashboardWidgetLabel": "{kind, select, today{آج} tomorrow{کل} pending{زیر التوا} overdue{تاخیر شدہ} completedToday{آج مکمل} upcoming{آنے والی یاد دہانیاں} favorites{پن اور پسندیدہ} progress{تکمیل کی پیش رفت} recentKnowledge{حالیہ معلومات} dateTime{تاریخ اور وقت} quickActions{فوری اعمال} miniCalendar{مختصر کیلنڈر} recentProjects{حالیہ منصوبے} recentActivity{حالیہ سرگرمی} productivity{پیداواری اسکور} other{ڈیش بورڈ ویجیٹ}}"
 , "@dashboardWidgetLabel": {"placeholders": {"kind": {"type": "String"}}}
 , "dashboardSizeLabel": "{size, select, compact{مختصر} regular{عام} expanded{کشادہ} other{حجم}}"
 , "@dashboardSizeLabel": {"placeholders": {"size": {"type": "String"}}}

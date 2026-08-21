@@ -141,6 +141,7 @@ final class ReminderUseCases {
           voiceEnabled: reminder.voiceEnabled,
           fullScreen: reminder.fullScreen,
           priority: reminder.priority,
+          sound: reminder.sound,
         ),
         repeatPattern: (repeat as Success<ReminderRepeatPattern>).value,
         snoozeMinutes: reminder.snoozeMinutes,

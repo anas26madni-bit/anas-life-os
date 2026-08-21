@@ -40,6 +40,7 @@ void main() {
           voiceEnabled: false,
           fullScreen: false,
           priority: ReminderPriority.high,
+          sound: 'default',
         ),
         repeatPattern: const ReminderRepeatPattern.none('UTC'),
         snoozeMinutes: 10,
@@ -52,6 +53,7 @@ void main() {
     expect(calls.single.method, 'schedule');
     final arguments = calls.single.arguments! as Map<Object?, Object?>;
     expect(arguments['reminderId'], 7);
+    expect(arguments['sound'], 'default');
     expect(arguments, isNot(contains('title')));
     expect(arguments, isNot(contains('message')));
   });

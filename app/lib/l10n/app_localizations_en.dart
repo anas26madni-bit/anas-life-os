@@ -50,6 +50,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get taskTitleRequired => 'Enter a task title.';
 
   @override
+  String get taskTitleTooLong => 'Task title cannot exceed 300 characters.';
+
+  @override
   String get save => 'Save';
 
   @override
@@ -86,10 +89,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get createReminder => 'Create reminder';
 
   @override
-  String get reminderTaskId => 'Task ID';
+  String get reminderTaskId => 'Task';
 
   @override
-  String get reminderTaskRequired => 'Enter a valid task ID.';
+  String get reminderTaskRequired => 'Select a task.';
 
   @override
   String get reminderTitle => 'Reminder title';
@@ -453,6 +456,42 @@ class AppLocalizationsEn extends AppLocalizations {
   String get projectId => 'Project ID';
 
   @override
+  String get parentTaskId => 'Parent task';
+
+  @override
+  String get parentTaskHelper => 'Required only for mandatory subtasks.';
+
+  @override
+  String get noParentTask => 'No parent task';
+
+  @override
+  String get mandatoryTaskRequiresParent =>
+      'Choose a parent task before marking this subtask mandatory.';
+
+  @override
+  String get invalidTaskDates => 'Due date cannot be before start date.';
+
+  @override
+  String get reminderSectionTitle => 'Reminder';
+
+  @override
+  String get reminderEnabled => 'Enable reminder';
+
+  @override
+  String get reminderDate => 'Date';
+
+  @override
+  String get reminderTime => 'Time';
+
+  @override
+  String get audibleReminder => 'Audible reminder';
+
+  @override
+  String taskSavedReminderFailed(String message) {
+    return 'Task saved, but its reminder could not be scheduled: $message';
+  }
+
+  @override
   String get addTag => 'Add tag';
 
   @override
@@ -666,7 +705,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'pending': 'Pending',
       'overdue': 'Overdue',
       'completedToday': 'Completed today',
-      'upcoming': 'Next seven days',
+      'upcoming': 'Upcoming reminders',
       'favorites': 'Pinned and favorites',
       'progress': 'Completion progress',
       'recentKnowledge': 'Recent knowledge',

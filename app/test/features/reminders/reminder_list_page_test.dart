@@ -45,9 +45,13 @@ void main() {
     await tester.tap(find.text('Create reminder').first);
     await tester.pumpAndSettle();
     final fields = find.byType(TextFormField);
-    expect(fields, findsAtLeastNWidgets(2));
-    await tester.enterText(fields.at(0), task.id.toString());
-    await tester.enterText(fields.at(1), 'Review task');
+    expect(fields, findsAtLeastNWidgets(1));
+    await tester.tap(find.byKey(const Key('reminder-task-selector')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(task.title).last);
+    await tester.pumpAndSettle();
+    await tester.enterText(fields.at(0), 'Review task');
+    expect(find.textContaining('Task ID'), findsNothing);
     await tester.tap(find.text('Save'));
     await tester.pumpAndSettle();
 

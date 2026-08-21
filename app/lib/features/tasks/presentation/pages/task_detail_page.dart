@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/errors/result.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/presentation/app_top_bar.dart';
 import '../../../../shared/presentation/async_state_view.dart';
-import '../../domain/entities/task_draft.dart';
+import '../../../reminders/domain/entities/reminder_entity.dart';
+import '../../../reminders/presentation/controllers/reminder_list_controller.dart';
 import '../../domain/entities/task_entity.dart';
-import '../../domain/entities/task_enums.dart';
 import '../controllers/task_detail_controller.dart';
+import '../widgets/task_form_fields.dart';
+import '../widgets/task_reminder_fields.dart';
 
 class TaskDetailPage extends ConsumerWidget {
   const TaskDetailPage({required this.taskId, super.key});
@@ -210,15 +213,18 @@ Future<void> _editTask(
 ) async {
   final localization = AppLocalizations.of(context);
   final key = GlobalKey<FormState>();
-  var title = task.title;
-  var description = task.description ?? '';
-  var projectId = task.projectId?.toString() ?? '';
-  var priority = task.priority;
-  var status = task.status;
-  var progress = task.progress.toDouble();
-  var mandatory = task.isMandatory;
-  var start = task.startAt;
-  var due = task.dueAt;
+  final data = TaskFormData.fromTask(task);
+  final reminderUseCases = await ref.read(reminderUseCasesProvider.future);
+  final reminderResult = await reminderUseCases.list(limit: 200);
+  final reminders = switch (reminderResult) {
+    Success<List<ReminderEntity>>(:final value) => value,
+    FailureResult<List<ReminderEntity>>() => const <ReminderEntity>[],
+  };
+  final existingReminder = reminders
+      .where((reminder) => reminder.taskId == task.id)
+      .firstOrNull;
+  final reminderData = TaskReminderFormData.fromReminder(existingReminder);
+  if (!context.mounted) return;
   final saved = await showModalBottomSheet<bool>(
     context: context,
     isScrollControlled: true,
@@ -243,93 +249,15 @@ Future<void> _editTask(
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   const SizedBox(height: AppSpacing.md),
-                  TextFormField(
-                    initialValue: title,
-                    maxLength: 300,
-                    decoration: InputDecoration(
-                      labelText: localization.taskTitle,
-                    ),
-                    validator: (value) => value == null || value.trim().isEmpty
-                        ? localization.taskTitleRequired
-                        : null,
-                    onChanged: (value) => title = value,
-                  ),
-                  TextFormField(
-                    initialValue: description,
-                    minLines: 3,
-                    maxLines: 6,
-                    decoration: InputDecoration(
-                      labelText: localization.description,
-                    ),
-                    onChanged: (value) => description = value,
-                  ),
-                  TextFormField(
-                    initialValue: projectId,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      labelText: localization.projectId,
-                    ),
-                    onChanged: (value) => projectId = value,
-                  ),
-                  DropdownButtonFormField<TaskPriority>(
-                    initialValue: priority,
-                    decoration: InputDecoration(
-                      labelText: localization.priority,
-                    ),
-                    items: TaskPriority.values
-                        .map(
-                          (item) => DropdownMenuItem(
-                            value: item,
-                            child: Text(
-                              localization.taskPriorityLabel(item.name),
-                            ),
-                          ),
-                        )
-                        .toList(growable: false),
-                    onChanged: (value) => priority = value!,
-                  ),
-                  DropdownButtonFormField<TaskStatus>(
-                    initialValue: status,
-                    decoration: InputDecoration(labelText: localization.status),
-                    items: TaskStatus.values
-                        .where((item) => item != TaskStatus.deleted)
-                        .map(
-                          (item) => DropdownMenuItem(
-                            value: item,
-                            child: Text(
-                              localization.taskStatusLabel(item.name),
-                            ),
-                          ),
-                        )
-                        .toList(growable: false),
-                    onChanged: (value) => status = value!,
-                  ),
-                  SwitchListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: Text(localization.mandatory),
-                    value: mandatory,
-                    onChanged: (value) => setState(() => mandatory = value),
-                  ),
-                  Text(localization.progressPercent(progress.round())),
-                  Slider(
-                    value: progress,
-                    max: 100,
-                    divisions: 20,
-                    label: '${progress.round()}%',
-                    onChanged: (value) => setState(() => progress = value),
-                  ),
-                  _DateButton(
-                    label: localization.startDate,
-                    value: start,
-                    onChanged: (value) => setState(() => start = value),
-                  ),
-                  _DateButton(
-                    label: localization.dueDate,
-                    value: due,
-                    onChanged: (value) => setState(() => due = value),
+                  TaskFormFields(data: data, onChanged: () => setState(() {})),
+                  const SizedBox(height: AppSpacing.lg),
+                  TaskReminderFields(
+                    data: reminderData,
+                    onChanged: () => setState(() {}),
                   ),
                   const SizedBox(height: AppSpacing.md),
                   FilledButton(
+                    key: const Key('task-edit-save'),
                     onPressed: () => key.currentState!.validate()
                         ? Navigator.pop(context, true)
                         : null,
@@ -344,55 +272,58 @@ Future<void> _editTask(
     ),
   );
   if (saved == true) {
-    await ref
-        .read(taskDetailActionsProvider)
-        .update(
-          task.id,
-          TaskDraft(
-            title: title,
-            description: description.trim().isEmpty ? null : description.trim(),
-            projectId: int.tryParse(projectId),
-            categoryId: task.categoryId,
-            subcategoryId: task.subcategoryId,
-            parentTaskId: task.parentTaskId,
-            sortOrder: task.sortOrder,
-            isMandatory: mandatory,
-            status: status,
-            priority: priority,
-            progress: progress.round(),
-            startAt: start,
-            dueAt: due,
+    await ref.read(taskDetailActionsProvider).update(task.id, data.toDraft());
+    if (existingReminder == null && reminderData.enabled) {
+      final result = await reminderUseCases.create(
+        reminderData.toDraft(
+          taskId: task.id,
+          title: data.title.trim(),
+          message: data.description.trim().isEmpty
+              ? null
+              : data.description.trim(),
+        ),
+      );
+      if (result case FailureResult<ReminderEntity>(:final failure)) {
+        throw StateError(failure.safeMessage);
+      }
+    } else if (existingReminder != null) {
+      if (reminderData.enabled) {
+        final result = await reminderUseCases.update(
+          existingReminder.id,
+          reminderData.toDraft(
+            taskId: task.id,
+            title: data.title.trim(),
+            message: data.description.trim().isEmpty
+                ? null
+                : data.description.trim(),
           ),
         );
+        if (result case FailureResult<ReminderEntity>(:final failure)) {
+          throw StateError(failure.safeMessage);
+        }
+        if (!existingReminder.enabled) {
+          final enabled = await reminderUseCases.setEnabled(
+            existingReminder.id,
+            true,
+          );
+          if (enabled case FailureResult<ReminderEntity>(:final failure)) {
+            throw StateError(failure.safeMessage);
+          }
+        }
+      } else if (existingReminder.enabled) {
+        final result = await reminderUseCases.setEnabled(
+          existingReminder.id,
+          false,
+        );
+        if (result case FailureResult<ReminderEntity>(:final failure)) {
+          throw StateError(failure.safeMessage);
+        }
+      }
+    }
+    ref.invalidate(reminderListControllerProvider);
   }
 }
 
-class _DateButton extends StatelessWidget {
-  const _DateButton({
-    required this.label,
-    required this.value,
-    required this.onChanged,
-  });
-  final String label;
-  final DateTime? value;
-  final ValueChanged<DateTime?> onChanged;
-
-  @override
-  Widget build(BuildContext context) => ListTile(
-    contentPadding: EdgeInsets.zero,
-    title: Text(label),
-    subtitle: value == null
-        ? null
-        : Text(DateFormat.yMMMd().format(value!.toLocal())),
-    trailing: const Icon(Icons.event_outlined),
-    onTap: () async {
-      final selected = await showDatePicker(
-        context: context,
-        firstDate: DateTime(2000),
-        lastDate: DateTime(2100),
-        initialDate: value?.toLocal() ?? DateTime.now(),
-      );
-      if (selected != null) onChanged(selected);
-    },
-  );
+extension<T> on Iterable<T> {
+  T? get firstOrNull => isEmpty ? null : first;
 }
